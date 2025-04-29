@@ -1,0 +1,40 @@
+{
+  "name": "hackit",
+  "version": "1.0.0",
+  "description": "HackIt - 青少年黑客松組織網站",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "keywords": [
+    "hackathon",
+    "youth",
+    "technology",
+    "education",
+    "innovation"
+  ],
+  "author": "HackIt Team",
+  "license": "MIT",
+  "dependencies": {
+    "@react-three/drei": "^9.77.0",
+    "@react-three/fiber": "^8.13.0",
+    "@types/node": "^20.8.9",
+    "@types/react": "^18.2.33",
+    "@types/react-dom": "^18.2.14",
+    "framer-motion": "^10.16.4",
+    "gsap": "^3.12.2",
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.5.0",
+    "three": "^0.150.1",
+    "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "10.4.16",
+    "postcss": "8.4.31",
+    "tailwindcss": "3.3.0"
+  }
+}
