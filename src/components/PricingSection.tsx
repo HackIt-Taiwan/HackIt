@@ -3,124 +3,46 @@
 import React, { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
-import { FaCheck, FaTimes, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaCheck, FaTimes, FaAngleDown } from "react-icons/fa";
 
-type PlanFeature = {
-  title: string;
-  included: boolean;
-};
-
-type PricingPlan = {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  period: string;
-  isPopular?: boolean;
-  features: PlanFeature[];
-  buttonText: string;
-  buttonLink: string;
-};
-
-const pricingPlans: PricingPlan[] = [
+// FAQ 問題和答案
+const faqItems = [
   {
-    id: "free",
-    name: "免費體驗",
-    description: "適合初學者了解程式設計的基礎",
-    price: 0,
-    period: "永久",
-    features: [
-      { title: "基礎課程內容", included: true },
-      { title: "社區論壇訪問", included: true },
-      { title: "線上練習題", included: true },
-      { title: "個人學習計劃", included: false },
-      { title: "專家指導", included: false },
-      { title: "認證證書", included: false },
-      { title: "實際專案實踐", included: false },
-      { title: "求職輔導", included: false },
-    ],
-    buttonText: "立即開始",
-    buttonLink: "/signup",
+    question: "HackIt 的課程難度如何？適合初學者嗎？",
+    answer:
+      "我們提供不同難度的課程，從完全零基礎的入門班到進階專題開發。無論您是完全沒有程式基礎的初學者，還是想要精進特定領域技能的開發者，都能找到適合的課程。",
   },
   {
-    id: "standard",
-    name: "標準方案",
-    description: "適合積極學習者深入探索程式設計",
-    price: 299,
-    period: "每月",
-    isPopular: true,
-    features: [
-      { title: "所有免費功能", included: true },
-      { title: "進階課程內容", included: true },
-      { title: "個人學習計劃", included: true },
-      { title: "每週直播課程", included: true },
-      { title: "1對1專家指導 (每月2次)", included: true },
-      { title: "專業技能認證", included: true },
-      { title: "實際專案實踐", included: false },
-      { title: "求職輔導", included: false },
-    ],
-    buttonText: "選擇方案",
-    buttonLink: "/signup?plan=standard",
+    question: "購買方案後，可以隨時取消嗎？",
+    answer:
+      "是的，您可以隨時取消訂閱。月付方案將在當前計費週期結束後停止續費；年付方案取消後可使用至期限結束，但不予退款。",
   },
   {
-    id: "premium",
-    name: "專業方案",
-    description: "適合未來程式設計師的完整培訓",
-    price: 599,
-    period: "每月",
-    features: [
-      { title: "所有標準功能", included: true },
-      { title: "獨家高級課程", included: true },
-      { title: "1對1專家指導 (無限制)", included: true },
-      { title: "專屬學習顧問", included: true },
-      { title: "實際專案實踐", included: true },
-      { title: "求職面試準備", included: true },
-      { title: "企業合作機會", included: true },
-      { title: "終身學習支持", included: true },
-    ],
-    buttonText: "選擇方案",
-    buttonLink: "/signup?plan=premium",
-  },
-];
-
-type FAQ = {
-  question: string;
-  answer: string;
-};
-
-const faqs: FAQ[] = [
-  {
-    question: "課程適合沒有編程基礎的人嗎？",
-    answer: "完全適合！我們的課程設計從零基礎開始，循序漸進地引導您進入程式設計的世界。免費方案就包含了豐富的入門課程，讓您輕鬆開始學習之旅。",
+    question: "可以先試用再決定是否購買嗎？",
+    answer:
+      "當然可以！我們提供 7 天的免費試用期，您可以在這段時間內體驗所有功能，之後再決定是否繼續訂閱。",
   },
   {
-    question: "我可以隨時更改或取消我的方案嗎？",
-    answer: "是的，您可以隨時在帳戶設置中升級、降級或取消您的方案。如果您在月底前取消，您將繼續擁有當月的訪問權限，不會產生額外費用。",
-  },
-  {
-    question: "專家指導是如何進行的？",
-    answer: "根據您的方案，您可以透過我們的平台與專業講師預約1對1視訊會議。標準方案每月可預約2次，專業方案則無次數限制。在會議中，您可以針對學習中遇到的困難獲得個人化指導。",
-  },
-  {
-    question: "課程內容多久更新一次？",
-    answer: "我們的課程內容根據行業最新發展持續更新。每月至少新增2-3個課程模組，確保學習內容與技術發展同步。",
-  },
-  {
-    question: "如何獲得課程認證？",
-    answer: "標準和專業方案的會員完成課程模組並通過相應的評估測試後，即可獲得認證證書。這些證書在您的個人資料中展示，並可分享到LinkedIn等專業社交平台。",
+    question: "企業方案包含哪些客製化內容？",
+    answer:
+      "企業方案可依據您的需求量身定制，包括專屬內部培訓、企業專屬線上課程、專案實作指導、技術顧問服務等。我們會安排專人與您討論，制定最適合貴公司的方案。",
   },
 ];
 
 const PricingSection: React.FC = () => {
-  const [activeTab, setActiveTab] = useState("monthly");
-  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const [billingType, setBillingType] = useState<"monthly" | "annual">(
+    "monthly"
+  );
+  const [expandedFaqIndex, setExpandedFaqIndex] = useState<number | null>(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
 
+  // 切換FAQ顯示
   const toggleFaq = (index: number) => {
-    setExpandedFaq(expandedFaq === index ? null : index);
+    setExpandedFaqIndex(expandedFaqIndex === index ? null : index);
   };
 
+  // 動畫變體
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -140,196 +62,293 @@ const PricingSection: React.FC = () => {
     },
   };
 
-  const getAnnualPrice = (monthlyPrice: number) => {
-    const annualPrice = monthlyPrice * 12 * 0.8; // 20% discount
-    return annualPrice;
-  };
+  // 定價方案資料
+  const pricingPlans = [
+    {
+      name: "基本版",
+      monthly: 300,
+      annual: 3000,
+      description: "適合初學者和個人學習",
+      features: [
+        "完整線上課程庫",
+        "3個專案範例",
+        "社群論壇基本訪問權限",
+        "每月2次線上Q&A課",
+        "電子證書",
+      ],
+      notIncluded: [
+        "專屬導師輔導",
+        "實作專案評審",
+        "就業媒合服務",
+        "企業參訪活動",
+      ],
+      cta: "開始免費試用",
+      popular: false,
+    },
+    {
+      name: "高級版",
+      monthly: 800,
+      annual: 8000,
+      description: "適合需要更深入學習的學生",
+      features: [
+        "完整線上課程庫",
+        "10個專案範例",
+        "社群論壇完整訪問權限",
+        "無限制線上Q&A課",
+        "電子證書",
+        "專屬導師輔導（每月2小時）",
+        "實作專案評審",
+        "作品集建立指導",
+      ],
+      notIncluded: ["就業媒合服務", "企業參訪活動"],
+      cta: "選擇高級版",
+      popular: true,
+    },
+    {
+      name: "專業版",
+      monthly: 1500,
+      annual: 15000,
+      description: "適合有職涯規劃需求的學習者",
+      features: [
+        "完整線上課程庫",
+        "無限制專案範例",
+        "社群論壇VIP訪問權限",
+        "無限制線上Q&A課",
+        "紙本和電子證書",
+        "專屬導師輔導（每月5小時）",
+        "實作專案評審",
+        "作品集建立指導",
+        "就業媒合服務",
+        "企業參訪活動",
+      ],
+      notIncluded: [],
+      cta: "選擇專業版",
+      popular: false,
+    },
+  ];
 
   return (
-    <section id="價格方案" className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <motion.div
-          ref={sectionRef}
-          className="text-center max-w-3xl mx-auto mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5 }}
-        >
-          <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6">
+    <section id="價格方案" className="py-20 md:py-28 lg:py-32 bg-white">
+      <motion.div
+        ref={ref}
+        className="container mx-auto px-4 md:px-6"
+        variants={containerVariants}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+      >
+        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-24">
+          <motion.span
+            className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6"
+            variants={itemVariants}
+          >
             價格方案
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            選擇適合您的<span className="text-primary">學習方案</span>
-          </h2>
-          <p className="text-lg text-gray-600">
-            我們提供多種靈活的價格方案，滿足不同階段學習者的需求
-          </p>
+          </motion.span>
+          <motion.h2
+            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6"
+            variants={itemVariants}
+          >
+            選擇適合你的<span className="text-primary">學習方案</span>
+          </motion.h2>
+          <motion.p
+            className="text-lg md:text-xl text-gray-600"
+            variants={itemVariants}
+          >
+            彈性的定價選項，滿足不同學習需求和預算
+          </motion.p>
+        </div>
 
-          <div className="mt-8 bg-white rounded-full p-1 inline-flex shadow-sm">
+        {/* 切換按鈕 */}
+        <motion.div
+          className="flex justify-center mb-12 md:mb-16"
+          variants={itemVariants}
+        >
+          <div className="bg-gray-100 p-1 rounded-full inline-flex">
             <button
-              onClick={() => setActiveTab("monthly")}
-              className={`px-6 py-2 text-sm font-medium rounded-full transition-all ${
-                activeTab === "monthly"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-gray-600 hover:text-primary"
+              className={`px-6 py-2 rounded-full text-sm md:text-base font-medium transition ${
+                billingType === "monthly"
+                  ? "bg-white text-primary shadow-md"
+                  : "text-gray-600 hover:text-gray-800"
               }`}
+              onClick={() => setBillingType("monthly")}
             >
-              月繳方案
+              月付方案
             </button>
             <button
-              onClick={() => setActiveTab("annual")}
-              className={`px-6 py-2 text-sm font-medium rounded-full transition-all ${
-                activeTab === "annual"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-gray-600 hover:text-primary"
+              className={`px-6 py-2 rounded-full text-sm md:text-base font-medium transition ${
+                billingType === "annual"
+                  ? "bg-white text-primary shadow-md"
+                  : "text-gray-600 hover:text-gray-800"
               }`}
+              onClick={() => setBillingType("annual")}
             >
-              年繳方案 (節省20%)
+              年付方案
+              <span className="ml-1 text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">
+                省20%
+              </span>
             </button>
           </div>
         </motion.div>
 
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
-          {pricingPlans.map((plan) => (
+        {/* 價格卡片 */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 lg:gap-8 max-w-6xl mx-auto">
+          {pricingPlans.map((plan, index) => (
             <motion.div
-              key={plan.id}
-              className={`relative bg-white rounded-2xl overflow-hidden shadow-lg ${
-                plan.isPopular ? "ring-2 ring-primary" : ""
+              key={plan.name}
+              className={`rounded-2xl overflow-hidden bg-white border ${
+                plan.popular
+                  ? "border-primary shadow-xl relative md:scale-105 md:-mt-4 md:mb-4"
+                  : "border-gray-200 shadow-md"
               }`}
               variants={itemVariants}
-              whileHover={{ y: -8, transition: { duration: 0.2 } }}
             >
-              {plan.isPopular && (
-                <div className="absolute top-0 right-0 bg-primary text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
-                  最受歡迎
+              {plan.popular && (
+                <div className="absolute top-0 left-0 right-0 bg-primary text-white text-center py-1 text-sm font-medium">
+                  最受歡迎方案
                 </div>
               )}
-              <div className="p-8">
-                <h3 className="text-2xl font-bold text-gray-800">{plan.name}</h3>
-                <p className="text-gray-600 mt-2 h-12">{plan.description}</p>
-                <div className="mt-6 mb-6">
-                  <span className="text-4xl font-bold">
-                    NT${activeTab === "annual" && plan.price > 0 
-                      ? Math.round(getAnnualPrice(plan.price) / 12) 
-                      : plan.price}
+              <div
+                className={`p-6 md:p-8 ${
+                  plan.popular ? "pt-9" : "pt-6 md:pt-8"
+                }`}
+              >
+                <h3 className="text-xl md:text-2xl font-bold">{plan.name}</h3>
+                <p className="text-gray-600 mt-2 h-12 md:h-14">
+                  {plan.description}
+                </p>
+                <div className="mt-4 md:mt-6">
+                  <span className="text-4xl md:text-5xl font-bold">
+                    NT${billingType === "monthly" ? plan.monthly : plan.annual}
                   </span>
-                  <span className="text-gray-500">
-                    /{activeTab === "annual" && plan.price > 0 ? "月 (年繳)" : plan.period}
+                  <span className="text-gray-600 ml-1">
+                    /{billingType === "monthly" ? "月" : "年"}
                   </span>
-                  {activeTab === "annual" && plan.price > 0 && (
-                    <div className="mt-2 text-sm text-primary font-medium">
-                      節省NT${Math.round(plan.price * 12 * 0.2)}（每年）
-                    </div>
-                  )}
                 </div>
 
                 <Link
-                  href={plan.buttonLink}
-                  className={`block w-full text-center py-3 px-4 rounded-lg font-medium transition-colors ${
-                    plan.isPopular
-                      ? "bg-primary text-white hover:bg-primary-dark"
-                      : "bg-gray-100 text-primary hover:bg-gray-200"
+                  href="/signup"
+                  className={`mt-6 md:mt-8 block w-full py-3 rounded-lg text-center transition-colors ${
+                    plan.popular
+                      ? "bg-primary hover:bg-primary-dark text-white"
+                      : "bg-gray-100 hover:bg-gray-200 text-gray-800"
                   }`}
                 >
-                  {plan.buttonText}
+                  {plan.cta}
                 </Link>
               </div>
 
-              <div className="border-t border-gray-100 bg-gray-50 p-8">
-                <h4 className="font-medium text-gray-800 mb-4">包含功能：</h4>
-                <ul className="space-y-3">
-                  {plan.features.map((feature, index) => (
+              <div className="bg-gray-50 p-6 md:p-8">
+                <h4 className="font-medium mb-4 text-gray-800">包含功能：</h4>
+                <ul className="space-y-3 mb-6">
+                  {plan.features.map((feature) => (
                     <li
-                      key={index}
-                      className="flex items-start text-sm text-gray-600"
+                      key={feature}
+                      className="flex items-start text-sm md:text-base"
                     >
-                      {feature.included ? (
-                        <FaCheck className="text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                      ) : (
-                        <FaTimes className="text-gray-300 mt-0.5 mr-2 flex-shrink-0" />
-                      )}
-                      <span
-                        className={
-                          feature.included ? "text-gray-700" : "text-gray-400"
-                        }
-                      >
-                        {feature.title}
-                      </span>
+                      <FaCheck className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
+
+                {plan.notIncluded.length > 0 && (
+                  <>
+                    <h4 className="font-medium mb-4 text-gray-800">
+                      不包含：
+                    </h4>
+                    <ul className="space-y-3 text-gray-500">
+                      {plan.notIncluded.map((feature) => (
+                        <li
+                          key={feature}
+                          className="flex items-start text-sm md:text-base"
+                        >
+                          <FaTimes className="h-5 w-5 text-red-400 mr-3 mt-0.5 flex-shrink-0" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
               </div>
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* FAQ Section */}
-        <div className="mt-20 max-w-3xl mx-auto">
-          <motion.h3
-            className="text-2xl font-bold text-center mb-10"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            常見問題
-          </motion.h3>
-          <motion.div
-            className="space-y-4"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            {faqs.map((faq, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg shadow-sm overflow-hidden"
-              >
-                <button
-                  onClick={() => toggleFaq(index)}
-                  className="flex justify-between items-center w-full p-4 text-left font-medium text-gray-800 hover:text-primary focus:outline-none"
-                >
-                  <span>{faq.question}</span>
-                  {expandedFaq === index ? (
-                    <FaChevronUp className="text-primary" />
-                  ) : (
-                    <FaChevronDown className="text-gray-400" />
-                  )}
-                </button>
-                <div
-                  className={`px-4 pb-4 text-gray-600 transition-all duration-300 ${
-                    expandedFaq === index ? "block" : "hidden"
-                  }`}
-                >
-                  <p>{faq.answer}</p>
-                </div>
-              </div>
-            ))}
-          </motion.div>
         </div>
 
-        {/* CTA */}
+        {/* 企業方案 */}
         <motion.div
-          className="text-center mt-16"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mt-16 md:mt-20 bg-gray-50 rounded-2xl p-6 md:p-10 max-w-5xl mx-auto"
+          variants={itemVariants}
         >
-          <p className="text-gray-600 mb-6">
-            還有其他問題？我們很樂意為您解答
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div className="mb-6 md:mb-0">
+              <h3 className="text-2xl md:text-3xl font-bold mb-2">企業方案</h3>
+              <p className="text-gray-600 md:text-lg">
+                為您的團隊提供客製化的學習體驗
+              </p>
+            </div>
+            <Link
+              href="/contact"
+              className="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg transition-colors inline-block text-center"
+            >
+              聯絡我們
+            </Link>
+          </div>
+        </motion.div>
+
+        {/* FAQ 部分 */}
+        <motion.div
+          className="mt-20 md:mt-28 max-w-3xl mx-auto"
+          variants={itemVariants}
+        >
+          <h3 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">
+            常見問題
+          </h3>
+          <div className="space-y-4">
+            {faqItems.map((item, index) => (
+              <motion.div
+                key={index}
+                className="border border-gray-200 rounded-lg overflow-hidden"
+                variants={itemVariants}
+              >
+                <button
+                  className="w-full text-left p-5 flex justify-between items-center hover:bg-gray-50 transition-colors"
+                  onClick={() => toggleFaq(index)}
+                >
+                  <span className="font-medium">{item.question}</span>
+                  <FaAngleDown
+                    className={`transform transition-transform ${
+                      expandedFaqIndex === index ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {expandedFaqIndex === index && (
+                  <div className="p-5 pt-0 text-gray-600 border-t border-gray-100">
+                    {item.answer}
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* 底部CTA */}
+        <motion.div
+          className="mt-20 md:mt-28 text-center"
+          variants={itemVariants}
+        >
+          <h3 className="text-2xl md:text-3xl font-bold mb-4">
+            準備好開始您的程式學習之旅了嗎？
+          </h3>
+          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            立即註冊 HackIt，開啟您的程式設計潛能！
           </p>
           <Link
-            href="/contact"
-            className="inline-block bg-white hover:bg-gray-50 text-primary font-medium py-3 px-6 rounded-lg shadow-sm transition-colors"
+            href="/signup"
+            className="inline-block bg-primary hover:bg-primary-dark text-white font-medium py-3 px-8 rounded-full text-base md:text-lg transition-colors shadow-md hover:shadow-lg"
           >
-            聯絡我們
+            免費試用 7 天
           </Link>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 };

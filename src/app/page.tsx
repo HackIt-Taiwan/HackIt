@@ -3,6 +3,8 @@ import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
 import TechSection from '@/components/TechSection';
 import EventsSection from '@/components/EventsSection';
+import TestimonialSection from '@/components/TestimonialSection';
+import CTASection from '@/components/CTASection';
 import TechAnimation from '@/components/TechAnimation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -28,6 +30,12 @@ export default function Home() {
       
       {/* Events section */}
       <EventsSection />
+      
+      {/* Testimonial section */}
+      <TestimonialSection />
+      
+      {/* CTA section */}
+      <CTASection />
       
       {/* Footer */}
       <Footer />
