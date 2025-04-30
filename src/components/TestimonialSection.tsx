@@ -54,9 +54,11 @@ const TestimonialSection: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
   const [displayCount, setDisplayCount] = useState(3);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // 根據視窗寬度調整顯示的卡片數量
   useEffect(() => {
+    setIsMounted(true);
+    
     const handleResize = () => {
       if (window.innerWidth < 640) {
         setDisplayCount(1);
@@ -100,12 +102,14 @@ const TestimonialSection: React.FC = () => {
   const cardHoverVariants = {
     rest: { 
       y: 0,
+      rotate: 0,
       boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
       transition: { duration: 0.3, ease: "easeOut" } 
     },
     hover: { 
-      y: -5,
-      boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+      y: -8,
+      rotate: [-0.5, 0.5, 0],
+      boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 15px rgba(124, 58, 237, 0.3)",
       transition: { duration: 0.3, ease: "easeIn" } 
     }
   };
@@ -121,6 +125,7 @@ const TestimonialSection: React.FC = () => {
       scale: 1.1,
       backgroundColor: "#7C3AED",
       color: "#FFFFFF",
+      boxShadow: "0 0 15px rgba(124, 58, 237, 0.5)",
       transition: { duration: 0.2 } 
     },
     tap: { 
@@ -173,33 +178,97 @@ const TestimonialSection: React.FC = () => {
     <section id="見證分享" className="py-20 md:py-28 lg:py-32 bg-gray-50 overflow-hidden relative">
       {/* 背景裝飾 */}
       <motion.div 
-        className="absolute top-[20%] right-[10%] w-[30vw] h-[30vw] max-w-[500px] max-h-[500px] bg-primary/3 rounded-full blur-3xl"
+        className="absolute top-[20%] right-[10%] w-[30vw] h-[30vw] max-w-[500px] max-h-[500px] bg-yellow-400/20 rounded-full blur-3xl"
         initial={{ opacity: 0 }}
         animate={{ 
-          opacity: 0.5,
+          opacity: 0.6,
           x: [0, 25, 0],
-          y: [0, -20, 0]
+          y: [0, -20, 0],
+          scale: [0.9, 1, 0.9]
         }}
         transition={{ 
           opacity: { duration: 1 },
-          x: { repeat: Infinity, duration: 20, ease: "easeInOut" },
-          y: { repeat: Infinity, duration: 15, ease: "easeInOut" }
+          x: { repeat: Infinity, duration: 20, ease: "easeInOut", repeatType: "loop" },
+          y: { repeat: Infinity, duration: 15, ease: "easeInOut", repeatType: "loop" },
+          scale: { repeat: Infinity, duration: 12, ease: "easeInOut", repeatType: "loop" }
         }}
       />
       <motion.div 
-        className="absolute bottom-[10%] left-[10%] w-[25vw] h-[25vw] max-w-[400px] max-h-[400px] bg-blue-500/3 rounded-full blur-3xl"
+        className="absolute bottom-[10%] left-[10%] w-[25vw] h-[25vw] max-w-[400px] max-h-[400px] bg-cyan-400/20 rounded-full blur-3xl"
         initial={{ opacity: 0 }}
         animate={{ 
-          opacity: 0.5,
+          opacity: 0.6,
           x: [0, -20, 0],
+          y: [0, 15, 0],
+          scale: [1, 1.1, 1]
+        }}
+        transition={{ 
+          opacity: { duration: 1 },
+          x: { repeat: Infinity, duration: 18, ease: "easeInOut", repeatType: "loop" },
+          y: { repeat: Infinity, duration: 22, ease: "easeInOut", repeatType: "loop" },
+          scale: { repeat: Infinity, duration: 15, ease: "easeInOut", repeatType: "loop" }
+        }}
+      />
+
+      {/* Playful elements */}
+      <motion.div 
+        className="absolute top-[10%] left-[20%] w-8 h-8 bg-primary/30 rounded-full"
+        initial={{ opacity: 0 }}
+        animate={{ 
+          opacity: 0.7,
+          y: [-10, 10, -10],
+          scale: [1, 1.2, 1]
+        }}
+        transition={{ 
+          opacity: { duration: 1 },
+          y: { repeat: Infinity, duration: 8, ease: "easeInOut" },
+          scale: { repeat: Infinity, duration: 10, ease: "easeInOut" }
+        }}
+      />
+      <motion.div 
+        className="absolute top-[30%] left-[70%] w-5 h-5 bg-yellow-400/40 rotate-45"
+        initial={{ opacity: 0 }}
+        animate={{ 
+          opacity: 0.6,
+          rotate: [45, 90, 45],
           y: [0, 15, 0]
         }}
         transition={{ 
           opacity: { duration: 1 },
-          x: { repeat: Infinity, duration: 18, ease: "easeInOut" },
-          y: { repeat: Infinity, duration: 22, ease: "easeInOut" }
+          rotate: { repeat: Infinity, duration: 12, ease: "easeInOut" },
+          y: { repeat: Infinity, duration: 10, ease: "easeInOut" }
         }}
       />
+      <motion.div 
+        className="absolute bottom-[20%] right-[15%] h-10 w-10 border-2 border-primary/30 rounded-full"
+        initial={{ opacity: 0 }}
+        animate={{ 
+          opacity: 0.8,
+          scale: [1, 1.3, 1],
+          x: [0, -10, 0]
+        }}
+        transition={{ 
+          opacity: { duration: 1 },
+          scale: { repeat: Infinity, duration: 8, ease: "easeInOut" },
+          x: { repeat: Infinity, duration: 6, ease: "easeInOut" }
+        }}
+      />
+      
+      {/* Floating icons */}
+      <motion.div
+        className="absolute left-[5%] top-[40%] opacity-20 pointer-events-none"
+        animate={{ y: [-10, 10, -10], rotate: [0, 5, 0] }}
+        transition={{ repeat: Infinity, duration: 10, ease: "easeInOut" }}
+      >
+        <FaStar className="text-yellow-500 text-4xl" />
+      </motion.div>
+      <motion.div
+        className="absolute right-[5%] top-[60%] opacity-20 pointer-events-none"
+        animate={{ y: [10, -10, 10], rotate: [0, -5, 0] }}
+        transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
+      >
+        <FaQuoteLeft className="text-primary text-4xl" />
+      </motion.div>
 
       <motion.div
         ref={ref}
@@ -226,6 +295,181 @@ const TestimonialSection: React.FC = () => {
               transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
             >大家</motion.span>怎麼說
           </motion.h2>
+          
+          {/* Add playful slogan */}
+          <motion.div 
+            className="relative mb-6 p-2 overflow-hidden"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            {/* 程式碼風格的打字動畫 - 適合淺色背景 */}
+            <div className="font-mono flex items-center text-xl md:text-2xl relative">
+              <motion.span
+                className="absolute -left-4 top-1/2 -translate-y-1/2 w-2 h-5 bg-primary"
+                animate={{
+                  opacity: [1, 0, 1],
+                }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 1,
+                  ease: "linear",
+                  repeatType: "loop"
+                }}
+              />
+              
+              <motion.span 
+                className="text-green-600 mr-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.2 }}
+              >
+                &gt;
+              </motion.span>
+              
+              <motion.div className="flex">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: "auto" }}
+                  transition={{ 
+                    duration: 0.8, 
+                    delay: 0.5,
+                    ease: "easeInOut",
+                  }}
+                  className="overflow-hidden flex"
+                >
+                  <motion.span
+                    className="text-primary font-bold whitespace-nowrap"
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ 
+                      x: 0, 
+                      opacity: 1,
+                    }}
+                    transition={{ 
+                      delay: 0.5, 
+                      duration: 0.3 
+                    }}
+                  >
+                    Hack
+                  </motion.span>
+                </motion.div>
+                
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: "auto" }}
+                  transition={{ 
+                    duration: 0.5, 
+                    delay: 1.3,
+                    ease: "easeInOut",
+                  }}
+                  className="overflow-hidden flex"
+                >
+                  <motion.span
+                    className="text-gray-600 font-medium whitespace-nowrap mx-1"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.3, duration: 0.3 }}
+                  >
+                    into
+                  </motion.span>
+                </motion.div>
+                
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: "auto" }}
+                  transition={{ 
+                    duration: 0.5, 
+                    delay: 1.8,
+                    ease: "easeInOut",
+                  }}
+                  className="overflow-hidden flex"
+                >
+                  <motion.span
+                    className="text-primary font-bold whitespace-nowrap"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.8, duration: 0.3 }}
+                  >
+                    It
+                  </motion.span>
+                </motion.div>
+                
+                <motion.span
+                  className="text-yellow-500 font-bold"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ 
+                    opacity: 1, 
+                    scale: [1, 1.3, 1],
+                  }}
+                  transition={{ 
+                    opacity: { delay: 2.3, duration: 0.2 },
+                    scale: { 
+                      delay: 2.5,
+                      duration: 0.4,
+                      repeat: Infinity,
+                      repeatDelay: 3,
+                      repeatType: "reverse",
+                    }
+                  }}
+                >
+                  !
+                </motion.span>
+              </motion.div>
+            </div>
+            
+            {/* 輸入後的閃爍效果 */}
+            <motion.div
+              className="absolute bottom-0 left-0 h-0.5 bg-green-500"
+              initial={{ width: "0%" }}
+              animate={{ 
+                width: ["0%", "100%", "0%"],
+              }}
+              transition={{ 
+                delay: 2.5,
+                duration: 1.5,
+                times: [0, 0.7, 1],
+                repeat: Infinity,
+                repeatDelay: 5
+              }}
+            />
+            
+            {/* 程式碼風格的背景元素 */}
+            <motion.div
+              className="absolute inset-0 -z-10 bg-gray-100 rounded-md border border-gray-200"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            />
+            
+            {/* Client-side only symbols with deterministic positions */}
+            {isMounted && ["{", "}", "<", ">"].map((char, i) => (
+              <motion.span
+                key={i}
+                className="absolute text-gray-300 text-opacity-40 font-mono pointer-events-none"
+                style={{
+                  top: `${(i * 30) % 100}%`,
+                  left: `${(i * 30) % 100}%`,
+                  fontSize: `${6 + i}px`,
+                }}
+                initial={{ opacity: 0 }}
+                animate={{ 
+                  opacity: [0, 0.7, 0],
+                  y: [0, -15],
+                  rotate: i * 5 - 7.5
+                }}
+                transition={{ 
+                  delay: 2.5 + i * 0.2,
+                  duration: 3,
+                  repeat: Infinity,
+                  repeatDelay: i,
+                  repeatType: "loop"
+                }}
+              >
+                {char}
+              </motion.span>
+            ))}
+          </motion.div>
+          
           <motion.p
             className="text-lg md:text-xl text-gray-600"
             variants={itemVariants}
@@ -242,25 +486,37 @@ const TestimonialSection: React.FC = () => {
           >
             <motion.button
               onClick={prevTestimonial}
-              className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white shadow-md flex items-center justify-center text-gray-700 hover:bg-primary hover:text-white transition-all"
+              className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white shadow-md flex items-center justify-center text-gray-700 hover:bg-primary hover:text-white transition-all relative overflow-hidden group"
               variants={navButtonVariants}
               initial="rest"
               whileHover="hover"
               whileTap="tap"
               aria-label="上一個見證"
             >
-              <FaArrowLeft className="h-4 w-4" />
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-pink-400/20 opacity-0 group-hover:opacity-100"
+                initial={{ rotate: 0 }}
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+              />
+              <FaArrowLeft className="h-5 w-5 relative z-10" />
             </motion.button>
             <motion.button
               onClick={nextTestimonial}
-              className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white shadow-md flex items-center justify-center text-gray-700 hover:bg-primary hover:text-white transition-all"
+              className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white shadow-md flex items-center justify-center text-gray-700 hover:bg-primary hover:text-white transition-all relative overflow-hidden group"
               variants={navButtonVariants}
               initial="rest"
               whileHover="hover"
               whileTap="tap"
               aria-label="下一個見證"
             >
-              <FaArrowRight className="h-4 w-4" />
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-pink-400/20 opacity-0 group-hover:opacity-100"
+                initial={{ rotate: 0 }}
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+              />
+              <FaArrowRight className="h-5 w-5 relative z-10" />
             </motion.button>
           </motion.div>
 
@@ -271,7 +527,7 @@ const TestimonialSection: React.FC = () => {
                   key={`visible-${testimonial.id}-${index}`}
                   className={`bg-white rounded-2xl shadow-lg p-6 md:p-8 flex-1 relative ${
                     index === 0 ? "md:shadow-xl" : "md:shadow-lg"
-                  }`}
+                  } border-2 border-transparent hover:border-primary/20`}
                   variants={cardHoverVariants}
                   initial="rest"
                   whileHover="hover"
@@ -279,28 +535,47 @@ const TestimonialSection: React.FC = () => {
                     opacity: 1, 
                     y: 0,
                     scale: index === 0 ? 1.02 : 1,
+                    rotate: index % 2 === 0 ? [-0.5, 0, -0.5] : [0.5, 0, 0.5],
                     transition: { 
                       type: "spring", 
                       stiffness: 100, 
                       damping: 12,
-                      delay: index * 0.1
+                      delay: index * 0.1,
+                      rotate: {
+                        repeat: Infinity,
+                        duration: 6,
+                        ease: "easeInOut",
+                        repeatType: "reverse"
+                      }
                     }
                   }}
                   exit={{ 
                     opacity: 0, 
                     y: -30,
+                    rotate: index % 2 === 0 ? -2 : 2,
                     transition: { duration: 0.3 }
                   }}
                 >
                   <motion.div 
                     className="absolute -top-4 left-8 bg-primary/10 w-10 h-10 rounded-full flex items-center justify-center"
                     initial={{ scale: 0, rotate: -45 }}
-                    animate={{ scale: 1, rotate: 0 }}
+                    animate={{ 
+                      scale: 1, 
+                      rotate: 0,
+                      y: [0, -5, 0]
+                    }}
                     transition={{ 
                       type: "spring", 
                       stiffness: 300, 
                       damping: 15,
-                      delay: 0.2 + index * 0.1
+                      delay: 0.2 + index * 0.1,
+                      y: {
+                        repeat: Infinity,
+                        duration: 2,
+                        ease: "easeInOut",
+                        repeatType: "reverse",
+                        delay: index * 0.5
+                      }
                     }}
                   >
                     <FaQuoteLeft className="text-primary h-4 w-4" />
@@ -358,9 +633,9 @@ const TestimonialSection: React.FC = () => {
               <motion.button
                 key={idx}
                 onClick={() => setActiveIndex(idx)}
-                className={`transition-all duration-300 ease-in-out ${
-                  idx === activeIndex ? "w-8 bg-primary" : "w-2.5 bg-gray-300 hover:bg-gray-400"
-                } h-2.5 rounded-full`}
+                className={`transition-all duration-300 ease-in-out relative ${
+                  idx === activeIndex ? "w-10 bg-primary" : "w-3 bg-gray-300 hover:bg-gray-400"
+                } h-3 rounded-full overflow-hidden group`}
                 animate={{ 
                   scale: idx === activeIndex ? 1.2 : 1,
                   backgroundColor: idx === activeIndex ? "#7C3AED" : "#D1D5DB"
@@ -369,7 +644,29 @@ const TestimonialSection: React.FC = () => {
                 aria-label={`前往見證 ${idx + 1}`}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-              />
+              >
+                {idx === activeIndex && (
+                  <motion.div 
+                    className="absolute inset-0 w-full h-full"
+                    initial={{ x: "-100%" }}
+                    animate={{ x: "100%" }}
+                    transition={{ 
+                      repeat: Infinity, 
+                      duration: 2, 
+                      ease: "easeInOut",
+                      repeatDelay: 0.2
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent w-full h-full" />
+                  </motion.div>
+                )}
+                <motion.div 
+                  className="absolute inset-0 bg-yellow-400 opacity-0 group-hover:opacity-30"
+                  initial={{ scale: 0 }}
+                  whileHover={{ scale: 1 }}
+                  transition={{ duration: 0.2 }}
+                />
+              </motion.button>
             ))}
           </div>
         </div>

@@ -6,14 +6,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#7C3AED',
-        secondary: '#FB7185',
-        accent: '#FCD34D',
-        tech: '#22D3EE',
-        fun: '#14F195',
+        primary: '#ec3750',        // Red like Hack Club
+        secondary: '#33d6a6',      // Mint green
+        accent: '#ff8c37',         // Orange
+        dark: '#252429',           // Near black
+        muted: '#8492a6',          // Gray
+        light: '#f5f5f4',          // Light background
       },
       fontFamily: {
         sans: ['Poppins', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
       animation: {
         'float': 'float 3s ease-in-out infinite',
