@@ -1,29 +1,37 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { FaRocket, FaCode, FaLaptopCode } from 'react-icons/fa';
 
 const CTASection = () => {
   const [isMounted, setIsMounted] = useState(false);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: false, amount: 0.3 });
   
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
   return (
-    <section className="relative py-24 overflow-hidden bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-500">
+    <motion.section 
+      ref={sectionRef}
+      initial={{ opacity: 0 }}
+      animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+      transition={{ duration: 1.2 }}
+      className="relative py-24 overflow-hidden bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-500"
+    >
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Floating code snippets */}
-        {isMounted && [...Array(15)].map((_, i) => {
+        {isMounted && isInView && [...Array(15)].map((_, i) => {
           // Use deterministic positions based on index
           const leftPos = ((i * 7) % 100).toFixed(0);
           const topPos = ((i * 11) % 100).toFixed(0);
           const fontSize = (8 + (i % 7)).toFixed(0);
-          const duration = 15 + (i % 10);
-          const delay = i % 5;
+          const duration = 20 + (i % 12); // Increased from 15 for slower animation
+          const delay = i % 7; // Changed from 5 to 7 for more variability
           
           return (
             <motion.div
@@ -53,27 +61,27 @@ const CTASection = () => {
           );
         })}
 
-        {/* Colorful shapes */}
+        {/* Colorful shapes - only animate when in view */}
         <motion.div 
           className="absolute top-0 left-0 w-64 h-64 bg-yellow-300 rounded-full opacity-20 -translate-x-1/2 -translate-y-1/2"
-          animate={{ 
+          animate={isInView ? { 
             scale: [1, 1.2, 1],
             x: ['-50%', '-30%', '-50%']
-          }}
+          } : {}}
           transition={{ 
-            duration: 15, 
+            duration: 22, // Slowed down from 15
             repeat: Infinity,
             repeatType: "loop" 
           }}
         />
         <motion.div 
           className="absolute bottom-0 right-0 w-96 h-96 bg-pink-500 rounded-full opacity-20 translate-x-1/2 translate-y-1/2"
-          animate={{ 
+          animate={isInView ? { 
             scale: [1, 1.3, 1],
             y: ['50%', '30%', '50%']
-          }}
+          } : {}}
           transition={{ 
-            duration: 18, 
+            duration: 25, // Slowed down from 18
             repeat: Infinity,
             repeatType: "loop" 
           }}
@@ -83,16 +91,15 @@ const CTASection = () => {
       <div className="relative container mx-auto px-4">
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.7 }}
             className="mb-8"
           >
             <motion.div 
               className="inline-block"
-              animate={{ rotate: [-2, 2, -2] }}
-              transition={{ duration: 4, repeat: Infinity, repeatType: "loop" }}
+              animate={isInView ? { rotate: [-2, 2, -2] } : {}}
+              transition={{ duration: 6, repeat: Infinity, repeatType: "loop" }} // Slowed down from 4
             >
               <FaRocket className="inline-block text-5xl text-yellow-300 mr-2" />
             </motion.div>
@@ -100,10 +107,9 @@ const CTASection = () => {
 
           <motion.h2 
             className="text-4xl md:text-5xl font-bold text-white mb-3"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
           >
             準備好了嗎？
           </motion.h2>
@@ -111,9 +117,8 @@ const CTASection = () => {
           <motion.div
             className="relative mb-6 p-3 overflow-hidden"
             initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
           >
             {/* 程式碼風格的打字動畫 - 適合暗色背景 */}
             <div className="font-mono flex items-center text-2xl md:text-3xl relative">
@@ -133,9 +138,8 @@ const CTASection = () => {
               <motion.span 
                 className="text-green-400 mr-2"
                 initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.2 }}
-                viewport={{ once: true }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4, duration: 0.2 }}
               >
                 &gt;
               </motion.span>
@@ -143,71 +147,160 @@ const CTASection = () => {
               <motion.div className="flex">
                 <motion.div
                   initial={{ width: 0 }}
-                  whileInView={{ width: "auto" }}
+                  animate={isInView ? { width: "auto" } : { width: 0 }}
                   transition={{ 
-                    duration: 0.8, 
-                    delay: 0.5,
+                    duration: 0.8,
+                    delay: isInView ? 1.0 : 0, 
                     ease: "easeInOut",
                   }}
                   className="overflow-hidden flex"
-                  viewport={{ once: true }}
                 >
                   <motion.span
                     className="text-yellow-300 font-bold whitespace-nowrap"
-                    initial={{ x: -20, opacity: 0 }}
-                    whileInView={{ 
-                      x: 0, 
+                    initial={{ opacity: 0 }}
+                    animate={isInView ? { 
                       opacity: 1,
-                    }}
+                      y: [0, -2, 0, 2, 0]
+                    } : { opacity: 0 }}
                     transition={{ 
-                      delay: 0.5, 
-                      duration: 0.3 
+                      opacity: { delay: isInView ? 1.0 : 0, duration: 0.5 }, 
+                      y: { 
+                        delay: isInView ? 3.0 : 0, 
+                        duration: 8, 
+                        repeat: Infinity, 
+                        repeatType: "loop",
+                        ease: "easeInOut"
+                      }
                     }}
-                    viewport={{ once: true }}
+                    style={{
+                      filter: "drop-shadow(0 0 5px rgba(253, 224, 71, 0.5))",
+                      textShadow: "0 0 3px rgba(253, 224, 71, 0.5)"
+                    }}
                   >
                     Hack
                   </motion.span>
                 </motion.div>
                 
                 <motion.div
-                  initial={{ width: 0 }}
-                  whileInView={{ width: "auto" }}
+                  initial={{ width: 0, opacity: 0 }}
+                  animate={isInView ? { width: "auto", opacity: 1 } : { width: 0, opacity: 0 }}
                   transition={{ 
-                    duration: 0.5, 
-                    delay: 1.3,
-                    ease: "easeInOut",
+                    width: { duration: 0.8, delay: isInView ? 2.5 : 0, ease: "easeInOut" },
+                    opacity: { duration: 0.6, delay: isInView ? 2.5 : 0 }
                   }}
-                  className="overflow-hidden flex"
-                  viewport={{ once: true }}
+                  className="overflow-hidden flex mx-1 relative"
                 >
+                  <motion.div
+                    className="absolute top-0 left-0 w-full h-full opacity-30 -z-10"
+                    style={{
+                      background: "radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)"
+                    }}
+                    initial={{ scale: 0 }}
+                    animate={isInView ? { scale: 1.2 } : { scale: 0 }}
+                    transition={{ delay: isInView ? 2.7 : 0, duration: 1.0 }}
+                  />
                   <motion.span
-                    className="text-white opacity-90 font-medium whitespace-nowrap mx-1"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ delay: 1.3, duration: 0.3 }}
-                    viewport={{ once: true }}
+                    className="text-white opacity-90 font-medium whitespace-nowrap"
+                    initial={{ 
+                      opacity: 0,
+                      y: -20,
+                      scaleY: 0.8,
+                      transformOrigin: "top",
+                      filter: "blur(3px)"
+                    }}
+                    animate={isInView ? { 
+                      opacity: 1,
+                      y: 0,
+                      scaleY: 1,
+                      filter: "blur(0px)"
+                    } : {
+                      opacity: 0,
+                      y: -20,
+                      scaleY: 0.8,
+                      filter: "blur(3px)"
+                    }}
+                    transition={{ 
+                      opacity: { delay: isInView ? 2.5 : 0, duration: 0.6 },
+                      y: { 
+                        delay: isInView ? 2.5 : 0,
+                        duration: 0.8,
+                        type: "spring",
+                        stiffness: 50,
+                        damping: 10
+                      },
+                      scaleY: { delay: isInView ? 2.5 : 0, duration: 0.8 },
+                      filter: { delay: isInView ? 2.7 : 0, duration: 0.5 }
+                    }}
+                    style={{
+                      filter: "drop-shadow(0 0 3px rgba(255,255,255,0.5))",
+                      textShadow: "0 0 8px rgba(255,255,255,0.5)"
+                    }}
                   >
                     into
                   </motion.span>
+                  
+                  {/* 添加布料紋理 */}
+                  {[...Array(6)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute bg-white/5 h-[1px]"
+                      style={{
+                        width: '100%',
+                        top: `${20 + i * 15}%`,
+                        left: 0
+                      }}
+                      initial={{ scaleX: 0, opacity: 0 }}
+                      animate={isInView ? { 
+                        scaleX: 1, 
+                        opacity: [0, 0.3, 0.1],
+                        y: [0, 1, -1, 0]
+                      } : {
+                        scaleX: 0, 
+                        opacity: 0
+                      }}
+                      transition={{
+                        delay: isInView ? (2.7 + i * 0.08) : 0,
+                        duration: 2.5,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        ease: "easeInOut"
+                      }}
+                    />
+                  ))}
                 </motion.div>
                 
                 <motion.div
                   initial={{ width: 0 }}
-                  whileInView={{ width: "auto" }}
+                  animate={isInView ? { width: "auto" } : { width: 0 }}
                   transition={{ 
-                    duration: 0.5, 
-                    delay: 1.8,
+                    duration: 0.8,
+                    delay: isInView ? 1.5 : 0,
                     ease: "easeInOut",
                   }}
                   className="overflow-hidden flex"
-                  viewport={{ once: true }}
                 >
                   <motion.span
                     className="text-yellow-300 font-bold whitespace-nowrap"
                     initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ delay: 1.8, duration: 0.3 }}
-                    viewport={{ once: true }}
+                    animate={isInView ? { 
+                      opacity: 1,
+                      y: [0, 2, 0, -2, 0]
+                    } : { opacity: 0 }}
+                    transition={{ 
+                      opacity: { delay: isInView ? 1.5 : 0, duration: 0.5 },
+                      y: { 
+                        delay: isInView ? 3.0 : 0,
+                        duration: 8,
+                        repeat: Infinity, 
+                        repeatType: "loop",
+                        ease: "easeInOut",
+                        repeatDelay: 1.0
+                      }
+                    }}
+                    style={{
+                      filter: "drop-shadow(0 0 5px rgba(253, 224, 71, 0.5))",
+                      textShadow: "0 0 3px rgba(253, 224, 71, 0.5)"
+                    }}
                   >
                     It
                   </motion.span>
@@ -215,59 +308,158 @@ const CTASection = () => {
                 
                 <motion.span
                   className="text-cyan-300 font-bold"
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  whileInView={{ 
-                    opacity: 1, 
-                    scale: 1,
-                  }}
-                  animate={{ 
-                    scale: [1, 1.3, 1],
-                  }}
+                  initial={{ opacity: 0 }}
+                  animate={isInView ? { 
+                    opacity: 1,
+                    y: [0, -3, 0]
+                  } : { opacity: 0 }}
                   transition={{ 
-                    opacity: { delay: 2.3, duration: 0.2 },
-                    scale: { 
-                      duration: 0.4,
+                    opacity: { delay: isInView ? 2.5 : 0, duration: 0.5 },
+                    y: {
+                      delay: isInView ? 3.0 : 0,
+                      duration: 2.5,
                       repeat: Infinity,
-                      repeatDelay: 3,
+                      repeatType: "reverse",
+                      ease: "easeInOut"
+                    },
+                    scale: { 
+                      duration: 0.6,
+                      repeat: Infinity,
+                      repeatDelay: 4,
                       repeatType: "loop",
                     }
                   }}
-                  viewport={{ once: true }}
+                  style={{
+                    textShadow: "0 0 8px rgba(34, 211, 238, 0.7)"
+                  }}
                 >
                   !
                 </motion.span>
               </motion.div>
             </div>
             
+            {/* 添加布料風格的動畫效果 */}
+            <motion.div
+              className="absolute top-0 left-0 w-full h-full -z-5 pointer-events-none overflow-hidden"
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 0.3 } : { opacity: 0 }}
+              transition={{ delay: isInView ? 2.5 : 0, duration: 1.2 }}
+            >
+              {/* 背景紋理 */}
+              <svg width="100%" height="100%" className="absolute opacity-10">
+                <defs>
+                  <pattern id="fabric" patternUnits="userSpaceOnUse" width="40" height="40">
+                    <path d="M0,20 Q10,17 20,20 T40,20" stroke="white" fill="none" strokeWidth="0.5" />
+                    <path d="M0,10 Q10,7 20,10 T40,10" stroke="white" fill="none" strokeWidth="0.5" />
+                    <path d="M0,30 Q10,27 20,30 T40,30" stroke="white" fill="none" strokeWidth="0.5" />
+                  </pattern>
+                </defs>
+                <motion.rect
+                  width="100%" 
+                  height="100%" 
+                  fill="url(#fabric)"
+                  initial={{ opacity: 0 }}
+                  animate={isInView ? { 
+                    opacity: 0.5,
+                    scale: [1, 1.05, 1]
+                  } : { opacity: 0 }}
+                  transition={{
+                    opacity: { delay: isInView ? 2.5 : 0, duration: 1.5 },
+                    scale: { 
+                      delay: isInView ? 3.0 : 0,
+                      duration: 12,
+                      repeat: Infinity, 
+                      repeatType: "reverse" 
+                    }
+                  }}
+                />
+              </svg>
+              
+              {/* 漂浮元素 */}
+              {[...Array(8)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute bg-indigo-200/10 rounded-full blur-md"
+                  style={{
+                    width: `${20 + Math.random() * 40}px`,
+                    height: `${20 + Math.random() * 40}px`,
+                    top: `${10 + Math.random() * 80}%`,
+                    left: `${10 + Math.random() * 80}%`,
+                  }}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={isInView ? { 
+                    scale: [0, 1.5, 1],
+                    opacity: [0, 0.6, 0.3],
+                    x: [0, Math.random() * 20 - 10, 0],
+                    y: [0, Math.random() * 20 - 10, 0]
+                  } : { scale: 0, opacity: 0 }}
+                  transition={{
+                    delay: isInView ? (2.5 + i * 0.15) : 0,
+                    duration: 4,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    ease: "easeInOut"
+                  }}
+                />
+              ))}
+              
+              {/* 添加波浪效果 */}
+              <svg className="absolute inset-0 w-full h-full opacity-20" preserveAspectRatio="none">
+                <motion.path
+                  d="M0,50 C20,40 40,60 60,50 C80,40 100,60 120,50"
+                  stroke="white"
+                  strokeWidth="1"
+                  fill="none"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={isInView ? {
+                    pathLength: 1,
+                    opacity: 0.5,
+                    pathOffset: [0, 0.5, 1]
+                  } : { pathLength: 0, opacity: 0 }}
+                  transition={{
+                    pathLength: { delay: isInView ? 2.7 : 0, duration: 1.5 },
+                    opacity: { delay: isInView ? 2.7 : 0, duration: 0.8 },
+                    pathOffset: { 
+                      delay: isInView ? 3.5 : 0,
+                      duration: 15,
+                      repeat: Infinity, 
+                      ease: "linear"
+                    }
+                  }}
+                  style={{
+                    strokeDasharray: "5 3",
+                    vectorEffect: "non-scaling-stroke"
+                  }}
+                />
+              </svg>
+            </motion.div>
+
             {/* 輸入後的閃爍效果 */}
             <motion.div
               className="absolute bottom-0 left-0 h-0.5 bg-green-400"
               initial={{ width: "0%" }}
-              whileInView={{ width: "0%" }}
-              animate={{ 
+              animate={isInView ? { 
                 width: ["0%", "100%", "0%"],
-              }}
+              } : { width: "0%" }}
               transition={{ 
-                duration: 1.5,
+                duration: 2.5,
                 times: [0, 0.7, 1],
                 repeat: Infinity,
-                repeatDelay: 5,
+                repeatDelay: 8,
                 repeatType: "loop"
               }}
-              viewport={{ once: true }}
             />
             
             {/* 程式碼風格的背景元素 */}
             <motion.div
               className="absolute inset-0 -z-10 bg-indigo-900/30 rounded-md border border-indigo-700"
               initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              viewport={{ once: true }}
+              animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ delay: isInView ? 0.5 : 0, duration: 0.8 }}
             />
             
             {/* 浮動的程式碼符號 */}
-            {isMounted && [...Array(8)].map((_, i) => {
+            {isMounted && isInView && [...Array(8)].map((_, i) => {
               const symbols = ["{", "}", "<", ">", "/", "*", "#", "="];
               const char = symbols[i % symbols.length];
               const topPos = (i * 12.5).toFixed(0);
@@ -283,26 +475,25 @@ const CTASection = () => {
                     fontSize: `${10 + i}px`,
                   }}
                   initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
                   animate={{ 
                     opacity: [0, 0.7, 0],
                     y: [0, -20],
                     rotate: i * 5 - 20
                   }}
                   transition={{ 
-                    opacity: { delay: 2.5 + i * 0.2, duration: 0.2 },
+                    opacity: { delay: 3.0 + i * 0.3, duration: 0.4 }, // Slowed down from 2.5
                     y: { 
-                      delay: 2.5 + i * 0.2, 
-                      duration: 3,
+                      delay: 3.0 + i * 0.3, // Slowed down from 2.5
+                      duration: 5, // Slowed down from 3
                       repeat: Infinity,
-                      repeatDelay: i,
+                      repeatDelay: i * 1.5, // Increased for slower animation
                       repeatType: "loop"
                     },
                     rotate: { 
-                      delay: 2.5 + i * 0.2, 
-                      duration: 3,
+                      delay: 3.0 + i * 0.3, // Slowed down from 2.5
+                      duration: 5, // Slowed down from 3
                       repeat: Infinity,
-                      repeatDelay: i,
+                      repeatDelay: i * 1.5, // Increased for slower animation
                       repeatType: "loop"
                     }
                   }}
@@ -316,10 +507,9 @@ const CTASection = () => {
           
           <motion.p 
             className="text-lg text-white mb-10 max-w-2xl"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
           >
             加入我們充滿創意和活力的科技社群，一起探索、學習、創造和成長！
             不管你是初學者還是有經驗的開發者，這裡都有屬於你的位置。
@@ -327,10 +517,9 @@ const CTASection = () => {
           
           <motion.div 
             className="flex flex-col sm:flex-row gap-5 w-full justify-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.7, delay: 0.4 }}
           >
             <Link href="/signup" className="flex-1 sm:flex-initial">
               <motion.button 
@@ -365,15 +554,14 @@ const CTASection = () => {
           <motion.p 
             className="text-white opacity-80 mt-8"
             initial={{ opacity: 0 }}
-            whileInView={{ opacity: 0.8 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            viewport={{ once: true }}
+            animate={isInView ? { opacity: 0.8 } : { opacity: 0 }}
+            transition={{ duration: 0.7, delay: 0.5 }}
           >
             不需要任何承諾！今天就加入我們的社群吧！
           </motion.p>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

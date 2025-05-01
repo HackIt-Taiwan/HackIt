@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { FaArrowRight, FaGithub, FaDiscord } from "react-icons/fa";
@@ -11,14 +11,16 @@ const HeroSection: React.FC = () => {
   const [typedText, setTypedText] = useState("");
   const fullText = "console.log('你好，駭客！')";
   const [typingIndex, setTypingIndex] = useState(0);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
 
   useEffect(() => {
     setWindowHeight(window.innerHeight);
     const handleResize = () => setWindowHeight(window.innerHeight);
     window.addEventListener("resize", handleResize);
     
-    // Typing animation
-    if (typingIndex < fullText.length) {
+    // Typing animation - only when section is in view
+    if (isInView && typingIndex < fullText.length) {
       const timeout = setTimeout(() => {
         setTypedText(prevText => prevText + fullText[typingIndex]);
         setTypingIndex(prevIndex => prevIndex + 1);
@@ -31,35 +33,36 @@ const HeroSection: React.FC = () => {
     }
     
     return () => window.removeEventListener("resize", handleResize);
-  }, [typingIndex, fullText]);
+  }, [typingIndex, fullText, isInView]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
+        staggerChildren: 0.3,
+        delayChildren: 0.4,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: { y: 30, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.5 },
+      transition: { duration: 0.7 },
     },
   };
 
   return (
     <section
       id="home"
+      ref={sectionRef}
       className="relative bg-light overflow-hidden"
       style={{
         minHeight: windowHeight ? `${windowHeight}px` : '100vh',
-        paddingTop: '80px',
+        paddingTop: '120px',
       }}
     >
       {/* 背景元素 - 更有駭客風格 */}
@@ -69,7 +72,7 @@ const HeroSection: React.FC = () => {
           <div className="h-full w-full" 
             style={{
               backgroundImage: 'radial-gradient(circle, #252429 1px, transparent 1px)',
-              backgroundSize: '30px 30px'
+              backgroundSize: '40px 40px'
             }}
           />
         </div>
@@ -77,7 +80,7 @@ const HeroSection: React.FC = () => {
         {/* 模擬程式碼行 */}
         <div className="absolute -left-4 top-1/4 transform -rotate-6 opacity-10">
           {[...Array(10)].map((_, i) => (
-            <div key={i} className="flex gap-2 text-xs font-mono my-1">
+            <div key={i} className="flex gap-2 text-xs font-mono my-1.5">
               <span className="text-muted">{i + 1}</span>
               <span className="text-primary">function</span>
               <span>createAwesome() {'{...}'}</span>
@@ -87,7 +90,7 @@ const HeroSection: React.FC = () => {
         
         <div className="absolute right-0 bottom-1/3 transform rotate-6 opacity-10">
           {[...Array(8)].map((_, i) => (
-            <div key={i} className="flex gap-2 text-xs font-mono my-1">
+            <div key={i} className="flex gap-2 text-xs font-mono my-1.5">
               <span className="text-muted">{i + 20}</span>
               <span className="text-accent">if</span>
               <span>(isHacker) {'{...}'}</span>
@@ -97,33 +100,33 @@ const HeroSection: React.FC = () => {
         
         {/* 裝飾元素 */}
         <motion.div
-          className="absolute top-1/4 right-1/4 w-64 h-64 rounded-full bg-secondary/20 blur-3xl"
-          animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.3, 0.2] }}
+          className="absolute top-1/5 right-1/4 w-80 h-80 rounded-full bg-secondary/20 blur-3xl"
+          animate={isInView ? { scale: [1, 1.2, 1], opacity: [0.15, 0.25, 0.15] } : {}}
           transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
         />
         
         <motion.div
-          className="absolute bottom-1/3 left-1/3 w-48 h-48 rounded-full bg-primary/20 blur-3xl"
-          animate={{ scale: [1, 1.3, 1], opacity: [0.15, 0.25, 0.15] }}
-          transition={{ repeat: Infinity, duration: 6, ease: "easeInOut", delay: 1 }}
+          className="absolute bottom-1/3 left-1/3 w-64 h-64 rounded-full bg-primary/20 blur-3xl"
+          animate={isInView ? { scale: [1, 1.3, 1], opacity: [0.1, 0.2, 0.1] } : {}}
+          transition={{ repeat: Infinity, duration: 7, ease: "easeInOut", delay: 1 }}
         />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10 h-full flex flex-col justify-center py-16">
-        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
+      <div className="container mx-auto px-8 relative z-10 h-full flex flex-col justify-center py-24">
+        <div className="flex flex-col md:flex-row items-center gap-16 md:gap-28">
           {/* 左側文字內容 */}
           <motion.div
-            className="md:w-1/2 md:pr-4"
+            className="md:w-1/2 md:pr-8"
             variants={containerVariants}
             initial="hidden"
-            animate="visible"
+            animate={isInView ? "visible" : "hidden"}
           >
-            <motion.div variants={itemVariants}>
-              <div className="inline-flex items-center mb-6 bg-dark px-4 py-2 rounded-lg text-light">
-                <div className="mr-2 flex space-x-1.5">
-                  <div className="w-3 h-3 rounded-full bg-primary"></div>
-                  <div className="w-3 h-3 rounded-full bg-accent"></div>
-                  <div className="w-3 h-3 rounded-full bg-secondary"></div>
+            <motion.div variants={itemVariants} className="mb-10">
+              <div className="inline-flex items-center bg-dark px-5 py-3 rounded-lg text-light">
+                <div className="mr-3 flex space-x-2">
+                  <div className="w-3.5 h-3.5 rounded-full bg-primary"></div>
+                  <div className="w-3.5 h-3.5 rounded-full bg-accent"></div>
+                  <div className="w-3.5 h-3.5 rounded-full bg-secondary"></div>
                 </div>
                 <code className="font-mono text-sm">
                   {typedText}
@@ -133,7 +136,7 @@ const HeroSection: React.FC = () => {
             </motion.div>
 
             <motion.h1
-              className="text-5xl md:text-6xl font-bold mb-4 leading-tight"
+              className="text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight"
               variants={itemVariants}
             >
               由<span className="text-primary">青少年</span>打造的 
@@ -141,105 +144,105 @@ const HeroSection: React.FC = () => {
             </motion.h1>
 
             <motion.p
-              className="text-lg md:text-xl text-muted mb-8 max-w-2xl"
+              className="text-xl md:text-2xl text-muted mb-12 max-w-2xl leading-relaxed"
               variants={itemVariants}
             >
               我們在這裡一起創造、探索和分享程式的無限可能！發揮你的創意，用程式將想法變成現實，HackIt 是屬於所有創作者的地方。
             </motion.p>
 
             <motion.div
-              className="flex flex-wrap gap-4"
+              className="flex flex-wrap gap-6 mb-16"
               variants={itemVariants}
             >
               <Link
                 href="#join"
-                className="px-6 py-3 bg-primary text-white rounded-lg flex items-center font-medium hover:bg-primary/90 transition-colors"
+                className="px-8 py-4 bg-primary text-white rounded-lg flex items-center font-medium hover:bg-primary/90 transition-colors text-lg"
               >
                 加入社群
-                <FaArrowRight className="ml-2" />
+                <FaArrowRight className="ml-3" />
               </Link>
               
               <Link
                 href="#projects"
-                className="px-6 py-3 bg-light border-2 border-dark text-dark rounded-lg hover:bg-dark hover:text-light transition-colors font-medium flex items-center"
+                className="px-8 py-4 bg-light border-2 border-dark text-dark rounded-lg hover:bg-dark hover:text-light transition-colors font-medium flex items-center text-lg"
               >
                 查看專案
-                <FaGithub className="ml-2" />
+                <FaGithub className="ml-3" />
               </Link>
             </motion.div>
             
             <motion.div 
-              className="flex items-center gap-2 mt-8"
+              className="flex items-center gap-4 mt-10"
               variants={itemVariants}
             >
-              <span className="text-sm text-muted">我們有</span>
-              <div className="px-3 py-1 bg-secondary/20 text-dark rounded-full font-mono">
-                <span className="font-bold">1,337</span> 位駭客
+              <span className="text-base text-muted">我們有</span>
+              <div className="px-4 py-2 bg-secondary/20 text-dark rounded-full font-mono">
+                <span className="font-bold text-lg">1,337</span> 位駭客
               </div>
-              <span className="text-sm text-muted">共同創造</span>
-              <div className="px-3 py-1 bg-accent/20 text-dark rounded-full font-mono">
-                <span className="font-bold">∞</span> 種可能性
+              <span className="text-base text-muted">共同創造</span>
+              <div className="px-4 py-2 bg-accent/20 text-dark rounded-full font-mono">
+                <span className="font-bold text-lg">∞</span> 種可能性
               </div>
             </motion.div>
           </motion.div>
 
           {/* 右側圖像/動畫 */}
           <motion.div 
-            className="md:w-1/2 mt-8 md:mt-0"
+            className="md:w-1/2 mt-16 md:mt-0"
             initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
           >
             <div className="relative rounded-lg overflow-hidden border-4 border-dark shadow-xl">
-              <div className="absolute top-0 left-0 right-0 h-8 bg-dark flex items-center px-3 z-10">
-                <div className="flex space-x-1.5">
-                  <div className="w-3 h-3 rounded-full bg-primary"></div>
-                  <div className="w-3 h-3 rounded-full bg-accent"></div>
-                  <div className="w-3 h-3 rounded-full bg-secondary"></div>
+              <div className="absolute top-0 left-0 right-0 h-10 bg-dark flex items-center px-4 z-10">
+                <div className="flex space-x-2.5">
+                  <div className="w-3.5 h-3.5 rounded-full bg-primary"></div>
+                  <div className="w-3.5 h-3.5 rounded-full bg-accent"></div>
+                  <div className="w-3.5 h-3.5 rounded-full bg-secondary"></div>
                 </div>
-                <div className="text-xs font-mono text-white ml-3">terminal</div>
+                <div className="text-sm font-mono text-white ml-4">terminal</div>
               </div>
-              <div className="pt-8 bg-dark text-light p-4 font-mono text-sm">
-                <div>$ cd HackIt</div>
-                <div>$ ls</div>
-                <div className="text-secondary">projects/ events/ community/ tutorials/</div>
-                <div>$ echo "Hello, World!"</div>
-                <div className="text-light mb-2">Hello, World!</div>
-                <div>$ npm run create</div>
-                <div className="text-accent">Starting creativity engine...</div>
-                <div className="text-primary">Welcome to HackIt! What will you create today?</div>
-                <div className="flex mt-2">
+              <div className="pt-12 bg-dark text-light p-6 font-mono text-base">
+                <div className="mb-2">$ cd HackIt</div>
+                <div className="mb-2">$ ls</div>
+                <div className="text-secondary mb-3">projects/ events/ community/ tutorials/</div>
+                <div className="mb-2">$ echo "Hello, World!"</div>
+                <div className="text-light mb-3">Hello, World!</div>
+                <div className="mb-2">$ npm run create</div>
+                <div className="text-accent mb-2">Starting creativity engine...</div>
+                <div className="text-primary mb-4">Welcome to HackIt! What will you create today?</div>
+                <div className="flex mt-3">
                   <span>$</span>
                   <span className="ml-2 inline-block animate-pulse">|</span>
                 </div>
               </div>
             </div>
             
-            <div className="flex justify-center mt-8 gap-4">
+            <div className="flex justify-center mt-14 gap-8">
               <motion.div 
-                className="bg-accent/10 p-3 rounded-lg"
-                whileHover={{ y: -5 }}
+                className="bg-accent/10 p-4 rounded-lg"
+                whileHover={{ y: -8 }}
               >
-                <div className="w-12 h-12 bg-accent/20 flex items-center justify-center rounded-md">
-                  <span className="text-xl font-bold">JS</span>
+                <div className="w-16 h-16 bg-accent/20 flex items-center justify-center rounded-md">
+                  <span className="text-2xl font-bold">JS</span>
                 </div>
               </motion.div>
               
               <motion.div 
-                className="bg-primary/10 p-3 rounded-lg"
-                whileHover={{ y: -5 }}
+                className="bg-primary/10 p-4 rounded-lg"
+                whileHover={{ y: -8 }}
               >
-                <div className="w-12 h-12 bg-primary/20 flex items-center justify-center rounded-md">
-                  <span className="text-xl font-bold">PY</span>
+                <div className="w-16 h-16 bg-primary/20 flex items-center justify-center rounded-md">
+                  <span className="text-2xl font-bold">PY</span>
                 </div>
               </motion.div>
               
               <motion.div 
-                className="bg-secondary/10 p-3 rounded-lg"
-                whileHover={{ y: -5 }}
+                className="bg-secondary/10 p-4 rounded-lg"
+                whileHover={{ y: -8 }}
               >
-                <div className="w-12 h-12 bg-secondary/20 flex items-center justify-center rounded-md">
-                  <span className="text-xl font-bold">HW</span>
+                <div className="w-16 h-16 bg-secondary/20 flex items-center justify-center rounded-md">
+                  <span className="text-2xl font-bold">HW</span>
                 </div>
               </motion.div>
             </div>
@@ -249,22 +252,58 @@ const HeroSection: React.FC = () => {
       
       {/* 向下滾動指示器 */}
       <motion.div 
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
+        className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex flex-col items-center z-10"
+        initial={{ opacity: 0, y: 15 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
+        transition={{ 
+          delay: 1.8, 
+          duration: 0.8,
+          ease: "easeOut" 
+        }}
       >
-        <span className="text-xs text-muted mb-2">往下滾動</span>
+        <motion.span 
+          className="text-sm font-mono text-primary mb-3 font-bold"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ 
+            delay: 2.1, 
+            duration: 0.6,
+            ease: "backOut" 
+          }}
+        >
+          準備好了嗎？
+        </motion.span>
         <motion.div 
-          className="w-6 h-10 border-2 border-muted rounded-full flex justify-center"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5 }}
+          className="w-8 h-12 border-2 border-dark rounded-full flex justify-center overflow-hidden relative"
+          initial={{ scale: 0.8 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 2.2, duration: 0.5 }}
+          whileHover={{ scale: 1.1 }}
         >
           <motion.div 
-            className="w-1.5 h-1.5 bg-primary rounded-full"
-            animate={{ y: [4, 16, 4] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
+            className="w-5 h-5 bg-primary rounded-full absolute"
+            animate={{ 
+              y: [0, 19, 0],
+              scale: [0.4, 0.6, 0.4]
+            }}
+            transition={{ 
+              repeat: Infinity, 
+              duration: 1.5, 
+              ease: "easeInOut"
+            }}
           />
+        </motion.div>
+        <motion.div
+          className="mt-4 text-xs font-mono text-accent"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 1, 0.8, 1] }}
+          transition={{ 
+            delay: 2.3, 
+            duration: 0.8,
+            times: [0, 0.5, 0.75, 1]
+          }}
+        >
+          點擊或滾動
         </motion.div>
       </motion.div>
     </section>
