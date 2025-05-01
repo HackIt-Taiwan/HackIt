@@ -112,10 +112,10 @@ const EventsSection: React.FC = () => {
   };
 
   return (
-    <section id="活動資訊" className="py-20 md:py-28 lg:py-32 bg-white relative overflow-hidden">
+    <section id="活動資訊" className="py-20 md:py-28 lg:py-32 bg-white dark:bg-gray-900 relative overflow-hidden">
       {/* 背景裝飾 */}
       <motion.div 
-        className="absolute top-[15%] left-[5%] w-[30vw] h-[30vw] max-w-[500px] max-h-[500px] bg-primary/3 rounded-full blur-3xl"
+        className="absolute top-[15%] left-[5%] w-[30vw] h-[30vw] max-w-[500px] max-h-[500px] bg-primary/3 dark:bg-primary/5 rounded-full blur-3xl"
         initial={{ opacity: 0 }}
         animate={{ 
           opacity: 0.5,
@@ -129,7 +129,7 @@ const EventsSection: React.FC = () => {
         }}
       />
       <motion.div 
-        className="absolute bottom-[20%] right-[10%] w-[25vw] h-[25vw] max-w-[400px] max-h-[400px] bg-blue-500/3 rounded-full blur-3xl"
+        className="absolute bottom-[20%] right-[10%] w-[25vw] h-[25vw] max-w-[400px] max-h-[400px] bg-blue-500/3 dark:bg-blue-500/5 rounded-full blur-3xl"
         initial={{ opacity: 0 }}
         animate={{ 
           opacity: 0.5,
@@ -160,7 +160,7 @@ const EventsSection: React.FC = () => {
             活動資訊
           </motion.span>
           <motion.h2 
-            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 dark:text-white"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.3 }}
@@ -173,7 +173,7 @@ const EventsSection: React.FC = () => {
             >精彩活動</motion.span>
           </motion.h2>
           <motion.p 
-            className="text-lg md:text-xl text-gray-600"
+            className="text-lg md:text-xl text-gray-600 dark:text-gray-300"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.4 }}
@@ -191,7 +191,7 @@ const EventsSection: React.FC = () => {
           {events.map((event, index) => (
             <motion.div
               key={event.id}
-              className="bg-white rounded-xl shadow-lg overflow-hidden h-full"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden h-full"
               initial="rest"
               whileHover="hover"
               variants={cardHoverVariants}
@@ -210,7 +210,7 @@ const EventsSection: React.FC = () => {
                   />
                 </motion.div>
                 <motion.div 
-                  className="absolute top-4 left-4 bg-white py-1 px-3 rounded-full text-sm font-medium text-primary shadow-sm"
+                  className="absolute top-4 left-4 bg-white dark:bg-gray-800 py-1 px-3 rounded-full text-sm font-medium text-primary shadow-sm"
                   initial={{ opacity: 0, scale: 0.8, x: -10 }}
                   animate={{ opacity: 1, scale: 1, x: 0 }}
                   transition={{ delay: 0.2 + index * 0.1, duration: 0.4 }}
@@ -220,12 +220,12 @@ const EventsSection: React.FC = () => {
               </div>
               
               <div className="p-5 md:p-6">
-                <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 line-clamp-1">{event.title}</h3>
-                <p className="text-gray-600 mb-4 text-sm md:text-base line-clamp-2">{event.description}</p>
+                <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 line-clamp-1 dark:text-white">{event.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm md:text-base line-clamp-2">{event.description}</p>
                 
                 <div className="space-y-2 mb-5 md:mb-6">
                   <motion.div 
-                    className="flex items-center text-sm text-gray-500"
+                    className="flex items-center text-sm text-gray-500 dark:text-gray-400"
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 + index * 0.1, duration: 0.4 }}
@@ -234,7 +234,7 @@ const EventsSection: React.FC = () => {
                     <span className="truncate">{event.date} {event.time}</span>
                   </motion.div>
                   <motion.div 
-                    className="flex items-center text-sm text-gray-500"
+                    className="flex items-center text-sm text-gray-500 dark:text-gray-400"
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 + index * 0.1, duration: 0.4 }}
@@ -243,7 +243,7 @@ const EventsSection: React.FC = () => {
                     <span className="truncate">{event.location}</span>
                   </motion.div>
                   <motion.div 
-                    className="flex items-center text-sm text-gray-500"
+                    className="flex items-center text-sm text-gray-500 dark:text-gray-400"
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
@@ -255,7 +255,7 @@ const EventsSection: React.FC = () => {
                 
                 {/* 名額進度條 */}
                 <div className="mb-5 md:mb-6">
-                  <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                     <motion.div 
                       className="h-full bg-primary rounded-full"
                       initial={{ width: 0 }}
@@ -264,8 +264,8 @@ const EventsSection: React.FC = () => {
                     ></motion.div>
                   </div>
                   <div className="flex justify-between text-xs mt-1">
-                    <span className="text-gray-500">已報名 {event.spots - event.spotsLeft} 人</span>
-                    <span className="text-gray-500">總共 {event.spots} 人</span>
+                    <span className="text-gray-500 dark:text-gray-400">已報名 {event.spots - event.spotsLeft} 人</span>
+                    <span className="text-gray-500 dark:text-gray-400">總共 {event.spots} 人</span>
                   </div>
                 </div>
                 
@@ -298,7 +298,7 @@ const EventsSection: React.FC = () => {
           >
             <Link
               href="/events"
-              className="inline-flex items-center text-primary font-medium hover:text-primary-dark group"
+              className="inline-flex items-center text-primary font-medium hover:text-primary-dark dark:hover:text-primary-light group"
             >
               <span className="text-lg">查看所有活動</span>
               <motion.div

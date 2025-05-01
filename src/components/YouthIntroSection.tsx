@@ -29,7 +29,7 @@ const YouthIntroSection: React.FC = () => {
   };
 
   return (
-    <section className="py-24 bg-gray-50 relative overflow-hidden">
+    <section className="py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
       {/* 背景裝飾 */}
       <div className="absolute inset-0 overflow-hidden">
         {/* 背景繪製線條 */}
@@ -71,7 +71,7 @@ const YouthIntroSection: React.FC = () => {
         {stars.map((star) => (
           <motion.div
             key={star.id}
-            className="absolute text-primary opacity-20"
+            className="absolute text-primary opacity-20 dark:opacity-30"
             style={{
               left: `${star.x}%`,
               top: `${star.y}%`,
@@ -106,7 +106,7 @@ const YouthIntroSection: React.FC = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <div className="px-4 py-2 bg-primary/10 text-primary rounded-full inline-flex items-center gap-2 font-medium">
+              <div className="px-4 py-2 bg-primary/10 dark:bg-primary/20 text-primary rounded-full inline-flex items-center gap-2 font-medium">
                 <FaCode className="text-sm" />
                 <span>專為年輕創作者打造</span>
               </div>
@@ -121,12 +121,13 @@ const YouthIntroSection: React.FC = () => {
               viewport={{ once: true }}
             >
               <span className="relative inline-block">
-                <span className="relative z-10 text-gray-800">一起探索</span>
+                <span className="relative z-10 text-gray-800 dark:text-gray-100">一起探索</span>
                 <svg className="absolute inset-0 w-full h-full" style={{ top: '5%', zIndex: 0 }}>
                   <motion.rect 
                     width="100%" 
                     height="65%" 
                     fill="#F2E8FF" 
+                    className="dark:fill-purple-900/30"
                     rx="3"
                     initial={{ width: 0 }}
                     whileInView={{ width: "100%" }}
@@ -151,14 +152,15 @@ const YouthIntroSection: React.FC = () => {
                 </svg>
               </span>{' '}
               <span className="relative inline-block mt-2 md:mt-0">
-                <span className="relative z-10 text-gray-800">的</span>
+                <span className="relative z-10 text-gray-800 dark:text-gray-100">的</span>
                 <span className="relative z-10 text-primary font-bold">無限可能</span>
                 <svg className="absolute inset-0 w-full h-full" style={{ top: '5%', zIndex: 0 }}>
                   <motion.circle 
                     cx="50%" 
                     cy="50%" 
                     r="25" 
-                    fill="#FFE4D6" 
+                    fill="#FFE4D6"
+                    className="dark:fill-orange-800/30" 
                     initial={{ scale: 0 }}
                     whileInView={{ scale: 3 }}
                     transition={{ duration: 0.8, delay: 0.8 }}
@@ -169,7 +171,7 @@ const YouthIntroSection: React.FC = () => {
             </motion.h2>
             
             <motion.p 
-              className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto"
+              className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
@@ -225,13 +227,13 @@ const YouthIntroSection: React.FC = () => {
                 whileHover={{ y: -8 }}
               >
                 {/* 筆記紙風格背景 - 更加強調手工感 */}
-                <div className="absolute inset-0 bg-white rounded-xl shadow-md transform rotate-1 group-hover:rotate-2 transition-transform duration-300" style={{ 
+                <div className="absolute inset-0 bg-white dark:bg-gray-700 rounded-xl shadow-md transform rotate-1 group-hover:rotate-2 transition-transform duration-300" style={{ 
                   backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 27px, #f0f0f0 28px)'
                 }}></div>
                 
-                <div className="relative p-7 bg-white rounded-xl shadow-md border-t-4 border-primary z-10 h-full transform -rotate-1 group-hover:-rotate-2 transition-transform duration-300">
+                <div className="relative p-7 bg-white dark:bg-gray-800 rounded-xl shadow-md border-t-4 border-primary z-10 h-full transform -rotate-1 group-hover:-rotate-2 transition-transform duration-300">
                   {/* 手繪風格裝飾膠帶 */}
-                  <div className="absolute -left-2 -top-1 w-10 h-5 bg-yellow-300/60 transform rotate-45"></div>
+                  <div className="absolute -left-2 -top-1 w-10 h-5 bg-yellow-300/60 dark:bg-yellow-500/50 transform rotate-45"></div>
                   <div className="absolute -right-3 -top-3">
                     <motion.div 
                       className="w-14 h-14 bg-primary rounded-full flex items-center justify-center text-white"
@@ -244,11 +246,11 @@ const YouthIntroSection: React.FC = () => {
                       {feature.icon}
                     </motion.div>
                   </div>
-                  <h3 className="text-xl font-bold mb-4 mt-2 text-gray-800">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
+                  <h3 className="text-xl font-bold mb-4 mt-2 text-gray-800 dark:text-gray-100">{feature.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
                   
                   {/* 手繪裝飾 */}
-                  <svg className="absolute bottom-3 right-4 w-12 h-12 text-primary/10" viewBox="0 0 24 24">
+                  <svg className="absolute bottom-3 right-4 w-12 h-12 text-primary/10 dark:text-primary/20" viewBox="0 0 24 24">
                     <motion.path
                       d="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z"
                       stroke="currentColor"
@@ -289,7 +291,7 @@ const YouthIntroSection: React.FC = () => {
             </div>
             
             <motion.div
-              className="bg-white p-8 md:p-10 rounded-xl shadow-lg relative"
+              className="bg-white dark:bg-gray-800 p-8 md:p-10 rounded-xl shadow-lg relative"
               initial={{ y: 50, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.7 }}
@@ -297,23 +299,23 @@ const YouthIntroSection: React.FC = () => {
               whileHover={{ y: -5 }}
             >
               {/* 手繪風的紙張背景 */}
-              <div className="absolute inset-0 bg-white rounded-xl overflow-hidden" style={{ 
+              <div className="absolute inset-0 bg-white dark:bg-gray-800 rounded-xl overflow-hidden" style={{ 
                 backgroundImage: 'radial-gradient(circle, #f9f9f9 1px, transparent 1px)',
                 backgroundSize: '15px 15px' 
               }}></div>
               
               <div className="absolute top-0 right-0 w-full h-full overflow-hidden rounded-xl">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full transform translate-x-16 -translate-y-16"></div>
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-indigo-50 rounded-full transform -translate-x-16 translate-y-16"></div>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 dark:bg-primary/10 rounded-full transform translate-x-16 -translate-y-16"></div>
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-indigo-50 dark:bg-indigo-900/20 rounded-full transform -translate-x-16 translate-y-16"></div>
                 
                 {/* 手繪風紙膠帶裝飾 */}
-                <div className="absolute -top-3 left-10 w-24 h-6 bg-pink-200/40 transform rotate-5"></div>
-                <div className="absolute -bottom-3 right-10 w-24 h-6 bg-blue-200/40 transform -rotate-5"></div>
+                <div className="absolute -top-3 left-10 w-24 h-6 bg-pink-200/40 dark:bg-pink-800/30 transform rotate-5"></div>
+                <div className="absolute -bottom-3 right-10 w-24 h-6 bg-blue-200/40 dark:bg-blue-800/30 transform -rotate-5"></div>
               </div>
               
               <div className="relative z-10">
                 <motion.p 
-                  className="text-2xl text-gray-800 font-medium mb-8"
+                  className="text-2xl text-gray-800 dark:text-gray-100 font-medium mb-8"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   transition={{ delay: 0.3, duration: 0.6 }}
@@ -334,7 +336,7 @@ const YouthIntroSection: React.FC = () => {
                   >
                     <Link 
                       href="/about" 
-                      className="inline-block px-8 py-3 bg-white border-2 border-primary text-primary rounded-full font-medium hover:bg-primary/5 transition-colors"
+                      className="inline-block px-8 py-3 bg-white dark:bg-gray-700 border-2 border-primary text-primary rounded-full font-medium hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors"
                     >
                       了解更多
                     </Link>

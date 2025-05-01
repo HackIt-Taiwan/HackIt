@@ -469,20 +469,20 @@ const ScrollableEvents: React.FC = () => {
   // 8. 渲染部分
   // ----------------------------------------
   return (
-    <section className="py-20 bg-gray-50" ref={sectionRef}>
+    <section className="py-20 bg-gray-50 dark:bg-gray-900" ref={sectionRef}>
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-end mb-10">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               各式<span className="text-primary">活動</span>
-              <span className="text-sm md:text-base font-normal text-gray-500 ml-1">(包括已結束的)</span>
+              <span className="text-sm md:text-base font-normal text-gray-500 dark:text-gray-400 ml-1">(包括已結束的)</span>
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-600 dark:text-gray-300">
               探索更多學習機會，任何時候都可以從中獲取靈感
             </p>
           </div>
           
-          <Link href="/events" className="text-primary font-medium hover:underline flex items-center">
+          <Link href="/events" className="text-primary hover:text-primary-dark dark:hover:text-primary-light font-medium hover:underline flex items-center">
             查看全部活動 <FaArrowRight className="ml-2" />
           </Link>
         </div>
@@ -491,22 +491,22 @@ const ScrollableEvents: React.FC = () => {
           {/* 左右滾動按鈕 */}
           <button 
             onClick={scrollToLeft}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white p-3 rounded-full shadow-md hover:shadow-lg transition-shadow transform -translate-x-1/2 focus:outline-none"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-3 rounded-full shadow-md hover:shadow-lg transition-shadow transform -translate-x-1/2 focus:outline-none"
             aria-label="滾動向左"
           >
-            <FaChevronLeft className="text-gray-700" />
+            <FaChevronLeft className="text-gray-700 dark:text-gray-300" />
           </button>
           
           <button 
             onClick={scrollToRight}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white p-3 rounded-full shadow-md hover:shadow-lg transition-shadow transform translate-x-1/2 focus:outline-none"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-3 rounded-full shadow-md hover:shadow-lg transition-shadow transform translate-x-1/2 focus:outline-none"
             aria-label="滾動向右"
           >
-            <FaChevronRight className="text-gray-700" />
+            <FaChevronRight className="text-gray-700 dark:text-gray-300" />
           </button>
           
           {/* 拖動提示 */}
-          <div className="text-center mb-4 text-gray-500 text-sm">
+          <div className="text-center mb-4 text-gray-500 dark:text-gray-400 text-sm">
             <span className="inline-flex items-center">
               <motion.div 
                 animate={isInView ? { x: [-5, 5, -5] } : {}}
@@ -536,7 +536,7 @@ const ScrollableEvents: React.FC = () => {
             {repeatedEvents.map((event, index) => (
               <motion.div
                 key={`${event.id}-${index}`}
-                className="flex-shrink-0 w-[300px] bg-white rounded-xl shadow-md overflow-hidden"
+                className="flex-shrink-0 w-[300px] bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden"
                 data-event-card
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ 
@@ -559,10 +559,10 @@ const ScrollableEvents: React.FC = () => {
                     sizes="300px"
                     loading={index < 12 ? "eager" : "lazy"}
                   />
-                  <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-primary flex items-center gap-1">
+                  <div className="absolute top-3 left-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-primary flex items-center gap-1">
                     {event.isCompleted ? (
                       <>
-                        <FaCheckCircle className="text-green-500" />
+                        <FaCheckCircle className="text-green-500 dark:text-green-400" />
                         <span>已結束</span>
                       </>
                     ) : (
@@ -573,7 +573,7 @@ const ScrollableEvents: React.FC = () => {
                   {/* 右上角活動狀態 */}
                   {event.isCompleted && (
                     <div className="absolute top-0 right-0 w-20 h-20 overflow-hidden">
-                      <div className="bg-gray-700/80 text-white text-xs font-bold py-1 px-4 rotate-45 transform origin-bottom-right absolute top-0 right-0 translate-x-[40%] translate-y-[10%]">
+                      <div className="bg-gray-700/80 dark:bg-gray-900/80 text-white text-xs font-bold py-1 px-4 rotate-45 transform origin-bottom-right absolute top-0 right-0 translate-x-[40%] translate-y-[10%]">
                         已結束
                       </div>
                     </div>
@@ -581,14 +581,14 @@ const ScrollableEvents: React.FC = () => {
                 </div>
                 
                 <div className="p-5">
-                  <h3 className="font-bold text-lg mb-2 line-clamp-1">{event.title}</h3>
+                  <h3 className="font-bold text-lg mb-2 line-clamp-1 dark:text-white">{event.title}</h3>
                   
                   <div className="space-y-2 mb-4 text-sm">
-                    <div className="flex items-center text-gray-500">
+                    <div className="flex items-center text-gray-500 dark:text-gray-300">
                       <FaCalendar className="mr-2 text-primary text-xs" />
                       <span>{event.date} {event.time}</span>
                     </div>
-                    <div className="flex items-center text-gray-500">
+                    <div className="flex items-center text-gray-500 dark:text-gray-300">
                       <FaMapMarkerAlt className="mr-2 text-primary text-xs" />
                       <span className="line-clamp-1">{event.location}</span>
                     </div>
@@ -598,8 +598,8 @@ const ScrollableEvents: React.FC = () => {
                     href={event.link} 
                     className={`inline-block w-full text-center py-2 rounded-lg transition-colors ${
                       event.isCompleted 
-                        ? 'bg-gray-200 text-gray-600 hover:bg-gray-300' 
-                        : 'bg-primary/10 text-primary hover:bg-primary/20'
+                        ? 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600' 
+                        : 'bg-primary/10 dark:bg-primary/20 text-primary hover:bg-primary/20 dark:hover:bg-primary/30'
                     }`}
                   >
                     {event.isCompleted ? '查看回顧' : '查看詳情'}

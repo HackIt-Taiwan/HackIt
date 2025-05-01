@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: 'class', // Enable dark mode with class strategy
   theme: {
     extend: {
       colors: {
@@ -34,6 +35,12 @@ module.exports = {
           '0%, 100%': { transform: 'rotate(-3deg)' },
           '50%': { transform: 'rotate(3deg)' },
         }
+      },
+      backgroundColor: {
+        DEFAULT: 'var(--background)',
+      },
+      textColor: {
+        DEFAULT: 'var(--foreground)',
       },
     },
   },

@@ -71,7 +71,7 @@ const HeroSection: React.FC = () => {
     <section
       id="home"
       ref={sectionRef}
-      className="relative bg-light overflow-hidden"
+      className="relative bg-light dark:bg-dark overflow-hidden"
       style={{
         minHeight: windowHeight ? `${windowHeight}px` : '100vh',
         paddingTop: isMobile ? '100px' : '120px', // 移動設備上減少頂部間距
@@ -80,7 +80,7 @@ const HeroSection: React.FC = () => {
       {/* 背景元素 - 更有駭客風格 */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         {/* 背景網格 */}
-        <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0 opacity-5 dark:opacity-10">
           <div className="h-full w-full" 
             style={{
               backgroundImage: 'radial-gradient(circle, #252429 1px, transparent 1px)',
@@ -90,7 +90,7 @@ const HeroSection: React.FC = () => {
         </div>
         
         {/* 模擬程式碼行 - 在移動設備上隱藏部分程式碼 */}
-        <div className="absolute -left-4 top-1/4 transform -rotate-6 opacity-10 hidden sm:block">
+        <div className="absolute -left-4 top-1/4 transform -rotate-6 opacity-10 dark:opacity-15 hidden sm:block">
           {[...Array(isMobile ? 5 : 10)].map((_, i) => (
             <div key={i} className="flex gap-2 text-xs font-mono my-1.5">
               <span className="text-muted">{i + 1}</span>
@@ -100,7 +100,7 @@ const HeroSection: React.FC = () => {
           ))}
         </div>
         
-        <div className="absolute right-0 bottom-1/3 transform rotate-6 opacity-10 hidden sm:block">
+        <div className="absolute right-0 bottom-1/3 transform rotate-6 opacity-10 dark:opacity-15 hidden sm:block">
           {[...Array(isMobile ? 4 : 8)].map((_, i) => (
             <div key={i} className="flex gap-2 text-xs font-mono my-1.5">
               <span className="text-muted">{i + 20}</span>
@@ -112,7 +112,7 @@ const HeroSection: React.FC = () => {
         
         {/* 裝飾元素 - 調整大小以適應不同設備 */}
         <motion.div
-          className={`absolute top-1/5 right-1/4 rounded-full bg-secondary/20 blur-3xl ${
+          className={`absolute top-1/5 right-1/4 rounded-full bg-secondary/20 dark:bg-secondary/30 blur-3xl ${
             isMobile ? 'w-40 h-40' : isTablet ? 'w-60 h-60' : 'w-80 h-80'
           }`}
           animate={isInView ? { scale: [1, 1.2, 1], opacity: [0.15, 0.25, 0.15] } : {}}
@@ -120,7 +120,7 @@ const HeroSection: React.FC = () => {
         />
         
         <motion.div
-          className={`absolute bottom-1/3 left-1/3 rounded-full bg-primary/20 blur-3xl ${
+          className={`absolute bottom-1/3 left-1/3 rounded-full bg-primary/20 dark:bg-primary/30 blur-3xl ${
             isMobile ? 'w-32 h-32' : isTablet ? 'w-48 h-48' : 'w-64 h-64'
           }`}
           animate={isInView ? { scale: [1, 1.3, 1], opacity: [0.1, 0.2, 0.1] } : {}}
@@ -138,7 +138,7 @@ const HeroSection: React.FC = () => {
             animate={isInView ? "visible" : "hidden"}
           >
             <motion.div variants={itemVariants} className="mb-6 md:mb-10">
-              <div className="inline-flex items-center bg-dark px-3 sm:px-4 md:px-5 py-2 md:py-3 rounded-lg text-light">
+              <div className="inline-flex items-center bg-dark dark:bg-light px-3 sm:px-4 md:px-5 py-2 md:py-3 rounded-lg text-light dark:text-dark">
                 <div className="mr-2 md:mr-3 flex space-x-1.5 md:space-x-2">
                   <div className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 rounded-full bg-primary"></div>
                   <div className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 rounded-full bg-accent"></div>
@@ -152,7 +152,7 @@ const HeroSection: React.FC = () => {
             </motion.div>
 
             <motion.h1
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 md:mb-8 leading-tight tracking-tight"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 md:mb-8 leading-tight tracking-tight text-dark dark:text-light"
               variants={itemVariants}
             >
               由<span className="text-primary">青少年</span>打造的 
@@ -160,7 +160,7 @@ const HeroSection: React.FC = () => {
             </motion.h1>
 
             <motion.p
-              className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted mb-8 md:mb-12 max-w-2xl leading-relaxed"
+              className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted dark:text-gray-300 mb-8 md:mb-12 max-w-2xl leading-relaxed"
               variants={itemVariants}
             >
               我們在這裡一起創造、探索和分享程式的無限可能！發揮你的創意，用程式將想法變成現實，HackIt 是屬於所有創作者的地方。
@@ -180,7 +180,7 @@ const HeroSection: React.FC = () => {
               
               <Link
                 href="#projects"
-                className="px-4 sm:px-6 md:px-8 py-3 md:py-4 bg-light border-2 border-dark text-dark rounded-lg hover:bg-dark hover:text-light transition-colors font-medium flex items-center text-sm sm:text-base md:text-lg"
+                className="px-4 sm:px-6 md:px-8 py-3 md:py-4 bg-light dark:bg-dark border-2 border-dark dark:border-light text-dark dark:text-light rounded-lg hover:bg-dark hover:text-light dark:hover:bg-light dark:hover:text-dark transition-colors font-medium flex items-center text-sm sm:text-base md:text-lg"
               >
                 查看專案
                 <FaGithub className="ml-2 md:ml-3" />
@@ -191,12 +191,12 @@ const HeroSection: React.FC = () => {
               className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 mt-6 md:mt-10"
               variants={itemVariants}
             >
-              <span className="text-sm md:text-base text-muted">我們有</span>
-              <div className="px-3 md:px-4 py-1.5 md:py-2 bg-secondary/20 text-dark rounded-full font-mono">
+              <span className="text-sm md:text-base text-muted dark:text-gray-300">我們有</span>
+              <div className="px-3 md:px-4 py-1.5 md:py-2 bg-secondary/20 dark:bg-secondary/30 text-dark dark:text-light rounded-full font-mono">
                 <span className="font-bold text-base md:text-lg">1,337</span> 位駭客
               </div>
-              <span className="text-sm md:text-base text-muted">共同創造</span>
-              <div className="px-3 md:px-4 py-1.5 md:py-2 bg-accent/20 text-dark rounded-full font-mono">
+              <span className="text-sm md:text-base text-muted dark:text-gray-300">共同創造</span>
+              <div className="px-3 md:px-4 py-1.5 md:py-2 bg-accent/20 dark:bg-accent/30 text-dark dark:text-light rounded-full font-mono">
                 <span className="font-bold text-base md:text-lg">∞</span> 種可能性
               </div>
             </motion.div>
@@ -209,16 +209,16 @@ const HeroSection: React.FC = () => {
             animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.7, delay: 0.3 }}
           >
-            <div className="relative rounded-lg overflow-hidden border-2 sm:border-3 md:border-4 border-dark shadow-xl max-w-lg mx-auto">
-              <div className="absolute top-0 left-0 right-0 h-7 sm:h-8 md:h-10 bg-dark flex items-center px-2 sm:px-3 md:px-4 z-10">
+            <div className="relative rounded-lg overflow-hidden border-2 sm:border-3 md:border-4 border-dark dark:border-light shadow-xl max-w-lg mx-auto">
+              <div className="absolute top-0 left-0 right-0 h-7 sm:h-8 md:h-10 bg-dark dark:bg-light flex items-center px-2 sm:px-3 md:px-4 z-10">
                 <div className="flex space-x-1.5 sm:space-x-2 md:space-x-2.5">
                   <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3.5 md:h-3.5 rounded-full bg-primary"></div>
                   <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3.5 md:h-3.5 rounded-full bg-accent"></div>
                   <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3.5 md:h-3.5 rounded-full bg-secondary"></div>
                 </div>
-                <div className="text-xs sm:text-sm font-mono text-white ml-2 sm:ml-3 md:ml-4">terminal</div>
+                <div className="text-xs sm:text-sm font-mono text-white dark:text-dark ml-2 sm:ml-3 md:ml-4">terminal</div>
               </div>
-              <div className="pt-8 sm:pt-10 md:pt-12 bg-dark text-light p-3 sm:p-4 md:p-6 font-mono text-xs sm:text-sm md:text-base">
+              <div className="pt-8 sm:pt-10 md:pt-12 bg-dark dark:bg-gray-900 text-light p-3 sm:p-4 md:p-6 font-mono text-xs sm:text-sm md:text-base">
                 <div className="mb-1 md:mb-2">$ cd HackIt</div>
                 <div className="mb-1 md:mb-2">$ ls</div>
                 <div className="text-secondary mb-2 md:mb-3">projects/ events/ community/ tutorials/</div>
@@ -236,29 +236,29 @@ const HeroSection: React.FC = () => {
             
             <div className="flex justify-center mt-6 sm:mt-10 md:mt-14 gap-4 sm:gap-6 md:gap-8">
               <motion.div 
-                className="bg-accent/10 p-2 sm:p-3 md:p-4 rounded-lg"
+                className="bg-accent/10 dark:bg-accent/20 p-2 sm:p-3 md:p-4 rounded-lg"
                 whileHover={{ y: -8 }}
               >
-                <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-accent/20 flex items-center justify-center rounded-md">
-                  <span className="text-lg sm:text-xl md:text-2xl font-bold">JS</span>
+                <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-accent/20 dark:bg-accent/30 flex items-center justify-center rounded-md">
+                  <span className="text-lg sm:text-xl md:text-2xl font-bold text-dark dark:text-light">JS</span>
                 </div>
               </motion.div>
               
               <motion.div 
-                className="bg-primary/10 p-2 sm:p-3 md:p-4 rounded-lg"
+                className="bg-primary/10 dark:bg-primary/20 p-2 sm:p-3 md:p-4 rounded-lg"
                 whileHover={{ y: -8 }}
               >
-                <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-primary/20 flex items-center justify-center rounded-md">
-                  <span className="text-lg sm:text-xl md:text-2xl font-bold">PY</span>
+                <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-primary/20 dark:bg-primary/30 flex items-center justify-center rounded-md">
+                  <span className="text-lg sm:text-xl md:text-2xl font-bold text-dark dark:text-light">PY</span>
                 </div>
               </motion.div>
               
               <motion.div 
-                className="bg-secondary/10 p-2 sm:p-3 md:p-4 rounded-lg"
+                className="bg-secondary/10 dark:bg-secondary/20 p-2 sm:p-3 md:p-4 rounded-lg"
                 whileHover={{ y: -8 }}
               >
-                <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-secondary/20 flex items-center justify-center rounded-md">
-                  <span className="text-lg sm:text-xl md:text-2xl font-bold">HW</span>
+                <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-secondary/20 dark:bg-secondary/30 flex items-center justify-center rounded-md">
+                  <span className="text-lg sm:text-xl md:text-2xl font-bold text-dark dark:text-light">HW</span>
                 </div>
               </motion.div>
             </div>
@@ -290,7 +290,7 @@ const HeroSection: React.FC = () => {
           準備好了嗎？
         </motion.span>
         <motion.div 
-          className="w-6 h-9 sm:w-7 sm:h-10 md:w-8 md:h-12 border-2 border-dark rounded-full flex justify-center overflow-hidden relative"
+          className="w-6 h-9 sm:w-7 sm:h-10 md:w-8 md:h-12 border-2 border-dark dark:border-light rounded-full flex justify-center overflow-hidden relative"
           initial={{ scale: 0.8 }}
           animate={{ scale: 1 }}
           transition={{ delay: 2.2, duration: 0.5 }}
