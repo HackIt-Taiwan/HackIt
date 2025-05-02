@@ -558,8 +558,17 @@ const ScrollableEvents: React.FC = () => {
                     style={{ objectFit: 'cover' }}
                     sizes="300px"
                     loading={index < 12 ? "eager" : "lazy"}
+                    draggable="false"
                   />
-                  <div className="absolute top-3 left-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-primary flex items-center gap-1">
+                  
+                  {/* 透明防點擊覆蓋層 - 防止直接觸碰到圖片 */}
+                  <div 
+                    className="absolute inset-0 z-10 cursor-grab" 
+                    aria-hidden="true"
+                    style={{ touchAction: 'pan-x' }}
+                  ></div>
+                  
+                  <div className="absolute top-3 left-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-primary flex items-center gap-1 z-20">
                     {event.isCompleted ? (
                       <>
                         <FaCheckCircle className="text-green-500 dark:text-green-400" />
@@ -572,7 +581,7 @@ const ScrollableEvents: React.FC = () => {
                   
                   {/* 右上角活動狀態 */}
                   {event.isCompleted && (
-                    <div className="absolute top-0 right-0 w-20 h-20 overflow-hidden">
+                    <div className="absolute top-0 right-0 w-20 h-20 overflow-hidden z-20">
                       <div className="bg-gray-700/80 dark:bg-gray-900/80 text-white text-xs font-bold py-1 px-4 rotate-45 transform origin-bottom-right absolute top-0 right-0 translate-x-[40%] translate-y-[10%]">
                         已結束
                       </div>
