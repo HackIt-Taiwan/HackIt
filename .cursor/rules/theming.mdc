@@ -1,0 +1,52 @@
+# HackIt 主題系統
+
+本專案實現了完整的深色/淺色主題切換功能，提供一致的用戶體驗。
+
+## 主題實現
+
+主題系統主要由以下部分組成：
+
+- Tailwind CSS 深色模式
+- CSS 變數定義主題顏色
+- ThemeToggle 元件處理主題切換
+- 本地儲存保存使用者主題偏好
+
+## 顏色系統
+
+主要顏色定義在 CSS 變數中：
+
+- Primary: 主色調，用於強調和突出重點
+- Secondary: 次要色調，用於輔助元素
+- Accent: 強調色，用於吸引注意力
+- Light/Dark: 背景和文字顏色
+
+## 主題適配指南
+
+開發時請遵循以下原則確保主題兼容性：
+
+1. 使用 Tailwind 的深色模式類別 (如 `dark:bg-gray-900`)
+2. 確保所有元件在兩種主題下都有足夠的對比度
+3. 避免硬編碼顏色值，優先使用 CSS 變數或 Tailwind 類別
+4. 圖標和圖片應考慮深色模式顯示效果
+
+## 相關檔案
+
+- [全局樣式](mdc:src/styles/globals.css) - 定義全局樣式和主題變數
+- [淺色主題](mdc:src/styles/themes/light-theme.css) - 淺色主題特定樣式
+- [深色主題](mdc:src/styles/themes/dark-theme.css) - 深色主題特定樣式
+- [ThemeToggle](mdc:src/components/ThemeToggle.tsx) - 主題切換元件
+
+## 實例
+
+```jsx
+// 正確的主題適配寫法
+<div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+  <h2 className="text-primary">標題</h2>
+  <p className="text-gray-600 dark:text-gray-300">內容</p>
+</div>
+```
+
+## 更新日誌
+
+- **最初建立**: 主題系統文件化
+- 注意事項: 當主題相關邏輯或樣式更新時，請更新此規則文件

@@ -5,82 +5,10 @@ import { motion, useInView, useAnimation } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { FaCalendar, FaMapMarkerAlt, FaUsers, FaArrowRight, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { getUpcomingEvents, type Event } from '@/utils/events';
 
-// 模擬活動數據
-const events = [
-  {
-    id: 1,
-    title: "新手入門工作坊",
-    date: "2023年12月10日",
-    time: "14:00 - 17:00",
-    location: "台北市信義區松高路1號",
-    category: "工作坊",
-    image: "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?q=80&w=2940&auto=format&fit=crop",
-    spots: 20,
-    spotsLeft: 8,
-    description: "專為完全沒有程式基礎的新手設計的工作坊，從零開始學習編程基礎知識。",
-  },
-  {
-    id: 2,
-    title: "网頁開發大挑戰",
-    date: "2023年12月16日",
-    time: "09:00 - 18:00",
-    location: "台北市大安區復興南路一段",
-    category: "駭客松",
-    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2940&auto=format&fit=crop",
-    spots: 50,
-    spotsLeft: 15,
-    description: "為期一天的網頁開發馬拉松，挑戰在限定時間內完成一個完整的網站專案。",
-  },
-  {
-    id: 3,
-    title: "AI應用開發講座",
-    date: "2023年12月23日",
-    time: "19:00 - 21:00",
-    location: "線上活動",
-    category: "講座",
-    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=2940&auto=format&fit=crop",
-    spots: 100,
-    spotsLeft: 42,
-    description: "由AI領域專家帶來的前沿技術分享，探討人工智能在各領域的實際應用。",
-  },
-  {
-    id: 4,
-    title: "開源專案貢獻日",
-    date: "2024年1月6日",
-    time: "10:00 - 16:00",
-    location: "台北市中山區南京東路三段",
-    category: "實作",
-    image: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?q=80&w=2940&auto=format&fit=crop",
-    spots: 30,
-    spotsLeft: 12,
-    description: "學習如何為開源專案做出貢獻，從提交第一個Pull Request開始，成為開源社區的一份子。",
-  },
-  {
-    id: 5,
-    title: "微服務架構工作坊",
-    date: "2024年1月15日",
-    time: "09:00 - 17:00",
-    location: "台北市內湖區瑞光路",
-    category: "工作坊",
-    image: "https://images.unsplash.com/photo-1573496130407-57329f01f769?q=80&w=2069&auto=format&fit=crop",
-    spots: 25,
-    spotsLeft: 10,
-    description: "深入學習微服務架構設計原則與實作方法，適合已有基礎的開發者參加。",
-  },
-  {
-    id: 6,
-    title: "資安防護基礎班",
-    date: "2024年1月20日",
-    time: "13:30 - 16:30",
-    location: "線上直播",
-    category: "課程",
-    image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop",
-    spots: 60,
-    spotsLeft: 28,
-    description: "網路安全入門課程，學習如何保護自己的應用程式免受常見的資安威脅。",
-  },
-];
+// 從 utils/events.ts 獲取活動數據
+const events = getUpcomingEvents();
 
 const EventsSection: React.FC = () => {
   const ref = useRef(null);
@@ -501,7 +429,7 @@ const EventsSection: React.FC = () => {
           >
             {events.map((event, index) => (
               <motion.div
-                key={event.id}
+                key={event.slug}
                 className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden h-full flex-shrink-0"
                 style={{ width: 'calc(100% / 3.5)', minWidth: '280px', maxWidth: '380px' }}
                 initial="rest"
@@ -515,8 +443,8 @@ const EventsSection: React.FC = () => {
                     variants={bgVariants}
                   >
                     <Image
-                      src={event.image}
-                      alt={event.title}
+                      src={event.frontmatter.image}
+                      alt={event.frontmatter.title}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       style={{ objectFit: "cover" }}
@@ -537,13 +465,13 @@ const EventsSection: React.FC = () => {
                     animate={{ opacity: 1, scale: 1, x: 0 }}
                     transition={{ delay: 0.2 + index * 0.1, duration: 0.4 }}
                   >
-                    {event.category}
+                    {event.frontmatter.category}
                   </motion.div>
                 </div>
                 
                 <div className="p-5 md:p-6">
-                  <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 line-clamp-1 dark:text-white">{event.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm md:text-base line-clamp-2">{event.description}</p>
+                  <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 line-clamp-1 dark:text-white">{event.frontmatter.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm md:text-base line-clamp-2">{event.frontmatter.description}</p>
                   
                   <div className="space-y-2 mb-5 md:mb-6">
                     <motion.div 
@@ -553,7 +481,9 @@ const EventsSection: React.FC = () => {
                       transition={{ delay: 0.3 + index * 0.1, duration: 0.4 }}
                     >
                       <FaCalendar className="mr-2 text-primary flex-shrink-0" />
-                      <span className="truncate">{event.date} {event.time}</span>
+                      <span className="truncate">
+                        {new Date(event.frontmatter.date).toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })} {event.frontmatter.time}
+                      </span>
                     </motion.div>
                     <motion.div 
                       className="flex items-center text-sm text-gray-500 dark:text-gray-400"
@@ -562,7 +492,7 @@ const EventsSection: React.FC = () => {
                       transition={{ delay: 0.4 + index * 0.1, duration: 0.4 }}
                     >
                       <FaMapMarkerAlt className="mr-2 text-primary flex-shrink-0" />
-                      <span className="truncate">{event.location}</span>
+                      <span className="truncate">{event.frontmatter.location}</span>
                     </motion.div>
                     <motion.div 
                       className="flex items-center text-sm text-gray-500 dark:text-gray-400"
@@ -571,7 +501,7 @@ const EventsSection: React.FC = () => {
                       transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
                     >
                       <FaUsers className="mr-2 text-primary flex-shrink-0" />
-                      <span>尚餘 {event.spotsLeft} 個名額</span>
+                      <span>尚餘 {event.frontmatter.spotsLeft} 個名額</span>
                     </motion.div>
                   </div>
                   
@@ -581,18 +511,18 @@ const EventsSection: React.FC = () => {
                       <motion.div 
                         className="h-full bg-primary rounded-full"
                         initial={{ width: 0 }}
-                        animate={{ width: `${calculateSpotsPercentage(event.spots, event.spotsLeft)}%` }}
+                        animate={{ width: `${calculateSpotsPercentage(event.frontmatter.spots, event.frontmatter.spotsLeft)}%` }}
                         transition={{ delay: 0.6 + index * 0.1, duration: 0.8, ease: "easeOut" }}
                       ></motion.div>
                     </div>
                     <div className="flex justify-between text-xs mt-1">
-                      <span className="text-gray-500 dark:text-gray-400">已報名 {event.spots - event.spotsLeft} 人</span>
-                      <span className="text-gray-500 dark:text-gray-400">總共 {event.spots} 人</span>
+                      <span className="text-gray-500 dark:text-gray-400">已報名 {event.frontmatter.spots - event.frontmatter.spotsLeft} 人</span>
+                      <span className="text-gray-500 dark:text-gray-400">總共 {event.frontmatter.spots} 人</span>
                     </div>
                   </div>
                   
                   <Link 
-                    href={`/events/${event.id}`} 
+                    href={`/events/${event.slug}`} 
                     className="flex items-center justify-center py-2 sm:py-2.5 px-4 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors group w-full"
                   >
                     <span>查看詳情</span>

@@ -1,3 +1,29 @@
-
+# 依賴和構建文件
 node_modules/
+
+# Next.js 構建輸出
+.next/
+!.next/server/
+!.next/static/
+
+# 但我們需要這些文件用於部署
+!.next/standalone/
+!.next/server/middleware-build-manifest.js
+!.next/server/middleware-manifest.json
+!.next/server/next-font-manifest.js
+!.next/server/pages-manifest.json
+!.next/server/webpack-api-runtime.js
+!.next/server/webpack-runtime.js
+
+# 明確忽略的文件夾
 .next/cache/
+.next/static/webpack/
+.next/server/app/
+.next/server/pages/
+.next/server/chunks/
+.next/trace/
+.next/tmp/
+
+# 本地緩存和環境
+.cache/
+.env.local

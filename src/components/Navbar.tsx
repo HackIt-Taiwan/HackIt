@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
+import { usePathname } from 'next/navigation';
 
 // Import ThemeToggle with no SSR to avoid hydration issues
 const ThemeToggle = dynamic(() => import('./ThemeToggle'), {
@@ -13,6 +14,7 @@ const ThemeToggle = dynamic(() => import('./ThemeToggle'), {
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,6 +37,16 @@ const Navbar: React.FC = () => {
     return () => clearTimeout(timer);
   }, [clickCount]);
 
+  // 導航項目定義 - 重新排序，將「最新消息」移到「首頁」旁邊
+  const navItems = [
+    { name: '首頁', href: '/' },
+    { name: '活動', href: '/events' },
+    { name: '最新消息', href: '/news' },
+    // 財務公開頁面暫時關閉
+    { name: '關於我們', href: '/about' },
+    { name: '加入我們', href: '/join', highlight: true }
+  ];
+
   return (
     <motion.header
       className={`fixed w-full z-50 transition-all duration-300 ${
@@ -54,23 +66,19 @@ const Navbar: React.FC = () => {
           onClick={() => setClickCount(prev => prev + 1)}
           transition={{ type: 'spring', stiffness: 300 }}
         >
-          <span className="text-2xl font-bold text-primary dark:text-primary">Hack<span className="text-dark dark:text-light">It</span></span>
-          <motion.div 
-            className="ml-1 bg-primary w-2 h-2 rounded-full" 
-            animate={{ scale: [1, 1.5, 1] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-          />
+          <Link href="/" className="flex items-center">
+            <span className="text-2xl font-bold text-primary dark:text-primary">Hack<span className="text-dark dark:text-light">It</span></span>
+            <motion.div 
+              className="ml-1 bg-primary w-2 h-2 rounded-full" 
+              animate={{ scale: [1, 1.5, 1] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+            />
+          </Link>
         </motion.div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-1 items-center">
-          {[
-            { name: '首頁', href: '#home' },
-            { name: '社群', href: '#community' },
-            { name: '活動', href: '#events' },
-            { name: '專案', href: '#projects' },
-            { name: '加入我們', href: '#join', highlight: true }
-          ].map((item, index) => (
+          {navItems.map((item, index) => (
             <motion.div
               key={index}
               className="relative"
@@ -82,16 +90,25 @@ const Navbar: React.FC = () => {
                 className={`font-medium px-4 py-2 rounded-md block transition-colors ${
                   item.highlight 
                     ? 'bg-primary text-white hover:bg-primary/90' 
-                    : 'hover:bg-light dark:hover:bg-dark hover:text-primary'
+                    : pathname === item.href
+                      ? 'text-primary bg-light/50 dark:bg-dark/50'
+                      : 'hover:bg-light dark:hover:bg-dark hover:text-primary'
                 }`}
               >
                 {item.name}
               </Link>
-              {!item.highlight && (
+              {!item.highlight && pathname !== item.href && (
                 <motion.div 
                   className="absolute bottom-0 left-0 h-0.5 bg-primary rounded-full w-0"
                   whileHover={{ width: '100%' }}
                   transition={{ duration: 0.2 }}
+                />
+              )}
+              {!item.highlight && pathname === item.href && (
+                <motion.div 
+                  className="absolute bottom-0 left-0 h-0.5 bg-primary rounded-full w-full"
+                  layoutId="navIndicator"
+                  transition={{ duration: 0.3 }}
                 />
               )}
             </motion.div>
@@ -139,17 +156,15 @@ const Navbar: React.FC = () => {
         style={{ display: isMobileMenuOpen ? 'block' : 'none' }}
       >
         <div className="container mx-auto py-4 px-4 flex flex-col space-y-2">
-          {[
-            { name: '首頁', href: '#home' },
-            { name: '社群', href: '#community' },
-            { name: '活動', href: '#events' },
-            { name: '專案', href: '#projects' },
-            { name: '加入我們', href: '#join' }
-          ].map((item, index) => (
+          {navItems.map((item, index) => (
             <Link
               key={index}
               href={item.href}
-              className="font-medium text-dark dark:text-light hover:text-primary py-3 px-3 rounded-md hover:bg-light dark:hover:bg-gray-800 transition-colors"
+              className={`font-medium py-3 px-3 rounded-md transition-colors ${
+                pathname === item.href
+                  ? 'bg-light/70 dark:bg-dark/70 text-primary'
+                  : 'text-dark dark:text-light hover:text-primary hover:bg-light dark:hover:bg-gray-800'
+              }`}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {item.name}

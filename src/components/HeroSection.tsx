@@ -6,14 +6,62 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaArrowRight, FaGithub, FaDiscord } from "react-icons/fa";
 
+// 添加接口定義
+interface DiscordMemberResponse {
+  memberCount: number;
+  guildName?: string;
+  error?: string;
+  fromCache?: boolean;
+}
+
 const HeroSection: React.FC = () => {
   const [windowHeight, setWindowHeight] = useState<number>(0);
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [typedText, setTypedText] = useState("");
+  const [memberCount, setMemberCount] = useState<number>(1337);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const fullText = "console.log('你好，駭客！')";
   const [typingIndex, setTypingIndex] = useState(0);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+
+  useEffect(() => {
+    // 獲取Discord成員數量
+    const fetchMemberCount = async () => {
+      setIsLoading(true);
+      try {
+        // 使用普通請求，不添加随機参数或时间戳来允许缓存工作
+        const response = await fetch('/api/discord-members');
+        
+        if (response.ok) {
+          const data: DiscordMemberResponse = await response.json();
+          if (data.memberCount && data.memberCount > 0) {
+            const source = data.fromCache ? '緩存' : 'API';
+            console.log(`成功獲取成員數量(${source}):`, data.memberCount, '伺服器:', data.guildName);
+            setMemberCount(data.memberCount);
+          } else {
+            console.error('獲取的數據中沒有有效的成員數量:', data);
+          }
+        } else {
+          console.error('獲取成員數量請求失敗:', response.status);
+        }
+      } catch (error) {
+        console.error('獲取Discord成員數量失敗:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    // 立即獲取一次
+    fetchMemberCount();
+    
+    // 每30分鐘刷新一次數據 (1800000ms)
+    // 這樣可以減少API請求頻率，但保持數據的相對新鮮度
+    const intervalId = setInterval(fetchMemberCount, 1800000);
+    
+    // 清理定時器
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     // 初始化窗口尺寸
@@ -193,7 +241,14 @@ const HeroSection: React.FC = () => {
             >
               <span className="text-sm md:text-base text-muted dark:text-gray-300">我們有</span>
               <div className="px-3 md:px-4 py-1.5 md:py-2 bg-secondary/20 dark:bg-secondary/30 text-dark dark:text-light rounded-full font-mono">
-                <span className="font-bold text-base md:text-lg">1,337</span> 位駭客
+                {isLoading ? (
+                  <span className="font-bold text-base md:text-lg inline-flex items-center">
+                    <span className="animate-pulse mr-1">•••</span>
+                  </span>
+                ) : (
+                  <span className="font-bold text-base md:text-lg">{memberCount.toLocaleString()}</span>
+                )}
+                <span> 位駭客</span>
               </div>
               <span className="text-sm md:text-base text-muted dark:text-gray-300">共同創造</span>
               <div className="px-3 md:px-4 py-1.5 md:py-2 bg-accent/20 dark:bg-accent/30 text-dark dark:text-light rounded-full font-mono">

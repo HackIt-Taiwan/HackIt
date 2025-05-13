@@ -5,32 +5,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaCalendar, FaMapMarkerAlt, FaArrowRight, FaRegLightbulb, FaRegCompass, FaStar, FaPaperclip, FaThumbtack } from 'react-icons/fa';
-
-// 大型精選活動的資料
-const featuredEvents = [
-  {
-    id: 1,
-    title: "HackIT 2024 年度黑客松",
-    date: "2024年7月15-17日",
-    location: "台北創新實驗室",
-    description: "一年一度最大規模的青少年程式競賽，為期三天的密集開發挑戰，打造解決真實問題的創新專案。",
-    image: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=2070&auto=format&fit=crop",
-    color: "indigo",
-    emoji: "🚀",
-    link: "/events/hackathon-2024"
-  },
-  {
-    id: 2,
-    title: "未來科技體驗營",
-    date: "2024年8月5-9日",
-    location: "台中高中國際會議廳",
-    description: "專為13-18歲青少年設計的五天四夜科技體驗營，涵蓋AI、機器人、區塊鏈等前沿技術的實作工作坊。",
-    image: "https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&w=2069&auto=format&fit=crop",
-    color: "purple",
-    emoji: "🔮",
-    link: "/events/tech-camp-2024"
-  }
-];
+import { Event, getFeaturedEvents } from '@/utils/events';
 
 // 筆記紙背景效果
 const notePaperBg = {
@@ -103,6 +78,14 @@ const useDarkModeStyles = () => {
 const FeaturedEvents: React.FC = () => {
   // 使用深色模式樣式的鉤子
   useDarkModeStyles();
+  
+  // 從 Markdown 文件獲取特色活動
+  const featuredEvents = getFeaturedEvents();
+  
+  // 如果沒有特色活動，則不顯示該部分
+  if (featuredEvents.length === 0) {
+    return null;
+  }
   
   return (
     <section className="py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
@@ -246,7 +229,7 @@ const FeaturedEvents: React.FC = () => {
         <div className="space-y-28">
           {featuredEvents.map((event, index) => (
             <motion.div
-              key={event.id}
+              key={event.slug}
               className="relative"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -275,8 +258,8 @@ const FeaturedEvents: React.FC = () => {
                       
                       {/* 圖片 */}
                       <Image 
-                        src={event.image} 
-                        alt={event.title} 
+                        src={event.frontmatter.image} 
+                        alt={event.frontmatter.title} 
                         fill 
                         style={{ objectFit: 'cover' }}
                         className="transition-transform duration-700"
@@ -290,7 +273,7 @@ const FeaturedEvents: React.FC = () => {
                         whileInView={{ scale: 1 }}
                         viewport={{ once: true }}
                       >
-                        {event.emoji} 超炫活動
+                        {event.frontmatter.emoji || "🔥"} 超炫活動
                       </motion.div>
                       
                       {/* 迴紋針裝飾 */}
@@ -335,7 +318,7 @@ const FeaturedEvents: React.FC = () => {
                           transition={{ delay: 0.2, duration: 0.6 }}
                           viewport={{ once: true }}
                         >
-                          {event.title}
+                          {event.frontmatter.title}
                         </motion.h3>
                         
                         {/* 手繪底線 */}
@@ -360,7 +343,7 @@ const FeaturedEvents: React.FC = () => {
                           className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-pink-100 dark:bg-pink-800 text-pink-600 dark:text-pink-200 font-mono text-xs md:text-sm font-bold border border-pink-200 dark:border-pink-700 transform rotate-6 shadow-sm"
                           whileHover={{ rotate: -6, scale: 1.1 }}
                         >
-                          {index === 0 ? '7月' : '8月'}
+                          {new Date(event.frontmatter.date).getMonth() + 1}月
                         </motion.div>
                       </div>
                       
@@ -372,7 +355,7 @@ const FeaturedEvents: React.FC = () => {
                         transition={{ delay: 0.3, duration: 0.6 }}
                         viewport={{ once: true }}
                       >
-                        {event.description}
+                        {event.frontmatter.description}
                       </motion.p>
                       
                       {/* 時間地點 */}
@@ -387,7 +370,12 @@ const FeaturedEvents: React.FC = () => {
                           <div className="w-7 h-7 rounded-full bg-amber-100 dark:bg-amber-700 flex items-center justify-center mr-3">
                             <FaCalendar className="text-amber-600 dark:text-amber-200" />
                           </div>
-                          <span>{event.date}</span>
+                          <span>
+                            {new Date(event.frontmatter.date).toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })}
+                            {event.frontmatter.endDate && 
+                              ` 至 ${new Date(event.frontmatter.endDate).toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })}`
+                            }
+                          </span>
                         </motion.div>
                         
                         <motion.div 
@@ -400,7 +388,7 @@ const FeaturedEvents: React.FC = () => {
                           <div className="w-7 h-7 rounded-full bg-teal-100 dark:bg-teal-700 flex items-center justify-center mr-3">
                             <FaMapMarkerAlt className="text-teal-600 dark:text-teal-200" />
                           </div>
-                          <span>{event.location}</span>
+                          <span>{event.frontmatter.location}</span>
                         </motion.div>
                       </div>
                       
@@ -416,7 +404,7 @@ const FeaturedEvents: React.FC = () => {
                           className="relative"
                         >
                           <Link
-                            href={event.link}
+                            href={`/events/${event.slug}`}
                             className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 dark:bg-indigo-700 text-white rounded-lg font-bold group w-full justify-center md:w-auto"
                           >
                             <span>了解更多</span> 
@@ -464,7 +452,8 @@ const FeaturedEvents: React.FC = () => {
                   <div>
                     <div className="text-sm font-bold dark:text-gray-100">日期</div>
                     <div className="text-lg font-mono font-bold text-indigo-700 dark:text-indigo-200">
-                      {index === 0 ? '7/15-17' : '8/5-9'}
+                      {new Date(event.frontmatter.date).toLocaleDateString('zh-TW', { month: 'numeric', day: 'numeric' })}
+                      {event.frontmatter.endDate && ` - ${new Date(event.frontmatter.endDate).toLocaleDateString('zh-TW', { month: 'numeric', day: 'numeric' })}`}
                     </div>
                   </div>
                 </div>

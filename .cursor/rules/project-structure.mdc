@@ -1,0 +1,31 @@
+# HackIt 專案結構
+
+這個 Next.js 專案是為青少年程式創意社群「HackIt」所建立的網站。
+
+## 目錄結構
+
+- `src/app/` - Next.js App Router 應用程式目錄
+  - `page.tsx` - 網站首頁
+  - `about/page.tsx` - 關於我們頁面 
+  - `events/page.tsx` - 活動頁面
+  - `finance/page.tsx` - 財務公開頁面
+  - `news/page.tsx` - 最新消息頁面
+  - `layout.tsx` - 應用程式布局
+
+- `src/components/` - React 元件目錄
+  - 共用元件包括 Navbar、Footer、各種區塊元件等
+
+- `src/styles/` - 樣式檔案
+  - `globals.css` - 全局樣式
+  - `themes/` - 主題相關樣式
+
+## 主要頁面
+
+- [首頁](mdc:src/app/page.tsx) - 網站主頁面，包含多個區塊元件
+- [關於我們](mdc:src/app/about/page.tsx) - 關於 HackIt 的詳細資訊
+- 其他頁面如活動、財務公開、新聞等
+
+## 更新日誌
+
+- **最初建立**: 專案基本結構文件化
+- 注意事項: 請確保在開發過程中，對檔案結構的任何重大變更都更新到此規則中

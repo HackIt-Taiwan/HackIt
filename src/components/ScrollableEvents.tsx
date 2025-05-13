@@ -5,78 +5,19 @@ import { motion, useInView } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaCalendar, FaMapMarkerAlt, FaArrowRight, FaChevronLeft, FaChevronRight, FaCheckCircle } from 'react-icons/fa';
-
-// 小型活動資料
-const regularEvents = [
-  {
-    id: 1,
-    title: "Python 初學者工作坊",
-    date: "2024年6月15日",
-    time: "14:00 - 17:00",
-    location: "線上直播",
-    image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=2069&auto=format&fit=crop",
-    category: "工作坊",
-    link: "/events/python-workshop",
-    isCompleted: false
-  },
-  {
-    id: 2,
-    title: "網頁開發入門課程",
-    date: "2024年6月22日",
-    time: "09:00 - 12:00",
-    location: "台北市信義區松高路",
-    image: "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=2064&auto=format&fit=crop",
-    category: "課程",
-    link: "/events/web-dev-course",
-    isCompleted: false
-  },
-  {
-    id: 3,
-    title: "遊戲開發體驗日",
-    date: "2024年7月1日",
-    time: "13:00 - 18:00",
-    location: "台北市中山區松江路",
-    image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=2071&auto=format&fit=crop",
-    category: "體驗",
-    link: "/events/game-dev-day",
-    isCompleted: false
-  },
-  {
-    id: 4,
-    title: "AI 應用開發工作坊",
-    date: "2024年7月8日",
-    time: "14:00 - 17:00",
-    location: "台北市大安區敦化南路",
-    image: "https://images.unsplash.com/photo-1591453089816-0fbb971b454c?q=80&w=2070&auto=format&fit=crop",
-    category: "工作坊",
-    link: "/events/ai-workshop",
-    isCompleted: false
-  },
-  {
-    id: 5,
-    title: "數據分析實戰",
-    date: "2023年12月20日",
-    time: "10:00 - 16:00",
-    location: "台北市大安區復興南路",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
-    category: "實作",
-    link: "/events/data-analysis",
-    isCompleted: true
-  },
-  {
-    id: 6,
-    title: "行動應用開發基礎",
-    date: "2023年11月15日",
-    time: "14:00 - 17:00",
-    location: "線上直播",
-    image: "https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?q=80&w=2070&auto=format&fit=crop",
-    category: "課程",
-    link: "/events/mobile-dev",
-    isCompleted: true
-  }
-];
+import { getUpcomingEvents, getPastEvents, Event } from '@/utils/events';
 
 const ScrollableEvents: React.FC = () => {
+  // 從 Markdown 文件獲取活動數據
+  const upcomingEvents = getUpcomingEvents();
+  const pastEvents = getPastEvents();
+  const events = [...upcomingEvents, ...pastEvents];
+  
+  // 如果沒有活動，則不顯示該部分
+  if (events.length === 0) {
+    return null;
+  }
+  
   // 基本狀態和引用
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -102,7 +43,7 @@ const ScrollableEvents: React.FC = () => {
   const lastMoveTimeRef = useRef(0);
   
   // 生成重複的活動數據用於無限滑動
-  const repeatedEvents = [...regularEvents, ...regularEvents, ...regularEvents];
+  const repeatedEvents = [...events, ...events, ...events];
 
   // 1. 基本實用函數（不依賴其他回調函數）
   // ----------------------------------------
@@ -130,10 +71,10 @@ const ScrollableEvents: React.FC = () => {
     const cardElements = container.querySelectorAll('[data-event-card]');
     
     // 如果還沒有渲染卡片，返回估計值
-    if (!cardElements.length) return regularEvents.length * 324; // 估計一張卡片寬度300px + 間距24px
+    if (!cardElements.length) return events.length * 324; // 估計一張卡片寬度300px + 間距24px
     
     // 取第一個完整卡片組的總寬度
-    const firstCardSet = Array.from(cardElements).slice(0, regularEvents.length);
+    const firstCardSet = Array.from(cardElements).slice(0, events.length);
     if (firstCardSet.length === 0) return 0;
     
     // 獲取第一個和最後一個卡片的位置來計算總寬度
@@ -147,7 +88,7 @@ const ScrollableEvents: React.FC = () => {
     
     // 計算整個卡片組的寬度，包括最後一張卡片的寬度和間距
     return (lastRect.right - firstRect.left);
-  }, []);
+  }, [events.length]);
   
   // 修復異常滾動位置
   const checkAndFixScroll = useCallback(() => {
@@ -535,7 +476,7 @@ const ScrollableEvents: React.FC = () => {
           >
             {repeatedEvents.map((event, index) => (
               <motion.div
-                key={`${event.id}-${index}`}
+                key={`${event.slug}-${index}`}
                 className="flex-shrink-0 w-[300px] bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden"
                 data-event-card
                 initial={{ opacity: 0, x: 50 }}
@@ -544,7 +485,7 @@ const ScrollableEvents: React.FC = () => {
                   x: 0,
                   transition: { 
                     duration: 0.3, 
-                    delay: Math.min((index % regularEvents.length) * 0.05, 0.3) 
+                    delay: Math.min((index % events.length) * 0.05, 0.3) 
                   }
                 }}
                 viewport={{ once: true, margin: "100px" }}
@@ -552,8 +493,8 @@ const ScrollableEvents: React.FC = () => {
               >
                 <div className="h-40 relative will-change-transform">
                   <Image 
-                    src={event.image} 
-                    alt={event.title} 
+                    src={event.frontmatter.image} 
+                    alt={event.frontmatter.title} 
                     fill 
                     style={{ objectFit: 'cover' }}
                     sizes="300px"
@@ -569,18 +510,18 @@ const ScrollableEvents: React.FC = () => {
                   ></div>
                   
                   <div className="absolute top-3 left-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-primary flex items-center gap-1 z-20">
-                    {event.isCompleted ? (
+                    {event.frontmatter.isCompleted ? (
                       <>
                         <FaCheckCircle className="text-green-500 dark:text-green-400" />
                         <span>已結束</span>
                       </>
                     ) : (
-                      event.category
+                      event.frontmatter.category
                     )}
                   </div>
                   
                   {/* 右上角活動狀態 */}
-                  {event.isCompleted && (
+                  {event.frontmatter.isCompleted && (
                     <div className="absolute top-0 right-0 w-20 h-20 overflow-hidden z-20">
                       <div className="bg-gray-700/80 dark:bg-gray-900/80 text-white text-xs font-bold py-1 px-4 rotate-45 transform origin-bottom-right absolute top-0 right-0 translate-x-[40%] translate-y-[10%]">
                         已結束
@@ -590,28 +531,31 @@ const ScrollableEvents: React.FC = () => {
                 </div>
                 
                 <div className="p-5">
-                  <h3 className="font-bold text-lg mb-2 line-clamp-1 dark:text-white">{event.title}</h3>
+                  <h3 className="font-bold text-lg mb-2 line-clamp-1 dark:text-white">{event.frontmatter.title}</h3>
                   
                   <div className="space-y-2 mb-4 text-sm">
                     <div className="flex items-center text-gray-500 dark:text-gray-300">
                       <FaCalendar className="mr-2 text-primary text-xs" />
-                      <span>{event.date} {event.time}</span>
+                      <span>
+                        {new Date(event.frontmatter.date).toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        {' '}{event.frontmatter.time}
+                      </span>
                     </div>
                     <div className="flex items-center text-gray-500 dark:text-gray-300">
                       <FaMapMarkerAlt className="mr-2 text-primary text-xs" />
-                      <span className="line-clamp-1">{event.location}</span>
+                      <span className="line-clamp-1">{event.frontmatter.location}</span>
                     </div>
                   </div>
                   
                   <Link 
-                    href={event.link} 
+                    href={`/events/${event.slug}`} 
                     className={`inline-block w-full text-center py-2 rounded-lg transition-colors ${
-                      event.isCompleted 
+                      event.frontmatter.isCompleted 
                         ? 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600' 
                         : 'bg-primary/10 dark:bg-primary/20 text-primary hover:bg-primary/20 dark:hover:bg-primary/30'
                     }`}
                   >
-                    {event.isCompleted ? '查看回顧' : '查看詳情'}
+                    {event.frontmatter.isCompleted ? '查看回顧' : '查看詳情'}
                   </Link>
                 </div>
               </motion.div>

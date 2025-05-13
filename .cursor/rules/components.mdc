@@ -1,0 +1,39 @@
+# HackIt 元件系統
+
+網站使用模組化元件架構，所有共享元件位於 `src/components/` 目錄中。
+
+## 核心元件
+
+- [Navbar](mdc:src/components/Navbar.tsx) - 網站頂部導航欄，包含頁面連結和主題切換按鈕
+- [Footer](mdc:src/components/Footer.tsx) - 網站底部，包含連結和版權資訊
+- [HeroSection](mdc:src/components/HeroSection.tsx) - 首頁英雄區塊，引人注目的主要內容區
+- [CTASection](mdc:src/components/CTASection.tsx) - 行動召喚區塊，鼓勵用戶加入或聯絡
+
+## 頁面區塊元件
+
+- FeaturedEvents - 精選活動區塊
+- ScrollableEvents - 可滾動的活動顯示
+- YouthIntroSection - 青少年介紹區塊
+- TechAnimation - 技術相關動畫
+
+## 動畫與互動
+
+大多數元件使用 Framer Motion 實現動畫效果，特別注意以下特性：
+
+- 使用 useInView 偵測元素進入視口
+- 使用 variants 定義動畫狀態 
+- 根據深淺色主題調整動畫效果
+
+## 元件開發指南
+
+開發新元件時應遵循以下原則：
+
+1. 所有 React 元件使用函數式元件並以 TypeScript 實現
+2. 互動式元件應添加 "use client" 指令
+3. 使用相對路徑引入其他元件
+4. 確保元件在深色/淺色主題下都正常顯示
+
+## 更新日誌
+
+- **最初建立**: 元件系統文件化
+- 注意事項: 添加新的共享元件時，請更新此規則文件

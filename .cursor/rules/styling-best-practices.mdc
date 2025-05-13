@@ -1,0 +1,53 @@
+# HackIt 樣式最佳實踐
+
+本專案使用 Tailwind CSS 進行樣式設計，輔以自定義 CSS。以下是確保一致設計風格的最佳實踐。
+
+## Tailwind 使用指南
+
+1. 優先使用 Tailwind 類別進行樣式設定
+2. 利用 Tailwind 的響應式前綴 (`sm:`, `md:`, `lg:`, `xl:`) 實現響應式設計
+3. 使用 Tailwind 的深色模式前綴 (`dark:`) 實現主題切換
+4. 自定義 Tailwind 配置時，請維持設計系統的一致性
+
+## 常用樣式模式
+
+### 卡片元素
+```jsx
+<div className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow p-6">
+  {/* 卡片內容 */}
+</div>
+```
+
+### 按鈕樣式
+```jsx
+<button className="bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-lg transition-colors">
+  按鈕文本
+</button>
+```
+
+### 漸層背景
+```jsx
+<div className="bg-gradient-to-br from-indigo-50 to-white dark:from-gray-800 dark:to-gray-900">
+  {/* 內容 */}
+</div>
+```
+
+## 動畫與過渡效果
+
+- 使用 `transition-` 類別添加過渡效果
+- 顏色過渡: `transition-colors`
+- 透明度過渡: `transition-opacity`
+- 緩慢縮放: `hover:scale-105 transition-transform`
+
+## 響應式設計指南
+
+確保網站在各種螢幕尺寸上都有良好的顯示效果：
+
+- 移動設備優先的設計方法
+- 使用 Tailwind 的響應式前綴適配不同螢幕
+- 針對不同裝置調整字體大小、間距和布局
+
+## 更新日誌
+
+- **最初建立**: 樣式最佳實踐文件化
+- 注意事項: 當引入新的樣式模式或約定時，請更新此規則文件
