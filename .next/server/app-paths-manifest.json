@@ -1,4 +1,5 @@
 {
-  "/not-found": "app/not-found.js",
-  "/api/discord-members/route": "app/api/discord-members/route.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/discord-members/route": "app/api/discord-members/route.js",
+  "/[locale]/page": "app/[locale]/page.js"
 }

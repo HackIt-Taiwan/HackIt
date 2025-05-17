@@ -5,13 +5,20 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
+import { useI18n } from '@/i18n';
 
 // Import ThemeToggle with no SSR to avoid hydration issues
 const ThemeToggle = dynamic(() => import('./ThemeToggle'), {
   ssr: false,
 });
 
+// Import LanguageSelector with no SSR
+const LanguageSelector = dynamic(() => import('./LanguageSelector'), {
+  ssr: false,
+});
+
 const Navbar: React.FC = () => {
+  const { t } = useI18n();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -39,12 +46,12 @@ const Navbar: React.FC = () => {
 
   // 導航項目定義 - 重新排序，將「最新消息」移到「首頁」旁邊
   const navItems = [
-    { name: '首頁', href: '/' },
-    { name: '活動', href: '/events' },
-    { name: '最新消息', href: '/news' },
+    { name: t('common.home'), href: '/' },
+    { name: t('common.events'), href: 'https://hackittw.notion.site/1f459188ed5280499052d8d3b813770c', isExternal: true },
+    { name: t('common.news'), href: '/news' },
     // 財務公開頁面暫時關閉
-    { name: '關於我們', href: '/about' },
-    { name: '加入我們', href: '/join', highlight: true }
+    { name: t('common.about'), href: '/about' },
+    { name: t('common.join'), href: '/join', highlight: true }
   ];
 
   return (
@@ -85,6 +92,16 @@ const Navbar: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
+              {item.isExternal ? (
+                <a 
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`font-medium px-4 py-2 rounded-md block transition-colors hover:bg-light dark:hover:bg-dark hover:text-primary`}
+                >
+                  {item.name}
+                </a>
+              ) : (
               <Link 
                 href={item.href}
                 className={`font-medium px-4 py-2 rounded-md block transition-colors ${
@@ -97,14 +114,15 @@ const Navbar: React.FC = () => {
               >
                 {item.name}
               </Link>
-              {!item.highlight && pathname !== item.href && (
+              )}
+              {!item.highlight && !item.isExternal && pathname !== item.href && (
                 <motion.div 
                   className="absolute bottom-0 left-0 h-0.5 bg-primary rounded-full w-0"
                   whileHover={{ width: '100%' }}
                   transition={{ duration: 0.2 }}
                 />
               )}
-              {!item.highlight && pathname === item.href && (
+              {!item.highlight && !item.isExternal && pathname === item.href && (
                 <motion.div 
                   className="absolute bottom-0 left-0 h-0.5 bg-primary rounded-full w-full"
                   layoutId="navIndicator"
@@ -114,6 +132,11 @@ const Navbar: React.FC = () => {
             </motion.div>
           ))}
           
+          {/* Language Selector */}
+          <div className="ml-2">
+            <LanguageSelector />
+          </div>
+          
           {/* Theme Toggle Button */}
           <div className="ml-2">
             <ThemeToggle />
@@ -122,6 +145,9 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Menu Button and Theme Toggle */}
         <div className="md:hidden flex items-center gap-2">
+          {/* Language Selector for Mobile */}
+          <LanguageSelector />
+          
           <ThemeToggle />
           
           <motion.button
@@ -157,6 +183,18 @@ const Navbar: React.FC = () => {
       >
         <div className="container mx-auto py-4 px-4 flex flex-col space-y-2">
           {navItems.map((item, index) => (
+            item.isExternal ? (
+              <a
+                key={index}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium py-3 px-3 rounded-md transition-colors text-dark dark:text-light hover:text-primary hover:bg-light dark:hover:bg-gray-800"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {item.name}
+              </a>
+            ) : (
             <Link
               key={index}
               href={item.href}
@@ -169,6 +207,7 @@ const Navbar: React.FC = () => {
             >
               {item.name}
             </Link>
+            )
           ))}
           <div className="pt-2 border-t border-gray-100 dark:border-gray-800 mt-2 font-mono text-xs text-muted">
             <p className="px-3">print("你好，駭客！")</p>

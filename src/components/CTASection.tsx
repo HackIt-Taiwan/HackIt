@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { FaRocket, FaCode, FaLaptopCode } from 'react-icons/fa';
@@ -9,6 +9,18 @@ const CTASection = () => {
   const [isMounted, setIsMounted] = useState(false);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.3 });
+  
+  // 使用 useMemo 生成固定的隨機值，避免重新渲染時變化
+  const floatingElements = useMemo(() => {
+    return Array.from({ length: 8 }, (_, i) => ({
+      width: 20 + (i * 5) % 40,
+      height: 20 + (i * 5) % 40,
+      top: 10 + (i * 10) % 80,
+      left: 10 + (i * 10) % 80,
+      xOffset: ((i * 7) % 20) - 10,
+      yOffset: ((i * 11) % 20) - 10
+    }));
+  }, []);
   
   useEffect(() => {
     setIsMounted(true);
@@ -375,23 +387,23 @@ const CTASection = () => {
                 />
               </svg>
               
-              {/* 漂浮元素 */}
-              {[...Array(8)].map((_, i) => (
+              {/* 漂浮元素 - 使用預先計算的隨機值 */}
+              {floatingElements.map((element, i) => (
                 <motion.div
                   key={i}
                   className="absolute bg-indigo-200/10 rounded-full blur-md"
                   style={{
-                    width: `${20 + Math.random() * 40}px`,
-                    height: `${20 + Math.random() * 40}px`,
-                    top: `${10 + Math.random() * 80}%`,
-                    left: `${10 + Math.random() * 80}%`,
+                    width: `${element.width}px`,
+                    height: `${element.height}px`,
+                    top: `${element.top}%`,
+                    left: `${element.left}%`,
                   }}
                   initial={{ scale: 0, opacity: 0 }}
                   animate={isInView ? { 
                     scale: [0, 1.5, 1],
                     opacity: [0, 0.6, 0.3],
-                    x: [0, Math.random() * 20 - 10, 0],
-                    y: [0, Math.random() * 20 - 10, 0]
+                    x: [0, element.xOffset, 0],
+                    y: [0, element.yOffset, 0]
                   } : { scale: 0, opacity: 0 }}
                   transition={{
                     delay: isInView ? (2.5 + i * 0.15) : 0,
@@ -458,7 +470,7 @@ const CTASection = () => {
               transition={{ delay: isInView ? 0.5 : 0, duration: 0.8 }}
             />
             
-            {/* 浮動的程式碼符號 */}
+            {/* 浮動的程式碼符號 - 使用靜態固定值 */}
             {isMounted && isInView && [...Array(8)].map((_, i) => {
               const symbols = ["{", "}", "<", ">", "/", "*", "#", "="];
               const char = symbols[i % symbols.length];
@@ -521,7 +533,7 @@ const CTASection = () => {
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
           >
-            <Link href="/signup" className="flex-1 sm:flex-initial">
+            <Link href="/join" className="flex-1 sm:flex-initial">
               <motion.button 
                 className="w-full sm:w-auto bg-white text-purple-700 font-bold py-4 px-8 rounded-xl transition duration-300 shadow-lg flex items-center justify-center gap-2"
                 whileHover={{ 
@@ -532,7 +544,7 @@ const CTASection = () => {
                 whileTap={{ scale: 0.98 }}
               >
                 <FaCode className="text-xl" />
-                <span>立即加入</span>
+                <span>加入我們</span>
               </motion.button>
             </Link>
             <Link href="/contact" className="flex-1 sm:flex-initial">

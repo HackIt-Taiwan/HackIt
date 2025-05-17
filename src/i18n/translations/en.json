@@ -1,0 +1,22 @@
+{
+  "common": {
+    "home": "Home",
+    "about": "About Us",
+    "events": "Events",
+    "news": "News",
+    "finance": "Financial Disclosure",
+    "join": "Join Us",
+    "faq": "FAQ",
+    "contact": "Contact Us",
+    "language": "Language"
+  },
+  "navbar": {
+    "languageSelector": "Select Language"
+  },
+  "footer": {
+    "copyright": "Copyright",
+    "allRightsReserved": "All Rights Reserved",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
+  }
+} 

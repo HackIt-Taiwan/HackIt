@@ -250,8 +250,8 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
       >
-        {React.Children.map(children, child => (
-          <motion.div variants={childVariants}>
+        {React.Children.map(children, (child, index) => (
+          <motion.div key={index} variants={childVariants}>
             {child}
           </motion.div>
         ))}

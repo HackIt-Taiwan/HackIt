@@ -1,12 +1,78 @@
 "use client";
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { FaLightbulb, FaUsers, FaRocket, FaChalkboardTeacher, FaCode, FaStar, FaMagic } from 'react-icons/fa';
+import { FaLightbulb, FaUsers, FaRocket, FaChalkboardTeacher, FaCode, FaStar, FaMagic, FaGithub, FaTwitter, FaLinkedin, FaEnvelope, FaTimes } from 'react-icons/fa';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
+
+// 更新團隊成員接口
+interface TeamMember {
+  image: string;
+  name: string;
+  title: string;
+  shortIntro: string; // 卡片上顯示的簡短介紹
+  description: string; // Popup中顯示的詳細描述
+  specialties: string[];
+  github?: string;
+  twitter?: string;
+  linkedin?: string;
+  email?: string;
+}
+
+// 示範團隊數據（請根據實際情況擴充）
+const teamMembers: TeamMember[] = [
+  {
+    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1961&auto=format&fit=crop",
+    name: "林小明",
+    title: "共同創辦人 / 技術總監",
+    shortIntro: "熱衷於用科技改變教育的先行者。",
+    description: "林小明是一位資深全端工程師，對教育科技充滿熱情，致力於培養下一代科技人才。他曾參與多個知名開源專案，並在程式教育領域擁有超過8年的實戰與教學經驗。他相信透過實作與創新，能激發學生的無限潛能。",
+    specialties: ["全端開發", "教育科技", "開源文化", "系統架構"],
+    github: "github.com/lxm",
+    twitter: "twitter.com/lxm",
+    linkedin: "linkedin.com/in/lxm",
+    email: "lxm@hackit.tw"
+  },
+  {
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop",
+    name: "王美玲",
+    title: "共同創辦人 / 教育長",
+    shortIntro: "致力於打造創新且包容的學習環境。",
+    description: "王美玲是前高中資訊教師，擁有超過10年的程式教學經驗，專注於教育方法創新。她深信每個學生都擁有獨特的學習方式，致力於設計多元化課程，打破傳統科技教育的框架與限制，引導學生找到學習的樂趣。",
+    specialties: ["程式教學法", "課程設計", "STEAM教育", "學習心理學"],
+    github: "github.com/wml",
+    twitter: "twitter.com/wml",
+    linkedin: "linkedin.com/in/wml",
+    email: "wml@hackit.tw"
+  },
+  {
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop",
+    name: "張文彥",
+    title: "營運總監",
+    shortIntro: "專注於社群連結與活動的完美落地。",
+    description: "張文彥具有豐富的社群經營和大型活動策劃經驗，他專注於為HackIt打造一個充滿活力且互助的學習社群。他擅長資源整合與跨部門協作，確保每個活動都能順利進行，並為參與者帶來最佳體驗。",
+    specialties: ["社群經營", "活動策劃", "專案管理", "市場行銷"],
+    github: "github.com/cwy",
+    twitter: "twitter.com/cwy",
+    linkedin: "linkedin.com/in/cwy",
+    email: "cwy@hackit.tw"
+  },
+  {
+    image: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80",
+    name: "陳小華",
+    title: "資深工程師",
+    shortIntro: "建構穩固學習平台的技術推手。",
+    description: "陳小華是HackIt技術團隊的核心成員，負責教育平台的後端開發與維護。他對系統穩定性和效能有著極高要求，致力於為學生提供流暢無礙的線上學習體驗。",
+    specialties: ["後端開發", "資料庫管理", "雲端架構", "API設計"],
+    github: "github.com/cxh",
+    linkedin: "linkedin.com/in/cxh",
+    email: "cxh@hackit.tw"
+  }
+  // ...可以添加更多團隊成員
+];
 
 export default function AboutPage() {
   // 參考各個區塊，用於檢測滾動到視圖
@@ -64,6 +130,8 @@ export default function AboutPage() {
       }}
     />
   );
+
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 
   return (
     <main className="relative">
@@ -728,249 +796,201 @@ export default function AboutPage() {
         </div>
       </motion.section>
       
-      {/* 團隊成員 */}
+      {/* 團隊成員 - 重新設計為更緊湊的列表式風格 */}
       <motion.section 
         ref={teamRef}
-        className="py-24 bg-gray-50 dark:bg-gray-800 relative overflow-hidden"
+        className="py-20 md:py-24 bg-gray-100 dark:bg-gray-800 relative overflow-hidden"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        {/* 背景效果 */}
-        <div className="absolute inset-0">
-          <motion.div 
-            className="absolute top-0 right-0 w-full h-40 bg-gradient-to-b from-primary/5 to-transparent"
-            animate={{ 
-              opacity: [0.3, 0.7, 0.3],
-              y: [0, 10, 0]
-            }}
-            transition={{ duration: 10, repeat: Infinity }}
-          />
-        </div>
-        
-        {/* 動態圖形 */}
-        <motion.div
-          className="absolute -left-16 top-20 w-32 h-64 bg-gradient-to-br from-blue-400/20 to-cyan-400/20 rounded-full blur-3xl"
-          animate={{ 
-            x: [0, 20, 0],
-            opacity: [0.4, 0.6, 0.4]
-          }}
-          transition={{ duration: 10, repeat: Infinity }}
-        />
-        <motion.div
-          className="absolute right-0 bottom-20 w-80 h-40 bg-gradient-to-bl from-pink-400/20 to-yellow-400/20 rounded-full blur-3xl"
-          animate={{ 
-            x: [0, -20, 0],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ duration: 8, repeat: Infinity, delay: 1 }}
-        />
+        <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] dark:opacity-[0.03]"></div>
         
         <div className="container mx-auto px-4 relative z-10">
           <motion.div 
-            className="text-center max-w-3xl mx-auto mb-16"
+            className="text-center max-w-3xl mx-auto mb-12 md:mb-16"
             variants={containerVariants}
             initial="hidden"
             animate={isTeamInView ? "visible" : "hidden"}
           >
             <motion.h2 
-              className="text-3xl md:text-4xl font-bold mb-6 text-gray-800 dark:text-gray-100"
+              className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-gray-100"
               variants={itemVariants}
             >
               認識我們的
               <motion.span 
                 className="text-primary ml-2 inline-block"
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
+                animate={{ y: [0, -3, 0], transition: { duration: 1.5, repeat: Infinity, ease: "easeInOut"} }}
               >
-                團隊
+                核心團隊
               </motion.span>
             </motion.h2>
-            
             <motion.p 
               className="text-lg text-gray-600 dark:text-gray-300"
               variants={itemVariants}
             >
-              一群充滿熱情與專業的教育者和科技人
+              一群對科技教育充滿熱忱的夥伴，致力於啟發下一代的創新思維。
             </motion.p>
           </motion.div>
-          
+
+          {/* 團隊成員列表/密集網格 */}
           <motion.div 
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8"
             variants={containerVariants}
             initial="hidden"
             animate={isTeamInView ? "visible" : "hidden"}
           >
-            {[
-              {
-                image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1961&auto=format&fit=crop",
-                name: "林小明",
-                title: "共同創辦人 / 技術總監",
-                description: "資深全端工程師，熱衷於教育科技和培養下一代人才。"
-              },
-              {
-                image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop",
-                name: "王美玲",
-                title: "共同創辦人 / 教育長",
-                description: "前高中資訊教師，擁有10年以上程式教學經驗，專注於教育方法創新。"
-              },
-              {
-                image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop",
-                name: "張文彥",
-                title: "營運總監",
-                description: "具有豐富的社群經營和活動策劃經驗，專注於打造優質學習體驗。"
-              }
-            ].map((member, index) => (
+            {teamMembers.map((member, index) => (
               <motion.div 
                 key={index}
-                className="bg-white dark:bg-gray-900 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 group"
+                className="bg-white dark:bg-gray-900 rounded-xl shadow-lg hover:shadow-primary/20 transition-all duration-300 cursor-pointer group flex items-center p-4 space-x-4"
                 variants={itemVariants}
-                whileHover={{ 
-                  y: -10,
-                  transition: { duration: 0.3 }
-                }}
+                onClick={() => setSelectedMember(member)}
+                whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgba(124, 58, 237, 0.1), 0 4px 6px -4px rgba(124, 58, 237, 0.1)"}}
               >
-                <motion.div 
-                  className="h-64 relative overflow-hidden"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.3 }}
-                >
+                <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden flex-shrink-0 border-2 border-primary/20 group-hover:border-primary/50 transition-colors duration-300">
                   <Image 
                     src={member.image}
                     alt={member.name}
                     fill
+                    sizes="(max-width: 768px) 64px, 80px"
                     style={{ objectFit: "cover" }}
-                    className="transition-transform duration-500 group-hover:scale-105"
+                    className="transition-transform duration-300 group-hover:scale-105"
                   />
-                  
-                  {/* 圖像疊加效果 */}
-                  <motion.div 
-                    className="absolute inset-0 bg-gradient-to-t from-indigo-700/70 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 0.6 }}
-                  />
-                  
-                  {/* 懸停時的動態效果 */}
-                  <motion.div
-                    className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileHover={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <motion.div
-                      className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg text-white font-medium"
-                      whileHover={{ scale: 1.1 }}
-                    >
-                      查看簡介
-                    </motion.div>
-                  </motion.div>
-                </motion.div>
-                
-                <motion.div 
-                  className="p-6 relative"
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.2 * index, duration: 0.4 }}
-                  viewport={{ once: true }}
-                >
-                  <motion.div
-                    className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-primary/50 rounded-full"
-                    initial={{ width: 0 }}
-                    whileInView={{ width: 64 }}
-                    transition={{ delay: 0.3 * index, duration: 0.5 }}
-                  />
-                  
-                  <motion.h3 
-                    className="text-xl font-bold mb-1 dark:text-gray-100"
-                    whileHover={{ x: 5 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {member.name}
-                  </motion.h3>
-                  
-                  <motion.p 
-                    className="text-primary mb-3"
-                    whileHover={{ x: 5 }}
-                    transition={{ duration: 0.2, delay: 0.05 }}
-                  >
-                    {member.title}
-                  </motion.p>
-                  
-                  <motion.p 
-                    className="text-gray-600 dark:text-gray-300 mb-4"
-                    whileHover={{ x: 5 }}
-                    transition={{ duration: 0.2, delay: 0.1 }}
-                  >
-                    {member.description}
-                  </motion.p>
-                  
-                  <motion.div 
-                    className="flex space-x-3"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ delay: 0.3 * index + 0.2, duration: 0.4 }}
-                  >
-                    {/* 社群媒體圖標 */}
-                    {['#', '#', '#'].map((_, i) => (
-                      <motion.a
-                        key={i}
-                        href="#"
-                        className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary"
-                        whileHover={{ scale: 1.2, backgroundColor: 'rgba(139, 92, 246, 0.2)' }}
-                      >
-                        <FaMagic className="w-4 h-4" />
-                      </motion.a>
-                    ))}
-                  </motion.div>
-                </motion.div>
+                </div>
+                <div className="flex-grow overflow-hidden">
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-white truncate">{member.name}</h3>
+                  <p className="text-primary text-xs font-medium mb-1 truncate">{member.title}</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-xs leading-snug line-clamp-2 h-8">
+                    {member.shortIntro}
+                  </p>
+                </div>
               </motion.div>
             ))}
           </motion.div>
-          
-          {/* 加入我們CTA */}
+
+          {/* 加入我們CTA - 保持 */}
           <motion.div 
-            className="mt-16 text-center"
+            className="mt-20 text-center bg-gradient-to-r from-primary/5 via-indigo-500/5 to-purple-500/5 dark:from-primary/10 dark:via-indigo-500/10 dark:to-purple-500/10 p-8 md:p-12 rounded-xl shadow-sm"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             viewport={{ once: true }}
           >
-            <motion.p 
-              className="text-lg text-gray-600 dark:text-gray-300 mb-6"
-              whileHover={{ scale: 1.02 }}
+            <motion.h3 
+              className="text-2xl md:text-3xl font-bold mb-4 text-gray-800 dark:text-gray-100"
+              whileInView={{ scale: [0.95, 1.02, 1], opacity: [0.8, 1] }}
+              transition={{ duration: 0.6 }}
             >
-              我們正在尋找志同道合的夥伴一起成長
+              成為我們的一份子
+            </motion.h3>
+            <motion.p 
+              className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-xl mx-auto"
+            >
+              如果您對科技教育充滿熱情，並渴望啟發下一代，我們誠摯邀請您加入HackIt的行列。
             </motion.p>
-            
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <Link
                 href="/join-team"
-                className="inline-block bg-primary hover:bg-primary/90 text-white font-medium py-3 px-8 rounded-lg transition-colors relative overflow-hidden group"
+                className="inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-8 rounded-lg transition-colors shadow-md hover:shadow-lg"
               >
-                <span className="relative z-10">加入我們的團隊</span>
-                <motion.span
-                  className="absolute inset-0 bg-white opacity-0 group-hover:opacity-25"
-                  initial={{ x: '-100%' }}
-                  whileHover={{ x: '100%' }}
-                  transition={{ duration: 0.5 }}
-                />
-                <motion.span 
-                  className="absolute -right-2 -top-2 w-12 h-12 bg-primary/20 rounded-full"
-                  animate={{ 
-                    scale: [1, 1.2, 1],
-                    opacity: [0.6, 0.8, 0.6]
-                  }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                />
+                <FaRocket className="mr-2" />
+                查看開放職位
               </Link>
             </motion.div>
           </motion.div>
         </div>
       </motion.section>
+
+      {/* 團隊成員 Modal */}
+      <AnimatePresence>
+        {selectedMember && (
+          <motion.div
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[999] p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedMember(null)} // Overlay click to close
+          >
+            <motion.div
+              className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+            >
+              <motion.button 
+                onClick={() => setSelectedMember(null)} 
+                className="absolute top-4 right-4 text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors z-10"
+                whileHover={{ scale: 1.2, rotate: 90 }}
+                aria-label="關閉視窗"
+              >
+                <FaTimes size={24}/>
+              </motion.button>
+              
+              <div className="flex flex-col sm:flex-row items-center sm:items-start mb-6">
+                <div className="relative w-32 h-32 sm:w-40 sm:h-40 mb-4 sm:mb-0 sm:mr-6 rounded-full overflow-hidden shadow-md flex-shrink-0 border-4 border-primary/30">
+                  <Image 
+                    src={selectedMember.image}
+                    alt={selectedMember.name}
+                    fill
+                    sizes="160px"
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+                <div className="text-center sm:text-left">
+                  <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-1">{selectedMember.name}</h2>
+                  <p className="text-primary text-lg font-medium mb-3">{selectedMember.title}</p>
+                  <div className="flex flex-wrap justify-center sm:justify-start gap-2 mb-4">
+                    {selectedMember.specialties.map((specialty, i) => (
+                      <span key={i} className="text-xs px-3 py-1 bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-light font-medium rounded-full">
+                        {specialty}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none mb-6 text-gray-700 dark:text-gray-300">
+                <p>{selectedMember.description}</p>
+              </div>
+
+              {(selectedMember.github || selectedMember.twitter || selectedMember.linkedin || selectedMember.email) && (
+                <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
+                  <h4 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wider">保持聯繫</h4>
+                  <div className="flex flex-wrap gap-x-4 gap-y-2">
+                    {selectedMember.github && (
+                      <motion.a href={`https://${selectedMember.github}`} target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors" whileHover={{ scale: 1.05}}>
+                        <FaGithub className="mr-2" /> GitHub
+                      </motion.a>
+                    )}
+                    {selectedMember.twitter && (
+                      <motion.a href={`https://${selectedMember.twitter}`} target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors" whileHover={{ scale: 1.05}}>
+                        <FaTwitter className="mr-2" /> Twitter
+                      </motion.a>
+                    )}
+                    {selectedMember.linkedin && (
+                      <motion.a href={`https://${selectedMember.linkedin}`} target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors" whileHover={{ scale: 1.05}}>
+                        <FaLinkedin className="mr-2" /> LinkedIn
+                      </motion.a>
+                    )}
+                    {selectedMember.email && (
+                      <motion.a href={`mailto:${selectedMember.email}`} className="flex items-center text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors" whileHover={{ scale: 1.05}}>
+                        <FaEnvelope className="mr-2" /> Email
+                      </motion.a>
+                    )}
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       {/* 聯絡我們 */}
       <motion.section 
