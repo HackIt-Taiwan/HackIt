@@ -229,7 +229,12 @@
     "title": "最新<span>消息</span>",
     "subtitle": "了解 HackIt 的最新動態、合作夥伴消息和活動信息",
     "readMore": "閱讀更多",
-    "viewAllNews": "查看全部消息"
+    "viewAllNews": "查看全部消息",
+    "noNews": {
+      "title": "暫無最新消息",
+      "description": "我們正在更新最新消息區塊。請稍後再查看或前往我們的 Notion 頁面獲取最新資訊。",
+      "notionLink": "前往 Notion 頁面"
+    }
   },
   "categories": {
     "events": {

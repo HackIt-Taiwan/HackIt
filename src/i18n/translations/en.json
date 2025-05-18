@@ -229,7 +229,12 @@
     "title": "Latest <span>News</span>",
     "subtitle": "Learn about HackIt's latest updates, partner news, and event information",
     "readMore": "Read More",
-    "viewAllNews": "View All News"
+    "viewAllNews": "View All News",
+    "noNews": {
+      "title": "No News at the Moment",
+      "description": "We are updating our news section. Please check back later or visit our Notion page for the latest updates.",
+      "notionLink": "Visit Our Notion Page"
+    }
   },
   "categories": {
     "events": {

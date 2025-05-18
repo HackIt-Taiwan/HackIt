@@ -183,7 +183,10 @@ export function getAllNews(): NewsItem[] {
 
 // 獲取最新新聞 (取前N則)
 export function getLatestNews(count: number = 5): NewsItem[] {
-  return getAllNews().slice(0, count);
+  // 暫時返回空陣列，以顯示"暫無最新消息"提示
+  return [];
+  // 恢復時取消註釋下面這行
+  // return getAllNews().slice(0, count);
 }
 
 // 獲取特色新聞 (標記為 isFeatured)
