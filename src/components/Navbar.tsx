@@ -48,8 +48,9 @@ const Navbar: React.FC = () => {
   const navItems = [
     { name: t('common.home'), href: '/' },
     { name: t('common.events'), href: 'https://hackittw.notion.site/1f459188ed5280499052d8d3b813770c', isExternal: true },
-    { name: t('common.news'), href: '/news' },
-    // 財務公開頁面暫時關閉
+    // { name: t('common.news'), href: '/news' },
+    { name: t('common.podcast'), href: '/podcast' },
+    // { name: t('common.financial'), href: '/financial' },
     { name: t('common.about'), href: '/about' },
     { name: t('common.join'), href: '/join', highlight: true }
   ];

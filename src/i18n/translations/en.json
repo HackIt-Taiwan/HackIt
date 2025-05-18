@@ -1,16 +1,4 @@
-{
-  "common": {
-    "home": "Home",
-    "about": "About Us",
-    "events": "Events",
-    "news": "News",
-    "finance": "Financial Disclosure",
-    "join": "Join Us",
-    "faq": "FAQ",
-    "contact": "Contact Us",
-    "language": "Language",
-    "all": "All"
-  },
+{  "common": {    "home": "Home",    "about": "About Us",    "events": "Events",    "news": "News",    "finance": "Financial Disclosure",    "join": "Join Us",    "faq": "FAQ",    "contact": "Contact Us",    "language": "Language",    "all": "All",    "podcast": "HackCast"  },
   "navbar": {
     "languageSelector": "Select Language",
     "easterEgg": "Hey! You found an easter egg! You're quite the explorer 👀"
@@ -288,6 +276,43 @@
       "share": "Share",
       "relatedNews": "Related News",
       "loading": "Loading..."
-    }
+    },
+    "temporaryClosed": " Temporarily Closed",
+    "temporaryClosedMessage": "We are updating our news information. Currently, all news content has been moved to our Notion page.",
+    "checkNotion": "You can check all the latest news on our Notion page",
+    "thanksForUnderstanding": "Thank you for your understanding and patience. If you have any questions, please contact our team.",
+    "goToNotion": "Go to Notion Page",
+    "backToHome": "Back to Home"
+  },
+  "podcastPage": {
+    "title": "HackCast <span>Podcast</span>",
+    "subtitle": "Listen to our behind-the-scenes event preparation journey",
+    "searchPlaceholder": "Search episodes...",
+    "filterByEvent": "Filter by Event",
+    "allEvents": "All Events",
+    "episodes": "Episodes",
+    "episode": "Episode",
+    "latestEpisodes": "Latest Episodes",
+    "duration": "Duration",
+    "releaseDate": "Release Date",
+    "play": "Play",
+    "pause": "Pause",
+    "nowPlaying": "Now Playing",
+    "upNext": "Up Next",
+    "description": "Description",
+    "showMore": "Show More",
+    "showLess": "Show Less",
+    "noEpisodes": "No episodes found",
+    "autoplay": "Autoplay next episode",
+    "shareEpisode": "Share Episode",
+    "shareAlert": "Link copied to clipboard",
+    "noDescription": "No description available",
+    "moreEpisodes": "More Episodes",
+    "comingSoon": " Coming Soon",
+    "preparingMessage": "Our podcast channel is currently in preparation and will be bringing you exciting technology and innovation content soon.",
+    "stayTuned": "Stay tuned for our first episode",
+    "thanksMessage": "Thank you for your interest! We are working hard to produce high-quality content. Please follow our social media for the latest updates.",
+    "joinDiscord": "Join our Discord",
+    "backToHome": "Back to Home"
   }
 } 

@@ -1,0 +1,107 @@
+[
+  {
+    "eventId": "hacktoberfest-2023",
+    "eventName": "HacktoberFest 2023",
+    "coverImage": "https://images.unsplash.com/photo-1558346547-4b08ead5de52?q=80&w=2940&auto=format&fit=crop",
+    "description": "HacktoberFest 2023 是我們的年度開源貢獻活動，集結全球程式開發者共同參與開源專案。",
+    "episodes": [
+      {
+        "id": "hacktoberfest-2023-ep1",
+        "title": "開源貢獻入門：如何開始你的第一個 PR",
+        "description": "在這集節目中，我們邀請了三位資深開源貢獻者，分享他們的開源旅程和給新手的建議。你將了解如何尋找適合初學者的專案、理解專案結構，以及提交高質量的 Pull Request。",
+        "audioUrl": "/podcasts/hacktoberfest-2023/episode1.mp3",
+        "duration": 2580,
+        "releaseDate": "2023-10-05T13:00:00Z",
+        "hosts": ["陳小明", "林小華"]
+      },
+      {
+        "id": "hacktoberfest-2023-ep2",
+        "title": "開源維護者座談：社群經營與專案成長",
+        "description": "這集我們邀請到三位流行開源專案的維護者，討論如何有效管理開源社群、處理貢獻者互動，以及確保專案長期健康發展的策略。他們分享了吸引新貢獻者、處理衝突和保持專案活躍的實用技巧。",
+        "audioUrl": "/podcasts/hacktoberfest-2023/episode2.mp3",
+        "duration": 3120,
+        "releaseDate": "2023-10-12T13:00:00Z",
+        "hosts": ["陳小明", "林小華"]
+      },
+      {
+        "id": "hacktoberfest-2023-ep3",
+        "title": "開源與職業發展：貢獻如何助力你的技術生涯",
+        "description": "開源貢獻如何幫助你的職業發展？本集節目邀請到在大型科技公司工作的開發者，分享他們如何通過開源專案貢獻提升技能、建立人脈，並獲得理想工作機會的真實故事。",
+        "audioUrl": "/podcasts/hacktoberfest-2023/episode3.mp3",
+        "duration": 2850,
+        "releaseDate": "2023-10-19T13:00:00Z",
+        "hosts": ["陳小明", "張大方"]
+      }
+    ]
+  },
+  {
+    "eventId": "ai-hackathon-2024",
+    "eventName": "AI 創新黑客松 2024",
+    "coverImage": "https://images.unsplash.com/photo-1677442135136-760c813a6bbe?q=80&w=3132&auto=format&fit=crop",
+    "description": "我們的年度 AI 創新黑客松，讓參與者在 48 小時內以 AI 技術解決實際問題。",
+    "episodes": [
+      {
+        "id": "ai-hackathon-2024-ep1",
+        "title": "準備篇：AI 工具箱與資源指南",
+        "description": "即將參加 AI 黑客松嗎？這集我們整理了最實用的 AI 開發工具、資源和 API，讓你在比賽中事半功倍。從基礎模型、資料集到開發框架，全面提升你的項目競爭力。",
+        "audioUrl": "/podcasts/ai-hackathon-2024/episode1.mp3",
+        "duration": 2340,
+        "releaseDate": "2024-03-01T13:00:00Z",
+        "hosts": ["李智慧", "王創新"]
+      },
+      {
+        "id": "ai-hackathon-2024-ep2",
+        "title": "組隊攻略：如何組建一個完美的黑客松團隊",
+        "description": "黑客松成功的關鍵：團隊組建。本集分享如何尋找合適夥伴、角色分配、溝通協作，以及在緊湊時間內發揮最大效能的技巧。來自過往獲獎隊伍的真實經驗分享。",
+        "audioUrl": "/podcasts/ai-hackathon-2024/episode2.mp3",
+        "duration": 2520,
+        "releaseDate": "2024-03-08T13:00:00Z",
+        "hosts": ["李智慧", "黃小組"]
+      }
+    ]
+  },
+  {
+    "eventId": "web3-summer-camp-2024",
+    "eventName": "Web3 夏令營 2024",
+    "coverImage": "https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=3132&auto=format&fit=crop",
+    "description": "為期兩週的 Web3 沉浸式學習營，專為對區塊鏈和去中心化應用有興趣的青少年設計。",
+    "episodes": [
+      {
+        "id": "web3-summer-camp-2024-ep1",
+        "title": "加密世界入門：概念、術語與基礎知識",
+        "description": "想了解 Web3 但不知從何開始？這集為你破解區塊鏈世界的基本概念、行話和關鍵技術，用通俗易懂的方式解釋複雜的加密經濟學，讓你輕鬆踏入這個創新領域。",
+        "audioUrl": "/podcasts/web3-summer-camp-2024/episode1.mp3",
+        "duration": 2760,
+        "releaseDate": "2024-05-15T13:00:00Z",
+        "hosts": ["趙區塊", "周鏈鏈"]
+      },
+      {
+        "id": "web3-summer-camp-2024-ep2",
+        "title": "智能合約開發：從 0 到 1 的實戰指南",
+        "description": "這集專注於智能合約開發，從環境設置、Solidity 語言基礎到安全最佳實踐。我們將一步步引導你完成一個完整的 DApp 項目，包括前端互動和測試部署全流程。",
+        "audioUrl": "/podcasts/web3-summer-camp-2024/episode2.mp3",
+        "duration": 3300,
+        "releaseDate": "2024-05-22T13:00:00Z",
+        "hosts": ["趙區塊", "李智能"]
+      },
+      {
+        "id": "web3-summer-camp-2024-ep3",
+        "title": "真實案例分析：成功的 Web3 創業項目",
+        "description": "通過深入分析三個成功的 Web3 創業案例，揭示它們的商業模式、技術選擇和成長策略。從失敗中學習，從成功中借鑑，幫助你在 Web3 領域找到自己的機會。",
+        "audioUrl": "/podcasts/web3-summer-camp-2024/episode3.mp3",
+        "duration": 2940,
+        "releaseDate": "2024-05-29T13:00:00Z",
+        "hosts": ["周鏈鏈", "張創業"]
+      },
+      {
+        "id": "web3-summer-camp-2024-ep4",
+        "title": "去中心化金融（DeFi）：原理與應用",
+        "description": "這集深入探討去中心化金融的核心原理、主要協議和創新應用。從借貸平台、去中心化交易所到收益聚合器，了解 DeFi 如何重塑傳統金融，以及參與這一革命的機會與風險。",
+        "audioUrl": "/podcasts/web3-summer-camp-2024/episode4.mp3",
+        "duration": 3060,
+        "releaseDate": "2024-06-05T13:00:00Z",
+        "hosts": ["趙區塊", "林金融"]
+      }
+    ]
+  }
+] 
