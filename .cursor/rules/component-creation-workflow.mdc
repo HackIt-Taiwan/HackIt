@@ -1,0 +1,141 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# HackIt 元件開發工作流程
+
+本文檔定義了 HackIt 專案中建立新元件的標準工作流程，確保所有元件都符合專案的 i18n 與主題支援要求。
+
+## 元件開發步驟
+
+### 1. 規劃與設計
+
+- 確定元件的功能需求與設計外觀
+- 考慮元件在不同語言和主題下的表現
+- 確認需要的文字和多語言支援需求
+
+### 2. 建立基本元件結構
+
+```tsx
+"use client";
+
+import React from 'react';
+import { useI18n } from '@/i18n';
+// 引入其他必要的模組
+
+interface MyComponentProps {
+  // 定義元件的 props
+}
+
+export default function MyComponent({ ...props }: MyComponentProps) {
+  // 獲取國際化功能
+  const { t, locale } = useI18n();
+  
+  return (
+    <div className="bg-white dark:bg-gray-900">
+      <h2 className="text-gray-800 dark:text-gray-100">{t('myComponent.title')}</h2>
+      {/* 其他元件內容 */}
+    </div>
+  );
+}
+```
+
+### 3. 添加翻譯文字
+
+在對應的翻譯檔案中添加元件需要的文字:
+
+**English (en.json)**:
+```json
+{
+  "myComponent": {
+    "title": "Component Title",
+    "description": "This is a description of the component"
+  }
+}
+```
+
+**繁體中文 (zh-TW.json)**:
+```json
+{
+  "myComponent": {
+    "title": "元件標題",
+    "description": "這是元件的描述"
+  }
+}
+```
+
+### 4. 實現主題支援
+
+確保所有 UI 元素都有適當的深淺色主題支援:
+
+```tsx
+<div className="bg-white dark:bg-gray-900 rounded-xl shadow-md dark:shadow-gray-700/20 p-6">
+  <h3 className="text-gray-800 dark:text-gray-100 text-xl font-bold mb-4">
+    {t('myComponent.title')}
+  </h3>
+  <p className="text-gray-600 dark:text-gray-300">
+    {t('myComponent.description')}
+  </p>
+  <button className="mt-4 bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg">
+    {t('common.learnMore')}
+  </button>
+</div>
+```
+
+### 5. 處理複雜的翻譯
+
+對於含有變數或 HTML 標記的文字:
+
+```tsx
+// 變數
+<p>{t('myComponent.count', { number: count })}</p>
+
+// HTML 標記
+<p>{t('myComponent.highlight', {
+  highlight: (text) => (
+    <span className="text-primary font-semibold">{text}</span>
+  )
+})}</p>
+```
+
+### 6. 響應式與互動狀態
+
+確保所有互動狀態在兩種主題下都有適當的視覺反饋:
+
+```tsx
+<button 
+  className="
+    bg-gray-100 dark:bg-gray-800 
+    hover:bg-gray-200 dark:hover:bg-gray-700
+    focus:ring-2 focus:ring-primary dark:focus:ring-primary/70
+    text-gray-800 dark:text-gray-100
+    transition-all duration-200
+  "
+>
+  {t('myComponent.button')}
+</button>
+```
+
+### 7. 測試與驗證
+
+完成元件後，執行下列測試:
+
+- 在所有支援的語言中檢查文字是否正確顯示
+- 切換深淺色主題，確認元件在兩種主題下都有良好的顯示效果
+- 測試不同螢幕尺寸的響應式表現
+- 確認所有互動元素在兩種主題下都有明確的互動提示
+
+## 元件開發檢查清單
+
+- [ ] 使用 `useI18n` hook 並透過翻譯鍵引用所有文字
+- [ ] 所有文字已添加到所有支援語言的翻譯檔案中
+- [ ] 所有 UI 元素都指定了深淺色主題的樣式
+- [ ] 檢查所有文字在兩種主題下都有足夠的對比度
+- [ ] 互動元素在兩種主題下都有清晰的視覺反饋
+- [ ] 元件能正確處理不同語言的文字長度差異
+
+## 更新日誌
+
+- **建立**: 元件開發工作流程標準化
+- **注意事項**: 技術棧變更時更新此文件

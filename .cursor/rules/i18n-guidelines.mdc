@@ -1,0 +1,78 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# HackIt 國際化 (i18n) 指南
+
+本專案實施完整的國際化支援，確保內容可以同時支援多種語言，目前主要支援繁體中文與英文。
+
+## i18n 架構
+
+專案使用自定義的 i18n 解決方案：
+- 翻譯檔案存放在 `src/i18n/translations/` 目錄下
+- 使用 `useI18n` hook 存取翻譯與當前語言設置
+- 透過 Next.js App Router 的 `[locale]` 動態路由實現語言切換
+
+## 翻譯檔案
+
+翻譯檔案使用 JSON 格式：
+- [英文翻譯](mdc:src/i18n/translations/en.json) - 英文翻譯檔案
+- [繁體中文翻譯](mdc:src/i18n/translations/zh-TW.json) - 繁體中文翻譯檔案
+
+## 使用方法
+
+### 在元件中使用國際化
+
+```jsx
+import { useI18n } from '@/i18n';
+
+function MyComponent() {
+  const { t, locale } = useI18n();
+  
+  return (
+    <div>
+      <h1>{t("common.home")}</h1>
+      <p>{t("heroSection.description")}</p>
+      
+      {/* 使用參數 */}
+      <p>{t("eventsSection.spotsLeft", { spotsLeft: 5, spots: 10 })}</p>
+      
+      {/* 使用 HTML 元素包裝 */}
+      <p>{t("aboutSection.tagline", {
+        highlight: (text) => (
+          <span className="text-primary font-semibold">{text}</span>
+        )
+      })}</p>
+    </div>
+  );
+}
+```
+
+### 新增翻譯文字
+
+1. 在翻譯檔案中添加新的鍵值對
+2. 使用巢狀結構組織相關文字
+3. 確保所有支援語言都添加相應的翻譯
+
+## 最佳實踐
+
+1. **鍵名結構化**：使用 `區塊.子區塊.項目` 格式以易於維護
+2. **避免硬編碼文字**：所有顯示給用戶的文字都應該透過 i18n 系統
+3. **翻譯同步**：新增文字時，確保所有語言版本同時更新
+4. **使用變數**：對於包含動態內容的文字，使用參數而不是字串拼接
+5. **複雜格式**：對於包含 HTML 標記的文字，使用函數包裝器處理
+
+## 檢查清單
+
+添加新功能時請確認：
+- [ ] 所有新增文字是否已添加到所有語言的翻譯檔案中
+- [ ] 使用 `t()` 函數而不是硬編碼文字
+- [ ] 動態內容使用參數傳遞
+- [ ] 每一處新增文字都有合理的翻譯鍵名結構
+
+## 更新日誌
+
+- **建立**: 國際化系統使用指南
+- **注意事項**: 添加新語言時或擴充翻譯時，需要更新此文件
+

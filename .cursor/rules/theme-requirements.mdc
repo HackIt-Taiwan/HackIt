@@ -1,0 +1,87 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# HackIt 深淺色主題必要要求
+
+所有新增或修改的程式碼必須同時支援深色和淺色主題。本文檔定義了主題支援的標準和必要條件。
+
+## 主題支援基本要求
+
+1. **所有元件必須在深淺色主題下都有良好的顯示效果**
+2. **所有文字必須在兩種主題下都具有足夠的對比度**
+3. **所有互動元素在兩種主題下必須有明確的互動提示**
+4. **顏色定義必須使用主題變數或 Tailwind 的主題類別**
+
+## Tailwind CSS 實現方式
+
+使用 Tailwind 的 `dark:` 前綴實現主題適配：
+
+```jsx
+<div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+  <button className="bg-primary hover:bg-primary/90 dark:bg-primary/90 dark:hover:bg-primary">
+    {buttonText}
+  </button>
+</div>
+```
+
+## 顏色系統
+
+遵循定義的顏色系統：
+
+- **主色調**：`text-primary`, `bg-primary`, `border-primary`
+- **背景色**：淺色主題使用 `bg-white` 或淺色系列，深色主題使用 `dark:bg-gray-900` 或深色系列
+- **文字色**：淺色主題 `text-gray-800`/`text-gray-600`，深色主題 `dark:text-gray-100`/`dark:text-gray-300`
+- **強調色**：根據設計系統使用適當的強調色，確保在兩種主題下都有良好效果
+
+## 元素特定指南
+
+### 卡片元素
+```jsx
+<div className="bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-700/20 rounded-xl">
+  <h3 className="text-gray-800 dark:text-gray-100">標題</h3>
+  <p className="text-gray-600 dark:text-gray-300">內容</p>
+</div>
+```
+
+### 按鈕
+```jsx
+// 主要按鈕
+<button className="bg-primary hover:bg-primary/90 text-white">主要按鈕</button>
+
+// 次要按鈕
+<button className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 
+                  hover:bg-gray-200 dark:hover:bg-gray-600">次要按鈕</button>
+```
+
+### 輸入欄位
+```jsx
+<input 
+  className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 
+            text-gray-800 dark:text-gray-100 focus:ring-primary"
+  placeholder="請輸入..."
+/>
+```
+
+## 檢查清單
+
+開發新元件或頁面時，請確認：
+
+- [ ] 所有元素在深淺色主題下都有適當的顏色定義
+- [ ] 文字在所有背景上都有足夠的對比度
+- [ ] 互動元素在兩種主題下有明確的狀態指示
+- [ ] 深色主題下的陰影效果適當調整（通常需要降低不透明度）
+- [ ] 圖標和圖片（如適用）在深色主題下有適當處理
+
+## 提示和技巧
+
+1. 使用瀏覽器的開發者工具測試深淺色主題切換
+2. 對於複雜的主題適配，考慮使用 CSS 變數或動態樣式
+3. 確保輔助色（成功、錯誤、警告等）在兩種主題下都有良好的辨識度
+4. 針對用戶上傳的內容或嵌入的外部資源，考慮添加適應主題的容器或覆蓋層
+
+## 更新日誌
+
+- **建立**: 深淺色主題實踐要求定義
+- **注意事項**: 設計系統更新時更新此文件
