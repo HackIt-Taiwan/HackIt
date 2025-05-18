@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaCalendar, FaMapMarkerAlt, FaUsers, FaArrowRight, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { getUpcomingEvents, type Event } from '@/utils/events';
+import { useI18n } from "@/i18n";
 
 // 從 utils/events.ts 獲取活動數據
 const events = getUpcomingEvents();
@@ -15,6 +16,7 @@ const EventsSection: React.FC = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
   const controls = useAnimation();
+  const { t } = useI18n();
 
   // 拖動滑動相關狀態
   const [isDragging, setIsDragging] = useState(false);
@@ -318,250 +320,179 @@ const EventsSection: React.FC = () => {
   }, [isInView, controls]);
 
   return (
-    <section id="活動資訊" className="py-20 md:py-28 lg:py-32 bg-white dark:bg-gray-900 relative overflow-hidden">
-      {/* 背景裝飾 */}
-      <motion.div 
-        className="absolute top-[15%] left-[5%] w-[30vw] h-[30vw] max-w-[500px] max-h-[500px] bg-primary/3 dark:bg-primary/5 rounded-full blur-3xl"
-        initial={{ opacity: 0 }}
-        animate={{ 
-          opacity: 0.5,
-          x: [0, -20, 0],
-          y: [0, 25, 0]
-        }}
-        transition={{ 
-          opacity: { duration: 1 },
-          x: { repeat: Infinity, duration: 18, ease: "easeInOut" },
-          y: { repeat: Infinity, duration: 22, ease: "easeInOut" }
+    <section ref={ref} className="py-20 md:py-28 bg-gradient-to-br from-indigo-50 to-white dark:from-gray-800 dark:to-gray-900 relative overflow-hidden">
+      {/* 背景圖案 */}
+      <div 
+        className="absolute inset-0 bg-repeat opacity-[0.03] dark:opacity-[0.02]"
+        style={{
+          backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'50\' height=\'50\' viewBox=\'0 0 50 50\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%239C92AC\' fill-opacity=\'0.4\' fill-rule=\'evenodd\'%3E%3Cpath d=\'M0 50 L50 0 L50 50 Z M0 0 L50 50 L0 50 Z\'/%3E%3C/g%3E%3C/svg%3E")',
         }}
       />
-      <motion.div 
-        className="absolute bottom-[20%] right-[10%] w-[25vw] h-[25vw] max-w-[400px] max-h-[400px] bg-blue-500/3 dark:bg-blue-500/5 rounded-full blur-3xl"
-        initial={{ opacity: 0 }}
-        animate={{ 
-          opacity: 0.5,
-          x: [0, 30, 0],
-          y: [0, -20, 0]
-        }}
-        transition={{ 
-          opacity: { duration: 1 },
-          x: { repeat: Infinity, duration: 20, ease: "easeInOut" },
-          y: { repeat: Infinity, duration: 16, ease: "easeInOut" }
-        }}
+      
+      {/* 光暈效果 */}
+      <motion.div
+        className="absolute -top-1/4 left-1/4 w-1/2 h-1/2 bg-primary/10 dark:bg-primary/20 rounded-full blur-3xl -z-10"
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={isInView ? { opacity: 1, scale: 1 } : {}}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      />
+      <motion.div
+        className="absolute -bottom-1/4 right-1/4 w-1/2 h-1/2 bg-accent/10 dark:bg-accent/20 rounded-full blur-3xl -z-10"
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={isInView ? { opacity: 1, scale: 1 } : {}}
+        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
       />
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <motion.div
-          ref={ref}
-          className="text-center max-w-3xl mx-auto mb-16 md:mb-24"
+      <div className="container mx-auto px-4 md:px-6 relative">
+        <motion.div 
+          className="text-center mb-12 md:mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
         >
-          <motion.span 
-            className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.3, delay: 0.2 }}
-          >
-            活動資訊
-          </motion.span>
-          <motion.h2 
-            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 dark:text-white"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            即將舉行的<motion.span 
-              className="text-primary"
-              initial={{ textShadow: "0 0 0 rgba(124, 58, 237, 0)" }}
-              animate={{ textShadow: "0 0 10px rgba(124, 58, 237, 0.3)" }}
-              transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
-            >精彩活動</motion.span>
-          </motion.h2>
-          <motion.p 
-            className="text-lg md:text-xl text-gray-600 dark:text-gray-300"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            參加我們的工作坊、講座和駭客松，與志同道合的夥伴一起學習和成長
-          </motion.p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-gray-800 dark:text-white">
+            {t("eventsSection.title")}
+          </h2>
+          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400">
+            {t("eventsSection.subtitle")}
+          </p>
         </motion.div>
 
-        {/* 滾動控制按鈕 */}
-        <div className="flex justify-end mb-4 gap-2">
-          <motion.button
-            className="p-2 rounded-full bg-white dark:bg-gray-800 shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={scrollToLeft}
-          >
-            <FaChevronLeft className="text-primary" size={20} />
-          </motion.button>
-          <motion.button
-            className="p-2 rounded-full bg-white dark:bg-gray-800 shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={scrollToRight}
-          >
-            <FaChevronRight className="text-primary" size={20} />
-          </motion.button>
-        </div>
-
-        {/* 可滑動容器 */}
-        <div
-          ref={scrollContainerRef}
-          className={`overflow-x-auto pb-4 hide-scrollbar flex gap-6 md:gap-8 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-          style={{ scrollbarWidth: 'none', scrollBehavior: 'auto' }}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseLeave}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-        >
+        {/* 活動卡片滾動容器 */}
+        <div className="relative">
           <motion.div
-            className="flex gap-6 md:gap-8"
+            ref={scrollContainerRef}
+            className={`flex overflow-x-auto pb-8 space-x-6 md:space-x-8 cursor-grab ${
+              isDragging ? 'cursor-grabbing' : ''
+            }`}
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }} /* 隱藏滾動條 */
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseLeave}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
             variants={containerVariants}
             initial="hidden"
-            animate={controls}
+            animate={isInView ? "visible" : "hidden"}
           >
             {events.map((event, index) => (
-              <motion.div
+              <motion.div 
                 key={event.slug}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden h-full flex-shrink-0"
-                style={{ width: 'calc(100% / 3.5)', minWidth: '280px', maxWidth: '380px' }}
+                variants={itemVariants} 
+                className="flex-none w-[280px] md:w-[320px] lg:w-[360px]"
                 initial="rest"
                 whileHover="hover"
-                custom={index}
-                variants={itemVariants}
+                animate={controls} // 用於卡片進入/離開視圖的動畫
               >
-                <div className="relative h-48 sm:h-40 md:h-48 lg:h-44 xl:h-48 overflow-hidden">
-                  <motion.div
-                    className="w-full h-full absolute"
-                    variants={bgVariants}
-                  >
+                <motion.div 
+                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300"
+                  variants={cardHoverVariants}
+                >
+                  <motion.div className="relative h-48 md:h-56 overflow-hidden" variants={bgVariants}>
                     <Image
                       src={event.frontmatter.image}
                       alt={event.frontmatter.title}
                       fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      style={{ objectFit: "cover" }}
-                      draggable="false"
-                      className="pointer-events-none"
+                      style={{ objectFit: 'cover' }}
+                      className="transition-transform duration-500"
                     />
+                    <div className="absolute top-3 left-3 bg-primary text-white px-3 py-1 rounded-full text-xs font-semibold">
+                      {event.frontmatter.category}
+                    </div>
+                  </motion.div>
+                  
+                  <div className="p-5 md:p-6 flex-grow flex flex-col">
+                    <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-3">
+                      <FaCalendar className="mr-1.5" />
+                      {new Date(event.frontmatter.date).toLocaleDateString(t('common.language') === 'English' ? 'en-US' : 'zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })}
+                    </div>
+                    <h3 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white mb-2 line-clamp-2 min-h-[3em]">
+                      {event.frontmatter.title}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3 flex-grow">
+                      {event.frontmatter.description}
+                    </p>
                     
-                    {/* 完全透明覆蓋層，阻止圖片直接互動 */}
-                    <div 
-                      className="absolute inset-0 z-10 cursor-grab" 
-                      aria-hidden="true"
-                      style={{ touchAction: 'pan-x' }}
-                    ></div>
-                  </motion.div>
-                  <motion.div 
-                    className="absolute top-4 left-4 bg-white dark:bg-gray-800 py-1 px-3 rounded-full text-sm font-medium text-primary shadow-sm z-20"
-                    initial={{ opacity: 0, scale: 0.8, x: -10 }}
-                    animate={{ opacity: 1, scale: 1, x: 0 }}
-                    transition={{ delay: 0.2 + index * 0.1, duration: 0.4 }}
-                  >
-                    {event.frontmatter.category}
-                  </motion.div>
-                </div>
-                
-                <div className="p-5 md:p-6">
-                  <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 line-clamp-1 dark:text-white">{event.frontmatter.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm md:text-base line-clamp-2">{event.frontmatter.description}</p>
-                  
-                  <div className="space-y-2 mb-5 md:mb-6">
-                    <motion.div 
-                      className="flex items-center text-sm text-gray-500 dark:text-gray-400"
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.3 + index * 0.1, duration: 0.4 }}
-                    >
-                      <FaCalendar className="mr-2 text-primary flex-shrink-0" />
-                      <span className="truncate">
-                        {new Date(event.frontmatter.date).toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })} {event.frontmatter.time}
-                      </span>
-                    </motion.div>
-                    <motion.div 
-                      className="flex items-center text-sm text-gray-500 dark:text-gray-400"
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.4 + index * 0.1, duration: 0.4 }}
-                    >
-                      <FaMapMarkerAlt className="mr-2 text-primary flex-shrink-0" />
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                        <span>{event.frontmatter.spotsLeft > 0 ? t("eventsSection.spotsLeft", { spotsLeft: event.frontmatter.spotsLeft, spots: event.frontmatter.spots }) : t("eventsSection.spotsFull")}</span>
+                        <span>{((event.frontmatter.spots - event.frontmatter.spotsLeft) / event.frontmatter.spots * 100).toFixed(0)}%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                        <motion.div 
+                          className={`h-2.5 rounded-full ${
+                            event.frontmatter.spotsLeft > 0 ? 'bg-primary' : 'bg-red-500'
+                          }`}
+                          style={{ width: `${calculateSpotsPercentage(event.frontmatter.spots, event.frontmatter.spotsLeft)}%` }}
+                          initial={{ width: 0 }}
+                          animate={isInView ? { width: `${calculateSpotsPercentage(event.frontmatter.spots, event.frontmatter.spotsLeft)}%` } : { width: 0 }}
+                          transition={{ duration: 0.8, delay: 0.2 + index * 0.1, ease: "easeOut" }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-4">
+                      <FaMapMarkerAlt className="mr-1.5 flex-shrink-0" /> 
                       <span className="truncate">{event.frontmatter.location}</span>
-                    </motion.div>
-                    <motion.div 
-                      className="flex items-center text-sm text-gray-500 dark:text-gray-400"
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
-                    >
-                      <FaUsers className="mr-2 text-primary flex-shrink-0" />
-                      <span>尚餘 {event.frontmatter.spotsLeft} 個名額</span>
-                    </motion.div>
-                  </div>
-                  
-                  {/* 名額進度條 */}
-                  <div className="mb-5 md:mb-6">
-                    <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                      <motion.div 
-                        className="h-full bg-primary rounded-full"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${calculateSpotsPercentage(event.frontmatter.spots, event.frontmatter.spotsLeft)}%` }}
-                        transition={{ delay: 0.6 + index * 0.1, duration: 0.8, ease: "easeOut" }}
-                      ></motion.div>
                     </div>
-                    <div className="flex justify-between text-xs mt-1">
-                      <span className="text-gray-500 dark:text-gray-400">已報名 {event.frontmatter.spots - event.frontmatter.spotsLeft} 人</span>
-                      <span className="text-gray-500 dark:text-gray-400">總共 {event.frontmatter.spots} 人</span>
-                    </div>
+
+                    <Link href={`/events/${event.slug}`} className="mt-auto">
+                      <motion.button 
+                        className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-5 rounded-lg transition-colors duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        {t("eventsSection.learnMore")}
+                        <FaArrowRight className="ml-1 transition-transform duration-300 group-hover:translate-x-1" />
+                      </motion.button>
+                    </Link>
                   </div>
-                  
-                  <Link 
-                    href={`/events/${event.slug}`} 
-                    className="flex items-center justify-center py-2 sm:py-2.5 px-4 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-colors group w-full"
-                  >
-                    <span>查看詳情</span>
-                    <motion.div
-                      animate={{ x: [0, 4, 0] }}
-                      transition={{ repeat: Infinity, duration: 1.5, repeatDelay: 1 + index * 0.2 }}
-                    >
-                      <FaArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-                    </motion.div>
-                  </Link>
-                </div>
+                </motion.div>
               </motion.div>
             ))}
           </motion.div>
+          
+          {/* 左右滾動箭頭 - 增強樣式和交互性 */}
+          <button 
+            onClick={scrollToLeft}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-110 -ml-4 md:-ml-6 focus:outline-none"
+            aria-label="Scroll Left"
+          >
+            <FaChevronLeft className="text-gray-700 dark:text-white text-xl" />
+          </button>
+          <button 
+            onClick={scrollToRight}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-110 -mr-4 md:-mr-6 focus:outline-none"
+            aria-label="Scroll Right"
+          >
+            <FaChevronRight className="text-gray-700 dark:text-white text-xl" />
+          </button>
         </div>
         
+        {/* 拖動提示 */}
+        <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
+          {t("eventsSection.dragHint")}
+        </p>
+
+        {/* 查看所有活動按鈕 */}
         <motion.div 
           className="text-center mt-12 md:mt-16"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ delay: 0.7, duration: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link
-              href="/events"
-              className="inline-flex items-center text-primary font-medium hover:text-primary-dark dark:hover:text-primary-light group"
+          <Link href="/events">
+            <motion.button 
+              className="bg-transparent hover:bg-primary/10 dark:hover:bg-primary/20 border-2 border-primary text-primary font-semibold py-3 px-8 rounded-lg transition-colors duration-300 flex items-center justify-center gap-2 mx-auto shadow-sm hover:shadow-md"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
             >
-              <span className="text-lg">查看所有活動</span>
-              <motion.div
-                animate={{ x: [0, 5, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5, repeatDelay: 1 }}
-              >
-                <FaArrowRight className="ml-1 group-hover:translate-x-1 transition-transform" />
-              </motion.div>
-            </Link>
-          </motion.div>
+              {t("eventsSection.viewAllEvents")}
+              <FaArrowRight />
+            </motion.button>
+          </Link>
         </motion.div>
       </div>
     </section>

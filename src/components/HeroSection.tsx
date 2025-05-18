@@ -5,6 +5,7 @@ import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { FaArrowRight, FaGithub, FaDiscord } from "react-icons/fa";
+import { useI18n } from "@/i18n";
 
 // 添加接口定義
 interface DiscordMemberResponse {
@@ -15,12 +16,13 @@ interface DiscordMemberResponse {
 }
 
 const HeroSection: React.FC = () => {
+  const { t } = useI18n();
   const [windowHeight, setWindowHeight] = useState<number>(0);
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [typedText, setTypedText] = useState("");
   const [memberCount, setMemberCount] = useState<number>(1337);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const fullText = "console.log('你好，駭客！')";
+  const fullText = t("heroSection.consoleText") as string;
   const [typingIndex, setTypingIndex] = useState(0);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
@@ -37,16 +39,16 @@ const HeroSection: React.FC = () => {
           const data: DiscordMemberResponse = await response.json();
           if (data.memberCount && data.memberCount > 0) {
             const source = data.fromCache ? '緩存' : 'API';
-            console.log(`成功獲取成員數量(${source}):`, data.memberCount, '伺服器:', data.guildName);
+            console.log(t("heroSection.logs.fetchSuccess", { 0: source }), data.memberCount, t("heroSection.logs.server"), data.guildName);
             setMemberCount(data.memberCount);
           } else {
-            console.error('獲取的數據中沒有有效的成員數量:', data);
+            console.error(t("heroSection.logs.dataError"), data);
           }
         } else {
-          console.error('獲取成員數量請求失敗:', response.status);
+          console.error(t("heroSection.logs.requestError"), response.status);
         }
       } catch (error) {
-        console.error('獲取Discord成員數量失敗:', error);
+        console.error(t("heroSection.logs.fetchError"), error);
       } finally {
         setIsLoading(false);
       }
@@ -61,7 +63,7 @@ const HeroSection: React.FC = () => {
     
     // 清理定時器
     return () => clearInterval(intervalId);
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     // 初始化窗口尺寸
@@ -203,15 +205,15 @@ const HeroSection: React.FC = () => {
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 md:mb-8 leading-tight tracking-tight text-dark dark:text-light"
               variants={itemVariants}
             >
-              由<span className="text-primary">青少年</span>打造的 
-              <br /><span className="text-accent">創意</span>程式社群
+              {t("heroSection.title.first")}<span className="text-primary">{t("heroSection.title.youth")}</span>{t("heroSection.title.second")}
+              <br /><span className="text-accent">{t("heroSection.title.creative")}</span>{t("heroSection.title.third")}
             </motion.h1>
 
             <motion.p
               className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted dark:text-gray-300 mb-8 md:mb-12 max-w-2xl leading-relaxed"
               variants={itemVariants}
             >
-              我們在這裡一起創造、探索和分享程式的無限可能！發揮你的創意，用程式將想法變成現實，HackIt 是屬於所有創作者的地方。
+              {t("heroSection.description")}
             </motion.p>
 
             <motion.div
@@ -222,7 +224,7 @@ const HeroSection: React.FC = () => {
                 href="#join"
                 className="px-4 sm:px-6 md:px-8 py-3 md:py-4 bg-primary text-white rounded-lg flex items-center font-medium hover:bg-primary/90 transition-colors text-sm sm:text-base md:text-lg"
               >
-                加入社群
+                {t("heroSection.buttons.joinCommunity")}
                 <FaArrowRight className="ml-2 md:ml-3" />
               </Link>
               
@@ -230,7 +232,7 @@ const HeroSection: React.FC = () => {
                 href="#projects"
                 className="px-4 sm:px-6 md:px-8 py-3 md:py-4 bg-light dark:bg-dark border-2 border-dark dark:border-light text-dark dark:text-light rounded-lg hover:bg-dark hover:text-light dark:hover:bg-light dark:hover:text-dark transition-colors font-medium flex items-center text-sm sm:text-base md:text-lg"
               >
-                查看專案
+                {t("heroSection.buttons.viewProjects")}
                 <FaGithub className="ml-2 md:ml-3" />
               </Link>
             </motion.div>
@@ -239,20 +241,20 @@ const HeroSection: React.FC = () => {
               className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 mt-6 md:mt-10"
               variants={itemVariants}
             >
-              <span className="text-sm md:text-base text-muted dark:text-gray-300">我們有</span>
+              <span className="text-sm md:text-base text-muted dark:text-gray-300">{t("heroSection.stats.prefix")}</span>
               <div className="px-3 md:px-4 py-1.5 md:py-2 bg-secondary/20 dark:bg-secondary/30 text-dark dark:text-light rounded-full font-mono">
                 {isLoading ? (
                   <span className="font-bold text-base md:text-lg inline-flex items-center">
-                    <span className="animate-pulse mr-1">•••</span>
+                    <span className="animate-pulse mr-1">{t("heroSection.stats.loading")}</span>
                   </span>
                 ) : (
                   <span className="font-bold text-base md:text-lg">{memberCount.toLocaleString()}</span>
                 )}
-                <span> 位駭客</span>
+                <span> {t("heroSection.stats.hackers")}</span>
               </div>
-              <span className="text-sm md:text-base text-muted dark:text-gray-300">共同創造</span>
+              <span className="text-sm md:text-base text-muted dark:text-gray-300">{t("heroSection.stats.middle")}</span>
               <div className="px-3 md:px-4 py-1.5 md:py-2 bg-accent/20 dark:bg-accent/30 text-dark dark:text-light rounded-full font-mono">
-                <span className="font-bold text-base md:text-lg">∞</span> 種可能性
+                <span className="font-bold text-base md:text-lg">∞</span> {t("heroSection.stats.possibilities")}
               </div>
             </motion.div>
           </motion.div>
@@ -271,19 +273,19 @@ const HeroSection: React.FC = () => {
                   <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3.5 md:h-3.5 rounded-full bg-accent"></div>
                   <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3.5 md:h-3.5 rounded-full bg-secondary"></div>
                 </div>
-                <div className="text-xs sm:text-sm font-mono text-white dark:text-dark ml-2 sm:ml-3 md:ml-4">terminal</div>
+                <div className="text-xs sm:text-sm font-mono text-white dark:text-dark ml-2 sm:ml-3 md:ml-4">{t("heroSection.terminal.title")}</div>
               </div>
               <div className="pt-8 sm:pt-10 md:pt-12 bg-dark dark:bg-gray-900 text-light p-3 sm:p-4 md:p-6 font-mono text-xs sm:text-sm md:text-base">
-                <div className="mb-1 md:mb-2">$ cd HackIt</div>
-                <div className="mb-1 md:mb-2">$ ls</div>
-                <div className="text-secondary mb-2 md:mb-3">projects/ events/ community/ tutorials/</div>
-                <div className="mb-1 md:mb-2">$ echo "Hello, World!"</div>
-                <div className="text-light mb-2 md:mb-3">Hello, World!</div>
-                <div className="mb-1 md:mb-2">$ npm run create</div>
-                <div className="text-accent mb-1 md:mb-2">Starting creativity engine...</div>
-                <div className="text-primary mb-3 md:mb-4">Welcome to HackIt! What will you create today?</div>
+                <div className="mb-1 md:mb-2">{t("heroSection.terminal.command1")}</div>
+                <div className="mb-1 md:mb-2">{t("heroSection.terminal.command2")}</div>
+                <div className="text-secondary mb-2 md:mb-3">{t("heroSection.terminal.output1")}</div>
+                <div className="mb-1 md:mb-2">{t("heroSection.terminal.command3")}</div>
+                <div className="text-light mb-2 md:mb-3">{t("heroSection.terminal.output2")}</div>
+                <div className="mb-1 md:mb-2">{t("heroSection.terminal.command4")}</div>
+                <div className="text-accent mb-1 md:mb-2">{t("heroSection.terminal.output3")}</div>
+                <div className="text-primary mb-3 md:mb-4">{t("heroSection.terminal.output4")}</div>
                 <div className="flex mt-2 md:mt-3">
-                  <span>$</span>
+                  <span>{t("heroSection.terminal.command5")}</span>
                   <span className="ml-1.5 md:ml-2 inline-block animate-pulse">|</span>
                 </div>
               </div>
@@ -295,7 +297,7 @@ const HeroSection: React.FC = () => {
                 whileHover={{ y: -8 }}
               >
                 <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-accent/20 dark:bg-accent/30 flex items-center justify-center rounded-md">
-                  <span className="text-lg sm:text-xl md:text-2xl font-bold text-dark dark:text-light">JS</span>
+                  <span className="text-lg sm:text-xl md:text-2xl font-bold text-dark dark:text-light">{t("heroSection.techLabels.js")}</span>
                 </div>
               </motion.div>
               
@@ -304,7 +306,7 @@ const HeroSection: React.FC = () => {
                 whileHover={{ y: -8 }}
               >
                 <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-primary/20 dark:bg-primary/30 flex items-center justify-center rounded-md">
-                  <span className="text-lg sm:text-xl md:text-2xl font-bold text-dark dark:text-light">PY</span>
+                  <span className="text-lg sm:text-xl md:text-2xl font-bold text-dark dark:text-light">{t("heroSection.techLabels.py")}</span>
                 </div>
               </motion.div>
               
@@ -313,7 +315,7 @@ const HeroSection: React.FC = () => {
                 whileHover={{ y: -8 }}
               >
                 <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-secondary/20 dark:bg-secondary/30 flex items-center justify-center rounded-md">
-                  <span className="text-lg sm:text-xl md:text-2xl font-bold text-dark dark:text-light">HW</span>
+                  <span className="text-lg sm:text-xl md:text-2xl font-bold text-dark dark:text-light">{t("heroSection.techLabels.hw")}</span>
                 </div>
               </motion.div>
             </div>
@@ -342,7 +344,7 @@ const HeroSection: React.FC = () => {
             ease: "backOut" 
           }}
         >
-          準備好了嗎？
+          {t("heroSection.scroll.ready")}
         </motion.span>
         <motion.div 
           className="w-6 h-9 sm:w-7 sm:h-10 md:w-8 md:h-12 border-2 border-dark dark:border-light rounded-full flex justify-center overflow-hidden relative"
@@ -374,7 +376,7 @@ const HeroSection: React.FC = () => {
             times: [0, 0.5, 0.75, 1]
           }}
         >
-          點擊或滾動
+          {t("heroSection.scroll.action")}
         </motion.div>
       </motion.div>
     </section>

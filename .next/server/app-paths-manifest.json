@@ -1,5 +1,7 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/discord-members/route": "app/api/discord-members/route.js",
-  "/[locale]/page": "app/[locale]/page.js"
+  "/[locale]/about/page": "app/[locale]/about/page.js",
+  "/[locale]/page": "app/[locale]/page.js",
+  "/[locale]/news/page": "app/[locale]/news/page.js",
+  "/[locale]/news/[slug]/page": "app/[locale]/news/[slug]/page.js",
+  "/api/discord-members/route": "app/api/discord-members/route.js"
 }

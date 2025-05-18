@@ -5,6 +5,7 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { FaLightbulb, FaUsers, FaRocket, FaChalkboardTeacher } from "react-icons/fa";
+import { useI18n } from "@/i18n";
 
 // 定義核心價值類型
 type CoreValue = {
@@ -13,31 +14,8 @@ type CoreValue = {
   description: string;
 };
 
-// 核心價值數據
-const coreValues: CoreValue[] = [
-  {
-    icon: <FaLightbulb className="w-8 h-8 text-primary" />,
-    title: "創新思維",
-    description: "鼓勵突破傳統框架，培養解決問題的創造力，讓學習者用不同角度思考問題。"
-  },
-  {
-    icon: <FaUsers className="w-8 h-8 text-primary" />,
-    title: "社群合作",
-    description: "建立互助學習環境，強調團隊協作的重要性，共同成長比單打獨鬥更能取得成功。"
-  },
-  {
-    icon: <FaRocket className="w-8 h-8 text-primary" />,
-    title: "實踐導向",
-    description: "理論與實作並重，透過真實項目應用所學，打造可展示的作品集加速職涯發展。"
-  },
-  {
-    icon: <FaChalkboardTeacher className="w-8 h-8 text-primary" />,
-    title: "終身學習",
-    description: "培養持續學習的習慣，在科技快速變遷的時代，保持好奇心與學習熱情是最大的競爭力。"
-  }
-];
-
 const AboutSection: React.FC = () => {
+  const { t } = useI18n();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
   
@@ -82,6 +60,30 @@ const AboutSection: React.FC = () => {
       }
     }
   };
+
+  // 核心價值數據 - 現在將從 i18n 獲取
+  const coreValues: CoreValue[] = [
+    {
+      icon: <FaLightbulb className="w-8 h-8 text-primary" />,
+      title: t("aboutSection.coreValueInnovativeTitle"),
+      description: t("aboutSection.coreValueInnovativeDescription")
+    },
+    {
+      icon: <FaUsers className="w-8 h-8 text-primary" />,
+      title: t("aboutSection.coreValueCommunityTitle"),
+      description: t("aboutSection.coreValueCommunityDescription")
+    },
+    {
+      icon: <FaRocket className="w-8 h-8 text-primary" />,
+      title: t("aboutSection.coreValuePracticalTitle"),
+      description: t("aboutSection.coreValuePracticalDescription")
+    },
+    {
+      icon: <FaChalkboardTeacher className="w-8 h-8 text-primary" />,
+      title: t("aboutSection.coreValueLifelongLearningTitle"),
+      description: t("aboutSection.coreValueLifelongLearningDescription")
+    }
+  ];
 
   return (
     <section id="關於我們" className="py-20 md:py-28 lg:py-32 bg-gray-50 relative overflow-hidden">
@@ -128,18 +130,24 @@ const AboutSection: React.FC = () => {
             animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3, delay: 0.2 }}
           >
-            關於我們
+            {t("aboutSection.aboutUs")}
           </motion.span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-            用<motion.span 
-              className="text-primary"
-              initial={{ textShadow: "0 0 0 rgba(124, 58, 237, 0)" }}
-              animate={isInView ? { textShadow: "0 0 10px rgba(124, 58, 237, 0.3)" } : {}}
-              transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
-            >創新思維</motion.span>啟發未來科技人才
+            {t("aboutSection.tagline", {
+              highlight: (text: React.ReactNode) => (
+                <motion.span 
+                  className="text-primary"
+                  initial={{ textShadow: "0 0 0 rgba(124, 58, 237, 0)" }}
+                  animate={isInView ? { textShadow: "0 0 10px rgba(124, 58, 237, 0.3)" } : {}}
+                  transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+                >
+                  {text}
+                </motion.span>
+              )
+            })}
           </h2>
           <p className="text-lg md:text-xl text-gray-600">
-            HackIt是一個致力於透過編程教育賦能青少年，啟發他們成為未來科技創新者的社群平台
+            {t("aboutSection.introduction")}
           </p>
         </motion.div>
 
@@ -162,7 +170,7 @@ const AboutSection: React.FC = () => {
             >
               <Image
                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2940&auto=format&fit=crop"
-                alt="HackIt創辦人"
+                alt={t("aboutSection.hackItFoundersAlt")}
                 fill
                 sizes="(max-width: 768px) 90vw, (max-width: 1024px) 50vw, 40vw"
                 style={{ objectFit: "cover" }}
@@ -210,12 +218,18 @@ const AboutSection: React.FC = () => {
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              我們的<motion.span 
-                className="text-primary"
-                initial={{ textShadow: "0 0 0 rgba(124, 58, 237, 0)" }}
-                animate={{ textShadow: "0 0 8px rgba(124, 58, 237, 0.3)" }}
-                transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
-              >創辦故事</motion.span>
+              {t("aboutSection.founderStoryTitle", {
+                highlight: (text: React.ReactNode) => (
+                  <motion.span 
+                    className="text-primary"
+                    initial={{ textShadow: "0 0 0 rgba(124, 58, 237, 0)" }}
+                    animate={{ textShadow: "0 0 8px rgba(124, 58, 237, 0.3)" }}
+                    transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+                  >
+                    {text}
+                  </motion.span>
+                )
+              })}
             </motion.h3>
             <motion.p 
               className="text-gray-600 mb-6"
@@ -223,7 +237,7 @@ const AboutSection: React.FC = () => {
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              HackIt創立於2020年，由一群熱愛科技教育的資深軟體工程師和教育工作者共同發起。在疫情帶來的遠距教學挑戰中，我們看見了數位教育的新機會，也發現傳統教育體系難以滿足現代科技人才的培育需求。
+              {t("aboutSection.founderStoryParagraph1")}
             </motion.p>
             <motion.p 
               className="text-gray-600 mb-6"
@@ -231,7 +245,7 @@ const AboutSection: React.FC = () => {
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              作為第一線的科技從業人員，我們深知實作經驗和創新思維對於未來工作者的重要性。因此，我們決定打造一個結合線上學習、實體工作坊和黑客松競賽的綜合平台，讓青少年能在寓教於樂的環境中接觸真實的科技專案開發。
+              {t("aboutSection.founderStoryParagraph2")}
             </motion.p>
             <motion.p 
               className="text-gray-600"
@@ -239,7 +253,7 @@ const AboutSection: React.FC = () => {
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
-              三年來，HackIt已經服務超過25,000名學生，舉辦了50多場線上及實體活動，並協助多位學員實現了自己的創新項目，甚至獲得國際級競賽的肯定。
+              {t("aboutSection.founderStoryParagraph3")}
             </motion.p>
           </motion.div>
         </motion.div>
@@ -294,13 +308,13 @@ const AboutSection: React.FC = () => {
                 >
                   <span className="font-bold">M</span>
                 </motion.span>
-                我們的使命
+                {t("aboutSection.missionTitle")}
               </h3>
               <p className="text-gray-600 mb-4">
-                我們致力於透過實用且創新的編程教育，啟發年輕人的技術潛能和創造力，培養他們成為未來的數位創新者和問題解決者。
+                {t("aboutSection.missionParagraph1")}
               </p>
               <p className="text-gray-600">
-                我們相信每個年輕人都應該有機會接觸編程技能，不論其背景或先前經驗。透過我們的平台，我們希望消除科技教育的障礙，讓更多人能夠參與數位未來的建設。
+                {t("aboutSection.missionParagraph2")}
               </p>
             </motion.div>
             
@@ -321,13 +335,13 @@ const AboutSection: React.FC = () => {
                 >
                   <span className="font-bold">V</span>
                 </motion.span>
-                我們的願景
+                {t("aboutSection.visionTitle")}
               </h3>
               <p className="text-gray-600 mb-4">
-                我們期望打造一個蓬勃發展的科技學習生態系統，在此生態系統中，創新思考被鼓勵，技術技能被賦能，社群合作被重視。
+                {t("aboutSection.visionParagraph1")}
               </p>
               <p className="text-gray-600">
-                我們希望成為台灣青少年科技教育的領導品牌，透過我們培育的人才，為社會創造正面影響，並協助台灣在全球數位經濟中保持競爭力。
+                {t("aboutSection.visionParagraph2")}
               </p>
             </motion.div>
           </div>
@@ -344,12 +358,18 @@ const AboutSection: React.FC = () => {
             className="text-2xl md:text-3xl font-bold text-center mb-12"
             variants={itemVariants}
           >
-            我們的<motion.span 
-              className="text-primary"
-              initial={{ textShadow: "0 0 0 rgba(124, 58, 237, 0)" }}
-              animate={{ textShadow: "0 0 8px rgba(124, 58, 237, 0.3)" }}
-              transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
-            >核心價值</motion.span>
+            {t("aboutSection.coreValuesTitle", {
+              highlight: (text: React.ReactNode) => (
+                <motion.span 
+                  className="text-primary"
+                  initial={{ textShadow: "0 0 0 rgba(124, 58, 237, 0)" }}
+                  animate={{ textShadow: "0 0 8px rgba(124, 58, 237, 0.3)" }}
+                  transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+                >
+                  {text}
+                </motion.span>
+              )
+            })}
           </motion.h3>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
@@ -388,7 +408,7 @@ const AboutSection: React.FC = () => {
           transition={{ delay: 0.5, duration: 0.5 }}
         >
           <p className="text-gray-600 mb-6">
-            想了解更多關於我們的故事和團隊成員？
+            {t("aboutSection.ctaText")}
           </p>
           <motion.div
             whileHover={{ scale: 1.05 }}
@@ -398,7 +418,7 @@ const AboutSection: React.FC = () => {
               href="/about"
               className="inline-block bg-primary hover:bg-primary-dark text-white font-medium py-3 px-6 rounded-lg shadow-sm hover:shadow-lg transition-colors"
             >
-              認識我們的團隊
+              {t("aboutSection.ctaButton")}
             </Link>
           </motion.div>
         </motion.div>

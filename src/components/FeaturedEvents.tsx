@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaCalendar, FaMapMarkerAlt, FaArrowRight, FaRegLightbulb, FaRegCompass, FaStar, FaPaperclip, FaThumbtack } from 'react-icons/fa';
 import { Event, getFeaturedEvents } from '@/utils/events';
+import { useI18n } from '@/i18n';
 
 // 筆記紙背景效果
 const notePaperBg = {
@@ -78,6 +79,9 @@ const useDarkModeStyles = () => {
 const FeaturedEvents: React.FC = () => {
   // 使用深色模式樣式的鉤子
   useDarkModeStyles();
+  
+  // 使用國際化翻譯
+  const { t } = useI18n();
   
   // 從 Markdown 文件獲取特色活動
   const featuredEvents = getFeaturedEvents();
@@ -169,7 +173,7 @@ const FeaturedEvents: React.FC = () => {
               >
                 <FaRegLightbulb className="text-indigo-500 dark:text-indigo-400 text-lg" />
               </motion.div>
-              <span className="text-indigo-700 dark:text-indigo-300 font-bold text-base">不能錯過的活動</span>
+              <span className="text-indigo-700 dark:text-indigo-300 font-bold text-base">{t("featuredEvents.tagline")}</span>
             </div>
           </motion.div>
           
@@ -182,7 +186,7 @@ const FeaturedEvents: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              精彩<span className="text-indigo-600 dark:text-indigo-400">活動</span>
+              {t("featuredEvents.title.first")}<span className="text-indigo-600 dark:text-indigo-400">{t("featuredEvents.title.highlighted")}</span>
             </motion.h2>
             
             {/* 手繪風格底線 */}
@@ -222,7 +226,7 @@ const FeaturedEvents: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             viewport={{ once: true }}
           >
-            來參加這些超酷的大型活動，認識志同道合的朋友，一起創造難忘的回憶！
+            {t("featuredEvents.subtitle")}
           </motion.p>
         </div>
         
@@ -273,7 +277,7 @@ const FeaturedEvents: React.FC = () => {
                         whileInView={{ scale: 1 }}
                         viewport={{ once: true }}
                       >
-                        {event.frontmatter.emoji || "🔥"} 超炫活動
+                        {event.frontmatter.emoji || "🔥"} {t("featuredEvents.eventSticker")}
                       </motion.div>
                       
                       {/* 迴紋針裝飾 */}
@@ -292,7 +296,7 @@ const FeaturedEvents: React.FC = () => {
                           whileHover={{ rotate: 2, y: -3 }}
                         >
                           <FaRegCompass className="text-red-500 dark:text-red-300" />
-                          <span>熱門活動</span>
+                          <span>{t("featuredEvents.popularTag")}</span>
                         </motion.div>
                       </div>
                     </div>
@@ -343,7 +347,7 @@ const FeaturedEvents: React.FC = () => {
                           className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-pink-100 dark:bg-pink-800 text-pink-600 dark:text-pink-200 font-mono text-xs md:text-sm font-bold border border-pink-200 dark:border-pink-700 transform rotate-6 shadow-sm"
                           whileHover={{ rotate: -6, scale: 1.1 }}
                         >
-                          {new Date(event.frontmatter.date).getMonth() + 1}月
+                          {new Date(event.frontmatter.date).getMonth() + 1}{t("featuredEvents.month")}
                         </motion.div>
                       </div>
                       
@@ -371,9 +375,9 @@ const FeaturedEvents: React.FC = () => {
                             <FaCalendar className="text-amber-600 dark:text-amber-200" />
                           </div>
                           <span>
-                            {new Date(event.frontmatter.date).toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })}
+                            {new Date(event.frontmatter.date).toLocaleDateString(t('common.language') === 'English' ? 'en-US' : 'zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })}
                             {event.frontmatter.endDate && 
-                              ` 至 ${new Date(event.frontmatter.endDate).toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })}`
+                              ` ${t("featuredEvents.dateTo")} ${new Date(event.frontmatter.endDate).toLocaleDateString(t('common.language') === 'English' ? 'en-US' : 'zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })}`
                             }
                           </span>
                         </motion.div>
@@ -407,7 +411,7 @@ const FeaturedEvents: React.FC = () => {
                             href={`/events/${event.slug}`}
                             className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 dark:bg-indigo-700 text-white rounded-lg font-bold group w-full justify-center md:w-auto"
                           >
-                            <span>了解更多</span> 
+                            <span>{t("featuredEvents.learnMoreButton")}</span> 
                             <motion.div
                               animate={{ x: [0, 5, 0] }}
                               transition={{ 
@@ -450,10 +454,10 @@ const FeaturedEvents: React.FC = () => {
                   style={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 75%, 75% 100%, 0% 100%)" }}
                 >
                   <div>
-                    <div className="text-sm font-bold dark:text-gray-100">日期</div>
+                    <div className="text-sm font-bold dark:text-gray-100">{t("featuredEvents.dateLabel")}</div>
                     <div className="text-lg font-mono font-bold text-indigo-700 dark:text-indigo-200">
-                      {new Date(event.frontmatter.date).toLocaleDateString('zh-TW', { month: 'numeric', day: 'numeric' })}
-                      {event.frontmatter.endDate && ` - ${new Date(event.frontmatter.endDate).toLocaleDateString('zh-TW', { month: 'numeric', day: 'numeric' })}`}
+                      {new Date(event.frontmatter.date).toLocaleDateString(t('common.language') === 'English' ? 'en-US' : 'zh-TW', { month: 'numeric', day: 'numeric' })}
+                      {event.frontmatter.endDate && ` - ${new Date(event.frontmatter.endDate).toLocaleDateString(t('common.language') === 'English' ? 'en-US' : 'zh-TW', { month: 'numeric', day: 'numeric' })}`}
                     </div>
                   </div>
                 </div>
@@ -494,7 +498,7 @@ const FeaturedEvents: React.FC = () => {
             whileTap={{ scale: 0.98 }}
           >
             <Link href="/events" className="inline-flex items-center text-indigo-600 dark:text-indigo-400 font-medium text-lg hover:text-indigo-800 dark:hover:text-indigo-300">
-              <span>查看所有活動</span>
+              <span>{t("featuredEvents.viewAllButton")}</span>
               <FaArrowRight className="ml-2" />
             </Link>
           </motion.div>

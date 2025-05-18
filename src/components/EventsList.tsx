@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaCalendar, FaMapMarkerAlt, FaUsers, FaClock, FaFilter, FaSearch, FaChevronDown } from 'react-icons/fa';
 import { Event } from '@/utils/events';
+import { useI18n } from '@/i18n';
 
 interface EventsListProps {
   upcomingEvents: Event[];
@@ -14,23 +15,24 @@ interface EventsListProps {
 }
 
 const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, categories }) => {
+  const { t } = useI18n();
   const [activeTab, setActiveTab] = useState("upcoming"); // 'upcoming' 或 'past'
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("全部");
+  const [selectedCategory, setSelectedCategory] = useState(t("common.all"));
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   // 處理搜索和過濾
   const filteredUpcomingEvents = upcomingEvents.filter(event => {
     const matchesSearch = event.frontmatter.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          event.frontmatter.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === "全部" || event.frontmatter.category === selectedCategory;
+    const matchesCategory = selectedCategory === t("common.all") || event.frontmatter.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
   const filteredPastEvents = pastEvents.filter(event => {
     const matchesSearch = event.frontmatter.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                         event.frontmatter.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === "全部" || event.frontmatter.category === selectedCategory;
+    const matchesCategory = selectedCategory === t("common.all") || event.frontmatter.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -63,7 +65,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
               <div className="relative flex-grow">
                 <input
                   type="text"
-                  placeholder="搜尋活動..."
+                  placeholder={t("eventsList.searchPlaceholder") as string}
                   className="w-full px-4 py-3 pl-10 rounded-l-lg border-2 border-gray-200 dark:border-gray-700 focus:outline-none focus:border-primary dark:bg-gray-800 dark:text-white"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -75,7 +77,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
                 onClick={() => setIsFilterOpen(!isFilterOpen)}
               >
                 <FaFilter className="text-gray-600 dark:text-gray-300" />
-                <span className="hidden sm:inline text-gray-600 dark:text-gray-300">篩選</span>
+                <span className="hidden sm:inline text-gray-600 dark:text-gray-300">{t("eventsList.filterButton")}</span>
                 <FaChevronDown className={`text-gray-600 dark:text-gray-300 transform transition-transform ${isFilterOpen ? 'rotate-180' : ''}`} />
               </button>
             </div>
@@ -89,7 +91,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
               >
-                <h3 className="font-medium text-gray-800 dark:text-white mb-2">活動類型</h3>
+                <h3 className="font-medium text-gray-800 dark:text-white mb-2">{t("eventsList.categoryTitle")}</h3>
                 <div className="flex flex-wrap gap-2">
                   {categories.map((category) => (
                     <button
@@ -124,7 +126,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
                 }`}
                 onClick={() => setActiveTab('upcoming')}
               >
-                即將舉行
+                {t("eventsList.upcomingTab")}
                 {activeTab === 'upcoming' && (
                   <motion.div
                     className="absolute left-0 right-0 bottom-0 h-0.5 bg-primary"
@@ -141,7 +143,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
                 }`}
                 onClick={() => setActiveTab('past')}
               >
-                過往活動
+                {t("eventsList.pastTab")}
                 {activeTab === 'past' && (
                   <motion.div
                     className="absolute left-0 right-0 bottom-0 h-0.5 bg-primary"
@@ -199,7 +201,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
                           </div>
                           <div className="flex items-center text-xs">
                             <FaUsers className="mr-1 text-primary" />
-                            <span className="font-medium text-primary">{event.frontmatter.spotsLeft}/{event.frontmatter.spots} 名額</span>
+                            <span className="font-medium text-primary">{event.frontmatter.spotsLeft}/{event.frontmatter.spots} {t("eventsList.spotsLabel")}</span>
                           </div>
                         </div>
                         <div className="mt-4 flex flex-wrap gap-2">
@@ -216,7 +218,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
                           href={`/events/${event.slug}`}
                           className="block mt-4 text-center bg-primary hover:bg-primary/90 text-white font-medium py-2 rounded-lg transition-colors"
                         >
-                          了解詳情
+                          {t("eventsList.detailsButton")}
                         </Link>
                       </div>
                     </motion.div>
@@ -224,7 +226,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
                 </div>
               ) : (
                 <div className="text-center py-16">
-                  <p className="text-gray-600 dark:text-gray-300 text-lg">沒有找到符合條件的活動</p>
+                  <p className="text-gray-600 dark:text-gray-300 text-lg">{t("eventsList.noEventsFound")}</p>
                 </div>
               )}
             </motion.div>
@@ -246,7 +248,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
                       <div className="relative h-48 overflow-hidden">
                         <div className="absolute inset-0 bg-gray-900/50 z-10 flex items-center justify-center">
                           <span className="bg-gray-900/80 text-white px-3 py-1 rounded-full text-sm transform -rotate-6">
-                            已結束
+                            {t("eventsList.endedBadge")}
                           </span>
                         </div>
                         <Image 
@@ -273,7 +275,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
                           </div>
                           <div className="flex items-center text-xs">
                             <FaUsers className="mr-1 text-gray-500 dark:text-gray-400" />
-                            <span className="text-gray-500 dark:text-gray-400">{event.frontmatter.spots} 名額</span>
+                            <span className="font-medium text-gray-500 dark:text-gray-400">{event.frontmatter.spots} {t("eventsList.spotsLabel")}</span>
                           </div>
                         </div>
                         <div className="mt-4 flex flex-wrap gap-2">
@@ -288,9 +290,9 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
                         </div>
                         <Link 
                           href={`/events/${event.slug}`}
-                          className="block mt-4 text-center bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium py-2 rounded-lg transition-colors"
+                          className="block mt-4 text-center bg-gray-400 dark:bg-gray-600 text-white font-medium py-2 rounded-lg cursor-not-allowed"
                         >
-                          活動回顧
+                          {t("eventsList.detailsButton")}
                         </Link>
                       </div>
                     </motion.div>
@@ -298,7 +300,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
                 </div>
               ) : (
                 <div className="text-center py-16">
-                  <p className="text-gray-600 dark:text-gray-300 text-lg">沒有找到符合條件的活動</p>
+                  <p className="text-gray-600 dark:text-gray-300 text-lg">{t("eventsList.noEventsFound")}</p>
                 </div>
               )}
             </motion.div>

@@ -6,8 +6,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FaCalendar, FaMapMarkerAlt, FaArrowRight, FaChevronLeft, FaChevronRight, FaCheckCircle } from 'react-icons/fa';
 import { getUpcomingEvents, getPastEvents, Event } from '@/utils/events';
+import { useI18n } from '@/i18n';
 
 const ScrollableEvents: React.FC = () => {
+  const { t, locale } = useI18n();
+  
   // 從 Markdown 文件獲取活動數據
   const upcomingEvents = getUpcomingEvents();
   const pastEvents = getPastEvents();
@@ -415,16 +418,16 @@ const ScrollableEvents: React.FC = () => {
         <div className="flex justify-between items-end mb-10">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              各式<span className="text-primary">活動</span>
-              <span className="text-sm md:text-base font-normal text-gray-500 dark:text-gray-400 ml-1">(包括已結束的)</span>
+              <span dangerouslySetInnerHTML={{ __html: t("scrollableEvents.title") }}></span>
+              <span className="text-sm md:text-base font-normal text-gray-500 dark:text-gray-400 ml-1">{t("scrollableEvents.pastEventsNote")}</span>
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300">
-              探索更多學習機會，任何時候都可以從中獲取靈感
+              {t("scrollableEvents.subtitle")}
             </p>
           </div>
           
           <Link href="/events" className="text-primary hover:text-primary-dark dark:hover:text-primary-light font-medium hover:underline flex items-center">
-            查看全部活動 <FaArrowRight className="ml-2" />
+            {t("scrollableEvents.viewAllEvents")} <FaArrowRight className="ml-2" />
           </Link>
         </div>
         
@@ -454,7 +457,7 @@ const ScrollableEvents: React.FC = () => {
                 transition={{ repeat: Infinity, duration: 1.5 }}
                 className="mr-2"
               >
-                ← 按住拖動 →
+                {t("scrollableEvents.dragHint")}
               </motion.div>
             </span>
           </div>
@@ -513,7 +516,7 @@ const ScrollableEvents: React.FC = () => {
                     {event.frontmatter.isCompleted ? (
                       <>
                         <FaCheckCircle className="text-green-500 dark:text-green-400" />
-                        <span>已結束</span>
+                        <span>{t("scrollableEvents.completed")}</span>
                       </>
                     ) : (
                       event.frontmatter.category
@@ -524,7 +527,7 @@ const ScrollableEvents: React.FC = () => {
                   {event.frontmatter.isCompleted && (
                     <div className="absolute top-0 right-0 w-20 h-20 overflow-hidden z-20">
                       <div className="bg-gray-700/80 dark:bg-gray-900/80 text-white text-xs font-bold py-1 px-4 rotate-45 transform origin-bottom-right absolute top-0 right-0 translate-x-[40%] translate-y-[10%]">
-                        已結束
+                        {t("scrollableEvents.completed")}
                       </div>
                     </div>
                   )}
@@ -537,7 +540,7 @@ const ScrollableEvents: React.FC = () => {
                     <div className="flex items-center text-gray-500 dark:text-gray-300">
                       <FaCalendar className="mr-2 text-primary text-xs" />
                       <span>
-                        {new Date(event.frontmatter.date).toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        {new Date(event.frontmatter.date).toLocaleDateString(locale === 'en' ? 'en-US' : 'zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })}
                         {' '}{event.frontmatter.time}
                       </span>
                     </div>
@@ -555,7 +558,7 @@ const ScrollableEvents: React.FC = () => {
                         : 'bg-primary/10 dark:bg-primary/20 text-primary hover:bg-primary/20 dark:hover:bg-primary/30'
                     }`}
                   >
-                    {event.frontmatter.isCompleted ? '查看回顧' : '查看詳情'}
+                    {event.frontmatter.isCompleted ? t("scrollableEvents.viewRecap") : t("scrollableEvents.viewDetails")}
                   </Link>
                 </div>
               </motion.div>

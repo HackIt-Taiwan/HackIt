@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaArrowRight, FaCalendar, FaUser, FaNewspaper, FaStar } from 'react-icons/fa';
 import { getLatestNews } from '@/utils/news';
+import { useI18n } from '@/i18n';
 
 // 浮動動畫
 const floatAnimation = {
@@ -22,6 +23,8 @@ const floatAnimation = {
 };
 
 export default function LatestNewsSection() {
+  const { t, locale } = useI18n();
+  
   // 獲取最新的3則新聞
   const latestNews = getLatestNews(3);
   
@@ -40,15 +43,17 @@ export default function LatestNewsSection() {
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
             }}
+            initial={{ opacity: 0, scale: 0 }}
             animate={{
-              y: [0, -30, 0],
-              x: [0, Math.random() * 20 - 10, 0],
-              scale: [1, 1.1, 0.9, 1],
+              opacity: [0.2, 0.5, 0.2],
+              scale: [1, 1.2, 1],
+              rotate: [0, 180, 360]
             }}
             transition={{
-              duration: 10 + Math.random() * 10,
-              repeat: Infinity,
               delay: i * 0.7,
+              duration: 4 + Math.random() * 4,
+              repeat: Infinity,
+              repeatType: "loop"
             }}
           />
         ))}
@@ -90,8 +95,7 @@ export default function LatestNewsSection() {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 dark:text-white mb-4 relative z-10">
-                最新<span className="text-primary relative">
-                  消息
+                <span dangerouslySetInnerHTML={{ __html: t("latestNewsSection.title") }}></span>
                   <motion.div 
                     className="absolute bottom-1 left-0 h-3 w-full bg-primary/20 -z-10 rounded-sm"
                     initial={{ width: 0 }}
@@ -99,7 +103,6 @@ export default function LatestNewsSection() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, delay: 0.7 }}
                   />
-                </span>
               </h2>
               
               {/* 手繪風格底線 */}
@@ -125,7 +128,7 @@ export default function LatestNewsSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              了解 HackIt 的最新動態、合作夥伴消息和活動信息
+              {t("latestNewsSection.subtitle")}
             </motion.p>
           </motion.div>
         </div>
@@ -221,7 +224,7 @@ export default function LatestNewsSection() {
                     transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
                   >
                     <FaCalendar className="mr-1" />
-                    <span>{new Date(news.frontmatter.date).toLocaleDateString('zh-TW', { 
+                    <span>{new Date(news.frontmatter.date).toLocaleDateString(locale === 'en' ? 'en-US' : 'zh-TW', { 
                       year: 'numeric', 
                       month: 'long', 
                       day: 'numeric' 
@@ -271,7 +274,7 @@ export default function LatestNewsSection() {
                     href={`/news/${news.slug}`} 
                     className="inline-flex items-center text-primary font-medium relative overflow-hidden group-hover:font-bold"
                   >
-                    <span className="relative z-10">閱讀更多</span>
+                    <span className="relative z-10">{t("latestNewsSection.readMore")}</span>
                     <span className="relative z-10 overflow-hidden">
                       <motion.span
                         className="inline-block ml-2"
@@ -309,7 +312,7 @@ export default function LatestNewsSection() {
               style={{ zIndex: -1 }}
             />
             <span className="flex items-center">
-              <span className="mr-2">查看全部消息</span> 
+              <span className="mr-2">{t("latestNewsSection.viewAllNews")}</span> 
               <motion.span
                 animate={{ x: [0, 5, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop", repeatDelay: 1 }}

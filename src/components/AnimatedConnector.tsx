@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useI18n } from '@/i18n';
 
 interface AnimatedConnectorProps {
   variant?: 'default' | 'eventsToCta';
@@ -10,6 +11,7 @@ interface AnimatedConnectorProps {
 const AnimatedConnector: React.FC<AnimatedConnectorProps> = ({ variant = 'default' }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isClient, setIsClient] = useState(false);
+  const { t } = useI18n();
 
   useEffect(() => {
     setIsClient(true);
@@ -226,7 +228,7 @@ const AnimatedConnector: React.FC<AnimatedConnectorProps> = ({ variant = 'defaul
               transition: { duration: 0.2 } 
             }}
           >
-            <span className="text-accent font-medium">function</span> <span className="text-secondary font-medium">unleashCreativity</span>() {'{ /* 你的創意在這裡 */ }'}
+            <span className="text-accent font-medium">function</span> <span className="text-secondary font-medium">unleashCreativity</span>() {t('animatedConnector.unleashCreativityComment')}
           </motion.div>
         </div>
         

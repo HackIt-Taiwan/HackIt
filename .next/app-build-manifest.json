@@ -1,5 +1,10 @@
 {
   "pages": {
+    "/[locale]/about/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/about/page.js"
+    ],
     "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -11,10 +16,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/page.js"
     ],
-    "/_not-found/page": [
+    "/[locale]/news/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
+      "static/chunks/app/[locale]/news/page.js"
+    ],
+    "/[locale]/news/[slug]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/[locale]/news/[slug]/page.js"
     ]
   }
 }

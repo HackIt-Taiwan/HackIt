@@ -4,9 +4,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaSun, FaMoon, FaDesktop } from 'react-icons/fa';
+import { useI18n } from '@/i18n';
 
 const ThemeToggle: React.FC = () => {
   const { theme, setTheme } = useTheme();
+  const { t } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
@@ -68,7 +70,7 @@ const ThemeToggle: React.FC = () => {
             transition={{ duration: 0.2 }}
             className="absolute right-0 mt-2 w-40 py-2 rounded-lg shadow-xl bg-white dark:bg-dark border border-gray-200 dark:border-gray-700 z-50"
           >
-            <div className="px-2 text-xs text-gray-500 dark:text-gray-400 mb-1">主題選擇</div>
+            <div className="px-2 text-xs text-gray-500 dark:text-gray-400 mb-1">{t("themeToggle.title")}</div>
             
             <button
               className={`flex items-center w-full px-4 py-2 text-sm ${
@@ -77,7 +79,7 @@ const ThemeToggle: React.FC = () => {
               onClick={handleThemeSelect('light')}
             >
               <FaSun className="mr-2 text-yellow-400" />
-              <span>淺色</span>
+              <span>{t("themeToggle.light")}</span>
               {theme === 'light' && (
                 <motion.span
                   initial={{ scale: 0 }}
@@ -96,7 +98,7 @@ const ThemeToggle: React.FC = () => {
               onClick={handleThemeSelect('dark')}
             >
               <FaMoon className="mr-2 text-indigo-400" />
-              <span>深色</span>
+              <span>{t("themeToggle.dark")}</span>
               {theme === 'dark' && (
                 <motion.span
                   initial={{ scale: 0 }}
@@ -115,7 +117,7 @@ const ThemeToggle: React.FC = () => {
               onClick={handleThemeSelect('system')}
             >
               <FaDesktop className="mr-2 text-green-400" />
-              <span>系統</span>
+              <span>{t("themeToggle.system")}</span>
               {theme === 'system' && (
                 <motion.span
                   initial={{ scale: 0 }}

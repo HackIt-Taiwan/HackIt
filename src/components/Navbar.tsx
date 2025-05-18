@@ -36,13 +36,13 @@ const Navbar: React.FC = () => {
   const [clickCount, setClickCount] = useState(0);
   useEffect(() => {
     if (clickCount === 3) {
-      console.log("嘿！你發現了彩蛋！你真是個探索者 👀");
+      console.log(t("navbar.easterEgg"));
       setClickCount(0);
     }
     
     const timer = setTimeout(() => setClickCount(0), 2000);
     return () => clearTimeout(timer);
-  }, [clickCount]);
+  }, [clickCount, t]);
 
   // 導航項目定義 - 重新排序，將「最新消息」移到「首頁」旁邊
   const navItems = [

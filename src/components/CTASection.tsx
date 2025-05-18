@@ -4,11 +4,13 @@ import React, { useEffect, useState, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { FaRocket, FaCode, FaLaptopCode } from 'react-icons/fa';
+import { useI18n } from '@/i18n';
 
 const CTASection = () => {
   const [isMounted, setIsMounted] = useState(false);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.3 });
+  const { t } = useI18n();
   
   // 使用 useMemo 生成固定的隨機值，避免重新渲染時變化
   const floatingElements = useMemo(() => {
@@ -66,9 +68,9 @@ const CTASection = () => {
                 repeatType: "loop"
               }}
             >
-              {i % 2 === 0 ? '<HackIntoIt className="future" />' : 
-               i % 3 === 0 ? 'function createFuture() { return innovation; }' : 
-               'const youCanHackIt = true;'}
+              {t(i % 2 === 0 ? "ctaSection.bgText1" : 
+                i % 3 === 0 ? "ctaSection.bgText2" : 
+                "ctaSection.bgText3")}
             </motion.div>
           );
         })}
@@ -123,7 +125,7 @@ const CTASection = () => {
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
           >
-            準備好了嗎？
+            {t("ctaSection.readyTitle")}
           </motion.h2>
           
           <motion.div
@@ -523,8 +525,7 @@ const CTASection = () => {
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
           >
-            加入我們充滿創意和活力的科技社群，一起探索、學習、創造和成長！
-            不管你是初學者還是有經驗的開發者，這裡都有屬於你的位置。
+            {t("ctaSection.description")}
           </motion.p>
           
           <motion.div 
@@ -544,7 +545,7 @@ const CTASection = () => {
                 whileTap={{ scale: 0.98 }}
               >
                 <FaCode className="text-xl" />
-                <span>加入我們</span>
+                <span>{t("ctaSection.joinButton")}</span>
               </motion.button>
             </Link>
             <Link href="/contact" className="flex-1 sm:flex-initial">
@@ -558,7 +559,7 @@ const CTASection = () => {
                 whileTap={{ scale: 0.98 }}
               >
                 <FaLaptopCode className="text-xl" />
-                <span>聯絡我們</span>
+                <span>{t("ctaSection.contactButton")}</span>
               </motion.button>
             </Link>
           </motion.div>
@@ -569,7 +570,7 @@ const CTASection = () => {
             animate={isInView ? { opacity: 0.8 } : { opacity: 0 }}
             transition={{ duration: 0.7, delay: 0.5 }}
           >
-            不需要任何承諾！今天就加入我們的社群吧！
+            {t("ctaSection.noCommitment")}
           </motion.p>
         </div>
       </div>

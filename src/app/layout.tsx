@@ -35,12 +35,12 @@ export default function RootLayout({
       </head>
       <body className="bg-light dark:bg-dark min-h-screen antialiased">
         <I18nClientProvider locale={locale}>
-          <ClientThemeProvider>
-            <div className="absolute w-full h-40 top-0 left-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 dark:from-primary/20 dark:via-secondary/20 dark:to-accent/20"></div>
-            <div className="min-h-screen relative z-10">
-              {children}
-            </div>
-          </ClientThemeProvider>
+        <ClientThemeProvider>
+          <div className="absolute w-full h-40 top-0 left-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 dark:from-primary/20 dark:via-secondary/20 dark:to-accent/20"></div>
+          <div className="min-h-screen relative z-10">
+            {children}
+          </div>
+        </ClientThemeProvider>
         </I18nClientProvider>
       </body>
     </html>

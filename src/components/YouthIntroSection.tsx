@@ -4,8 +4,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { FaRocket, FaLaptopCode, FaUsers, FaStar, FaCode } from 'react-icons/fa';
+import { useI18n } from '@/i18n';
 
 const YouthIntroSection: React.FC = () => {
+  const { t } = useI18n();
+  
   // 隨機分佈的裝飾星星
   const stars = Array.from({ length: 15 }, (_, i) => ({
     id: i,
@@ -108,7 +111,7 @@ const YouthIntroSection: React.FC = () => {
             >
               <div className="px-4 py-2 bg-primary/10 dark:bg-primary/20 text-primary rounded-full inline-flex items-center gap-2 font-medium">
                 <FaCode className="text-sm" />
-                <span>專為年輕創作者打造</span>
+                <span>{t("youthIntroSection.tagline")}</span>
               </div>
             </motion.div>
             
@@ -121,7 +124,7 @@ const YouthIntroSection: React.FC = () => {
               viewport={{ once: true }}
             >
               <span className="relative inline-block">
-                <span className="relative z-10 text-gray-800 dark:text-gray-100">一起探索</span>
+                <span className="relative z-10 text-gray-800 dark:text-gray-100">{t("youthIntroSection.title.first")}</span>
                 <svg className="absolute inset-0 w-full h-full" style={{ top: '5%', zIndex: 0 }}>
                   <motion.rect 
                     width="100%" 
@@ -137,7 +140,7 @@ const YouthIntroSection: React.FC = () => {
                 </svg>
               </span>{' '}
               <span className="relative inline-block mt-2 md:mt-0">
-                <span className="relative z-10 text-primary">程式創作</span>
+                <span className="relative z-10 text-primary">{t("youthIntroSection.title.second")}</span>
                 <svg className="absolute inset-0 w-full h-full" style={{ top: '60%', left: '0', zIndex: 0 }}>
                   <motion.path 
                     d="M0,10 Q40,20 80,10 T160,10" 
@@ -152,8 +155,8 @@ const YouthIntroSection: React.FC = () => {
                 </svg>
               </span>{' '}
               <span className="relative inline-block mt-2 md:mt-0">
-                <span className="relative z-10 text-gray-800 dark:text-gray-100">的</span>
-                <span className="relative z-10 text-primary font-bold">無限可能</span>
+                <span className="relative z-10 text-gray-800 dark:text-gray-100">{t("youthIntroSection.title.third")}</span>
+                <span className="relative z-10 text-primary font-bold">{t("youthIntroSection.title.fourth")}</span>
                 <svg className="absolute inset-0 w-full h-full" style={{ top: '5%', zIndex: 0 }}>
                   <motion.circle 
                     cx="50%" 
@@ -177,8 +180,9 @@ const YouthIntroSection: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               viewport={{ once: true }}
             >
-              HackIt 是一群熱愛創作的13-18歲夥伴們的秘密基地，我們在這裡玩程式、做專案、交朋友、
-              <span className="font-semibold text-primary">一起瘋狂創造屬於這個世代的數位可能</span>！
+              {t("youthIntroSection.description.first")}
+              <span className="font-semibold text-primary">{t("youthIntroSection.description.highlighted")}</span>
+              {t("youthIntroSection.description.last")}
             </motion.p>
 
             {/* 手繪的裝飾 */}
@@ -203,18 +207,18 @@ const YouthIntroSection: React.FC = () => {
             {[
               {
                 icon: <FaLaptopCode className="w-6 h-6 text-white" />,
-                title: "動手做最酷的程式專案",
-                description: "從零開始，一步步打造屬於自己的網站、遊戲、App、AI 應用，沒有經驗也沒關係！"
+                title: t("youthIntroSection.features.coding.title"),
+                description: t("youthIntroSection.features.coding.description")
               },
               {
                 icon: <FaUsers className="w-6 h-6 text-white" />,
-                title: "找到一群同路人",
-                description: "跟來自各地的科技愛好者成為朋友，一起腦力激盪、互相幫助、共同成長！"
+                title: t("youthIntroSection.features.community.title"),
+                description: t("youthIntroSection.features.community.description")
               },
               {
                 icon: <FaRocket className="w-6 h-6 text-white" />,
-                title: "打造個人超強作品集",
-                description: "在導師指導下完成專案，累積實戰經驗，為未來升學與職涯做準備～"
+                title: t("youthIntroSection.features.portfolio.title"),
+                description: t("youthIntroSection.features.portfolio.description")
               }
             ].map((feature, index) => (
               <motion.div
@@ -321,8 +325,8 @@ const YouthIntroSection: React.FC = () => {
                   transition={{ delay: 0.3, duration: 0.6 }}
                   viewport={{ once: true }}
                 >
-                  無論你是第一次碰程式的新手，還是已經有一點經驗的開發者<br/>
-                  <span className="text-primary font-bold">來 HackIt，總有一段冒險在等你！</span>
+                  {t("youthIntroSection.cta.message1")}<br/>
+                  <span className="text-primary font-bold">{t("youthIntroSection.cta.message2")}</span>
                 </motion.p>
                 
                 <div className="flex flex-wrap justify-center gap-6">
@@ -338,7 +342,7 @@ const YouthIntroSection: React.FC = () => {
                       href="/about" 
                       className="inline-block px-8 py-3 bg-white dark:bg-gray-700 border-2 border-primary text-primary rounded-full font-medium hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors"
                     >
-                      了解更多
+                      {t("youthIntroSection.cta.learnMoreButton")}
                     </Link>
                   </motion.div>
                   
@@ -354,7 +358,7 @@ const YouthIntroSection: React.FC = () => {
                       href="/signup" 
                       className="inline-block px-8 py-3 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-colors"
                     >
-                      馬上加入
+                      {t("youthIntroSection.cta.joinButton")}
                     </Link>
                   </motion.div>
                 </div>

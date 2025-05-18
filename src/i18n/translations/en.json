@@ -8,15 +8,286 @@
     "join": "Join Us",
     "faq": "FAQ",
     "contact": "Contact Us",
-    "language": "Language"
+    "language": "Language",
+    "all": "All"
   },
   "navbar": {
-    "languageSelector": "Select Language"
+    "languageSelector": "Select Language",
+    "easterEgg": "Hey! You found an easter egg! You're quite the explorer 👀"
   },
   "footer": {
     "copyright": "Copyright",
     "allRightsReserved": "All Rights Reserved",
     "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service"
+    "termsOfService": "Terms of Service",
+    "description": "Cultivating the ability of Taiwanese youth to organize hackathons for youth and promoting hackathon culture in Taiwan.",
+    "social": {
+      "facebook": "Facebook",
+      "twitter": "Twitter",
+      "instagram": "Instagram",
+      "github": "GitHub"
+    },
+    "sections": {
+      "events": "Events",
+      "resources": "Resources",
+      "contactUs": "Contact Us"
+    },
+    "eventsLinks": ["Hackathons", "Workshops", "Talks", "Meetups"],
+    "resourcesLinks": ["Learning Resources", "Competition Guide", "FAQ", "Partners"],
+    "contactInfo": {
+      "email": "contact@hackit.org.tw",
+      "phone": "(02) 1234-5678",
+      "address": "No. 1, Songgao Road, Xinyi District, Taipei City"
+    }
+  },
+  "aboutSection": {
+    "aboutUs": "About Us",
+    "tagline": "Inspiring Future Tech Talents with <highlight>Innovative Thinking</highlight>",
+    "introduction": "HackIt is a community platform dedicated to empowering teenagers through programming education, inspiring them to become future tech innovators.",
+    "founderStoryTitle": "Our <highlight>Founding Story</highlight>",
+    "founderStoryTitlePlain": "Founding Story",
+    "founderStoryParagraph1": "Founded in 2020, HackIt was initiated by a group of senior software engineers and educators passionate about tech education. Amidst the challenges of remote teaching during the pandemic, we saw new opportunities in digital education and realized that traditional education systems struggled to meet the cultivation needs of modern tech talent.",
+    "founderStoryParagraph2": "As frontline tech professionals, we deeply understand the importance of practical experience and innovative thinking for future workers. Therefore, we decided to create a comprehensive platform integrating online learning, physical workshops, and hackathon competitions, allowing teenagers to engage in real tech project development in an edutaining environment.",
+    "founderStoryParagraph3": "Over the past three years, HackIt has served over 25,000 students, organized more than 50 online and offline events, and helped many students realize their innovative projects, some even receiving recognition in international competitions.",
+    "missionTitle": "Our Mission",
+    "missionParagraph1": "We are committed to inspiring young people's technical potential and creativity through practical and innovative programming education, cultivating them to become future digital innovators and problem solvers.",
+    "missionParagraph2": "We believe every young person should have the opportunity to access programming skills, regardless of their background or prior experience. Through our platform, we hope to remove barriers to tech education and enable more people to participate in building the digital future.",
+    "visionTitle": "Our Vision",
+    "visionParagraph1": "We aspire to build a thriving tech learning ecosystem where innovative thinking is encouraged, technical skills are empowered, and community collaboration is valued.",
+    "visionParagraph2": "We aim to become a leading brand in youth tech education in Taiwan, creating a positive impact on society through the talents we cultivate and helping Taiwan maintain its competitiveness in the global digital economy.",
+    "coreValuesTitle": "Our <highlight>Core Values</highlight>",
+    "coreValueInnovativeTitle": "Innovative Thinking",
+    "coreValueInnovativeDescription": "Encourage breaking traditional frameworks, cultivate creativity in problem-solving, and enable learners to think from different perspectives.",
+    "coreValueCommunityTitle": "Community Collaboration",
+    "coreValueCommunityDescription": "Establish a mutual learning environment, emphasize the importance of teamwork, and achieve greater success through collective growth rather than individual effort.",
+    "coreValuePracticalTitle": "Practical Orientation",
+    "coreValuePracticalDescription": "Emphasize both theory and practice, apply learning through real projects, and build a demonstrable portfolio to accelerate career development.",
+    "coreValueLifelongLearningTitle": "Lifelong Learning",
+    "coreValueLifelongLearningDescription": "Cultivate a habit of continuous learning; in an era of rapid technological change, curiosity and a passion for learning are the greatest competitive advantages.",
+    "ctaText": "Want to learn more about our story and team members?",
+    "ctaButton": "Meet Our Team",
+    "hackItFoundersAlt": "HackIt Founders",
+    "ourOrigins": "Our Origins",
+    "missionVisionTitle": "Our Mission and Vision",
+    "missionVisionSubtitle": "The core ideals and ambitious goals that drive us forward",
+    "teamHeader": "Meet Our Team",
+    "teamSubheader": "A group of passionate, talented educators and tech experts",
+    "clickForDetails": "Click for details",
+    "viewFullTeam": "View Full Team",
+    "students": "Students",
+    "events": "Events",
+    "years": "Years"
+  },
+  "animatedConnector": {
+    "unleashCreativityComment": "{ /* Your creativity here */ }"
+  },
+  "ctaSection": {
+    "readyTitle": "Ready to Dive In?",
+    "description": "Join our creative and vibrant tech community to explore, learn, create, and grow together! Whether you're a beginner or an experienced developer, there's a place for you here.",
+    "joinButton": "Join Us",
+    "contactButton": "Contact Us",
+    "noCommitment": "No commitment needed! Join our community today!",
+    "bgText1": "<HackIntoIt className=\"future\" />",
+    "bgText2": "function createFuture() { return innovation; }",
+    "bgText3": "const youCanHackIt = true;"
+  },
+  "eventsList": {
+    "searchPlaceholder": "Search events...",
+    "filterButton": "Filter",
+    "categoryTitle": "Category",
+    "upcomingTab": "Upcoming",
+    "pastTab": "Past Events",
+    "spotsLabel": "Spots",
+    "detailsButton": "View Details",
+    "noEventsFound": "No events found matching your criteria.",
+    "endedBadge": "Ended"
+  },
+  "eventsSection": {
+    "title": "Upcoming Events",
+    "subtitle": "Explore Our Activities",
+    "dragHint": "Drag to scroll or use arrows to navigate",
+    "spotsFull": "Full",
+    "spotsLeft": "{spotsLeft} / {spots} Spots",
+    "learnMore": "Learn More",
+    "viewAllEvents": "View All Events"
+  },
+  "featuredEvents": {
+    "tagline": "Must-Attend Events",
+    "title": {
+      "first": "Featured ",
+      "highlighted": "Events"
+    },
+    "subtitle": "Join these awesome major events, meet like-minded friends, and create unforgettable memories together!",
+    "eventSticker": "Exciting Event",
+    "popularTag": "Popular Event",
+    "month": "",
+    "dateTo": "to",
+    "dateLabel": "Date",
+    "learnMoreButton": "Learn More",
+    "viewAllButton": "View All Events"
+  },
+  "heroSection": {
+    "consoleText": "console.log('Hello, Hacker!')",
+    "title": {
+      "first": "Built by ",
+      "youth": "youth",
+      "second": " for ",
+      "creative": "creative",
+      "third": " programmers"
+    },
+    "description": "We create, explore, and share the endless possibilities of programming together! Express your creativity, transform ideas into reality with code. HackIt is the place for all creators.",
+    "buttons": {
+      "joinCommunity": "Join Community",
+      "viewProjects": "View Projects"
+    },
+    "stats": {
+      "prefix": "We have",
+      "loading": "•••",
+      "hackers": "hackers",
+      "middle": "creating",
+      "possibilities": "possibilities"
+    },
+    "terminal": {
+      "title": "terminal",
+      "command1": "$ cd HackIt",
+      "command2": "$ ls",
+      "output1": "projects/ events/ community/ tutorials/",
+      "command3": "$ echo \"Hello, World!\"",
+      "output2": "Hello, World!",
+      "command4": "$ npm run create",
+      "output3": "Starting creativity engine...",
+      "output4": "Welcome to HackIt! What will you create today?",
+      "command5": "$"
+    },
+    "techLabels": {
+      "js": "JS",
+      "py": "PY",
+      "hw": "HW"
+    },
+    "scroll": {
+      "ready": "Ready?",
+      "action": "Click or scroll"
+    },
+    "logs": {
+      "fetchSuccess": "Successfully fetched member count({0}):",
+      "server": "Server:",
+      "dataError": "No valid member count in the data:",
+      "requestError": "Failed to fetch member count:",
+      "fetchError": "Failed to fetch Discord member count:"
+    }
+  },
+  "themeToggle": {
+    "title": "Theme Selection",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "navigation": {
+    "menu": {
+      "home": "Home",
+      "aboutUs": "About Us",
+      "events": "Events",
+      "team": "Team",
+      "faq": "FAQ",
+      "contactUs": "Contact Us"
+    },
+    "participateButton": "Participate"
+  },
+  "youthIntroSection": {
+    "tagline": "Designed for Young Creators",
+    "title": {
+      "first": "Explore",
+      "second": "Creative Coding",
+      "third": "and its",
+      "fourth": "Endless Possibilities"
+    },
+    "description": {
+      "first": "HackIt is a secret base for creative 13-18 year-olds who love making things. Here we code, build projects, make friends, and ",
+      "highlighted": "create amazing digital possibilities for our generation",
+      "last": "!"
+    },
+    "features": {
+      "coding": {
+        "title": "Build Cool Programming Projects",
+        "description": "Start from scratch and create your own websites, games, apps, and AI applications - no prior experience needed!"
+      },
+      "community": {
+        "title": "Find Your Tribe",
+        "description": "Connect with tech enthusiasts from all over, brainstorm together, help each other, and grow as a community!"
+      },
+      "portfolio": {
+        "title": "Create an Impressive Portfolio",
+        "description": "Complete projects with mentor guidance, gain hands-on experience, and prepare for your academic and career future."
+      }
+    },
+    "cta": {
+      "message1": "Whether you're a beginner just touching code for the first time or you already have some experience",
+      "message2": "Come to HackIt - there's an adventure waiting for you!",
+      "learnMoreButton": "Learn More",
+      "joinButton": "Join Now"
+    }
+  },
+  "scrollableEvents": {
+    "title": "Various <span>Events</span>",
+    "pastEventsNote": "(including past events)",
+    "subtitle": "Explore more learning opportunities, gain inspiration anytime",
+    "viewAllEvents": "View All Events",
+    "dragHint": "← Hold and drag →",
+    "completed": "Completed",
+    "viewRecap": "View Recap",
+    "viewDetails": "View Details"
+  },
+  "latestNewsSection": {
+    "title": "Latest <span>News</span>",
+    "subtitle": "Learn about HackIt's latest updates, partner news, and event information",
+    "readMore": "Read More",
+    "viewAllNews": "View All News"
+  },
+  "categories": {
+    "events": {
+      "title": "Events",
+      "hackathons": "Hackathons",
+      "workshops": "Workshops",
+      "talks": "Talks",
+      "meetups": "Meetups"
+    },
+    "resources": {
+      "title": "Resources",
+      "learningResources": "Learning Resources",
+      "competitionGuide": "Competition Guide",
+      "faq": "FAQ",
+      "partners": "Partners"
+    }
+  },
+  "newsPage": {
+    "title": "Latest <span>News</span>",
+    "subtitle": "Learn about HackIt's latest updates, event information, and media coverage",
+    "searchPlaceholder": "Search news...",
+    "categoryAll": "All",
+    "noResults": {
+      "title": "No news found",
+      "subtitle": "Please try different search terms or categories",
+      "clearButton": "Clear Filters"
+    },
+    "readMore": "Read More",
+    "subscribe": {
+      "title": "Subscribe to Updates",
+      "subtitle": "Don't miss any important updates. Get HackIt's latest news and event information directly",
+      "emailPlaceholder": "Your email",
+      "button": "Subscribe"
+    },
+    "categories": {
+      "eventAnnouncement": "Event Announcement",
+      "eventPreview": "Event Preview",
+      "partnerNews": "Partner News",
+      "mediaReport": "Media Coverage"
+    },
+    "detail": {
+      "backToNews": "Back to all news",
+      "category": "Category",
+      "share": "Share",
+      "relatedNews": "Related News",
+      "loading": "Loading..."
+    }
   }
 } 
