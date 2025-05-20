@@ -21,6 +21,16 @@ export interface PodcastEvent {
   episodes: PodcastEpisode[];
 }
 
+// 獲取所有事件ID
+export function getAllEventIds(): string[] {
+  if (!Array.isArray(podcastsData)) {
+    console.error('播客數據格式錯誤:', podcastsData);
+    return [];
+  }
+  
+  return podcastsData.map((event: PodcastEvent) => event.eventId);
+}
+
 // 格式化發布日期
 export function formatReleaseDate(releaseDate: string): string {
   const date = new Date(releaseDate);
@@ -157,4 +167,25 @@ export function searchEpisodes(query: string): PodcastEpisode[] {
     episode.description.toLowerCase().includes(lowerQuery) ||
     episode.eventName?.toLowerCase().includes(lowerQuery)
   );
+}
+
+// 獲取所有集數的事件ID和集數ID組合
+export function getAllEpisodeIds(): { eventId: string; episodeId: string }[] {
+  if (!Array.isArray(podcastsData)) {
+    console.error('播客數據格式錯誤:', podcastsData);
+    return [];
+  }
+  
+  const allIds: { eventId: string; episodeId: string }[] = [];
+  
+  podcastsData.forEach((event: PodcastEvent) => {
+    event.episodes.forEach(episode => {
+      allIds.push({
+        eventId: event.eventId,
+        episodeId: episode.id
+      });
+    });
+  });
+  
+  return allIds;
 } 

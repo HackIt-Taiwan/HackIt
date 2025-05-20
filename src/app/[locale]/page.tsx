@@ -15,6 +15,14 @@ export const metadata = {
   description: 'HackIt 是一個專為 13-18 歲青少年打造的科技學習平台，透過實作工作坊、黑客松和課程，培養未來的科技創新者。',
 };
 
+// 添加generateStaticParams函數以支援靜態匯出
+export async function generateStaticParams() {
+  return [
+    { locale: 'en' },
+    { locale: 'zh-TW' }
+  ];
+}
+
 export default function LocaleHome() {
   return (
     <main className="relative">

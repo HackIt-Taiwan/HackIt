@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { FaCalendar, FaClock, FaMapMarkerAlt, FaUsers, FaTags, FaArrowLeft } from 'react-icons/fa';
-import { getEventBySlug } from '@/utils/events';
+import { getEventBySlug, getEventFiles } from '@/utils/events';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { MDXRemote } from 'next-mdx-remote/rsc';
@@ -12,6 +12,15 @@ interface EventPageProps {
   params: {
     slug: string;
   };
+}
+
+// 添加generateStaticParams函數以支援靜態匯出
+export async function generateStaticParams() {
+  const slugs = getEventFiles();
+  
+  return slugs.map(slug => ({
+    slug
+  }));
 }
 
 export default function EventPage({ params }: EventPageProps) {

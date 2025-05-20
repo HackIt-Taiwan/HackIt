@@ -2,17 +2,17 @@
   "components\\Navbar.tsx -> ./LanguageSelector": {
     "id": 4590,
     "files": [
-      "static/chunks/8e1d74a4-b67f5bcdea8450a6.js",
+      "static/chunks/8e1d74a4-97e18f06fa8e6e39.js",
       "static/chunks/39-fc62ab8a11fa5540.js",
-      "static/chunks/590.9251f8da236759ce.js"
+      "static/chunks/590.487d7d4a509e1023.js"
     ]
   },
   "components\\Navbar.tsx -> ./ThemeToggle": {
     "id": 7569,
     "files": [
-      "static/chunks/8e1d74a4-b67f5bcdea8450a6.js",
+      "static/chunks/8e1d74a4-97e18f06fa8e6e39.js",
       "static/chunks/39-fc62ab8a11fa5540.js",
-      "static/chunks/569.9db567ca035646ab.js"
+      "static/chunks/569.58ae5a245209e0e5.js"
     ]
   }
 }
