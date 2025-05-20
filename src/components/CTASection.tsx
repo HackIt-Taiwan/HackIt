@@ -534,7 +534,7 @@ const CTASection = () => {
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
           >
-            <Link href="/join" className="flex-1 sm:flex-initial">
+            <Link href={t("ctaSection.joinButtonUrl") as string} className="flex-1 sm:flex-initial">
               <motion.button 
                 className="w-full sm:w-auto bg-white text-purple-700 font-bold py-4 px-8 rounded-xl transition duration-300 shadow-lg flex items-center justify-center gap-2"
                 whileHover={{ 
@@ -548,7 +548,7 @@ const CTASection = () => {
                 <span>{t("ctaSection.joinButton")}</span>
               </motion.button>
             </Link>
-            <Link href="/contact" className="flex-1 sm:flex-initial">
+            <Link href={t("ctaSection.contactButtonUrl") as string} className="flex-1 sm:flex-initial">
               <motion.button 
                 className="w-full sm:w-auto bg-transparent text-white font-bold py-4 px-8 rounded-xl border-2 border-white transition duration-300 flex items-center justify-center gap-2"
                 whileHover={{ 

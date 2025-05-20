@@ -94,6 +94,9 @@ export default function AboutPage() {
   const valuesRef = useRef(null);
   const teamRef = useRef(null);
   
+  // 控制是否顯示團隊部分
+  const showTeamSection = false; // 設為false以暫時隱藏團隊部分
+  
   // 滾動進度動畫
   const { scrollYProgress } = useScroll();
   const opacityHero = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
@@ -200,6 +203,11 @@ export default function AboutPage() {
     getEventsCount();
   }, []);
 
+  const missionShort = t('aboutSection.missionShort', { returnObjects: true });
+  const missionArr = Array.isArray(missionShort) ? missionShort : missionShort ? [missionShort] : [];
+  const manifestoShort = t('aboutSection.manifestoShort', { returnObjects: true });
+  const manifestoArr = Array.isArray(manifestoShort) ? manifestoShort : manifestoShort ? [manifestoShort] : [];
+
   return (
     <main className="relative">
       <Navbar />
@@ -219,7 +227,7 @@ export default function AboutPage() {
               className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-800 dark:text-gray-100"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
             >
               {t("aboutSection.aboutUs")}
             </motion.h1>
@@ -228,7 +236,7 @@ export default function AboutPage() {
               className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
             >
               {t("aboutSection.tagline", {
                 highlight: (text) => (
@@ -241,14 +249,14 @@ export default function AboutPage() {
               className="h-1 w-20 bg-primary mx-auto mb-8"
               initial={{ width: 0, opacity: 0 }}
               animate={{ width: 80, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
             />
             
             <motion.p 
               className="text-lg text-gray-600 dark:text-gray-300"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
               {t("aboutSection.introduction")}
             </motion.p>
@@ -278,7 +286,7 @@ export default function AboutPage() {
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
           />
           <motion.div
-            className="absolute right-1/4 bottom-10 w-40 h-40 border-4 border-secondary/30 rounded-full"
+            className="absolute right-1/4 bottom-10 w-40 h-40 border-4 border-secondary/30 rounded-full blur-xl"
             style={{ borderRadius: "38% 62% 63% 37% / 41% 44% 56% 59%" }}
             animate={{ 
               rotate: [0, 360],
@@ -380,16 +388,16 @@ export default function AboutPage() {
                   <motion.div 
                     key={i} 
                     className="text-center"
-                    initial={{ y: 30, opacity: 0 }}
+                    initial={{ opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.2 * i, duration: 0.6 }}
+                    transition={{ delay: 0.1 * i, duration: 0.5 }}
                     viewport={{ once: true }}
                   >
                     <motion.div 
                       className="text-4xl font-bold text-primary"
-                      initial={{ scale: 0.8 }}
-                      whileInView={{ scale: [0.8, 1.2, 1] }}
-                      transition={{ duration: 0.6, delay: 0.3 + 0.1 * i }}
+                      initial={{ scale: 0.9 }}
+                      whileInView={{ scale: [0.9, 1.1, 1] }}
+                      transition={{ duration: 0.5, delay: 0.1 * i }}
                     >
                       {stat.value}
                     </motion.div>
@@ -402,9 +410,9 @@ export default function AboutPage() {
             <motion.div className="lg:w-1/2" variants={itemVariants}>
               <motion.div 
                 className="inline-block px-4 py-1 rounded-full text-primary bg-primary/10 text-sm font-medium mb-6"
-                initial={{ x: -20, opacity: 0 }}
+                initial={{ opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.4 }}
                 whileHover={{ scale: 1.05 }}
               >
                 {t("aboutSection.ourOrigins")}
@@ -412,9 +420,9 @@ export default function AboutPage() {
               
               <motion.h2 
                 className="text-3xl md:text-4xl font-bold mb-8 text-gray-800 dark:text-gray-100"
-                initial={{ y: 20, opacity: 0 }}
+                initial={{ opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
+                transition={{ duration: 0.5 }}
               >
                 HackIt
                 <motion.span 
@@ -458,7 +466,7 @@ export default function AboutPage() {
       {/* 使命與願景 */}
       <motion.section 
         ref={missionRef}
-        className="py-24 bg-gray-50 dark:bg-gray-800 relative overflow-hidden"
+        className="py-28 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 relative overflow-hidden"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -491,6 +499,33 @@ export default function AboutPage() {
               delay: 2
             }}
           />
+          
+          {/* 增加一些裝飾性元素 */}
+          <motion.div 
+            className="absolute top-1/4 right-[15%] w-24 h-24 bg-gradient-to-br from-purple-100/30 to-indigo-100/20 dark:from-purple-900/10 dark:to-indigo-900/5 rounded-full blur-xl"
+            animate={{ 
+              scale: [1, 1.2, 1],
+              opacity: [0.5, 0.7, 0.5]
+            }}
+            transition={{ 
+              duration: 8, 
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          <motion.div 
+            className="absolute bottom-1/4 left-[20%] w-32 h-32 bg-gradient-to-tr from-indigo-100/20 to-purple-100/30 dark:from-indigo-900/5 dark:to-purple-900/10 rounded-full blur-xl"
+            animate={{ 
+              scale: [1, 0.8, 1],
+              opacity: [0.4, 0.6, 0.4]
+            }}
+            transition={{ 
+              duration: 10, 
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1
+            }}
+          />
         </div>
         
         {/* 裝飾性圖形 */}
@@ -511,6 +546,16 @@ export default function AboutPage() {
           transition={{ duration: 20, repeat: Infinity }}
         />
         
+        {/* 矩形裝飾 */}
+        <motion.div
+          className="absolute right-[15%] bottom-[15%] w-12 h-12 border-2 border-primary/10 rounded-lg opacity-50"
+          animate={{ 
+            rotate: [0, 45],
+            opacity: [0.5, 0.3, 0.5]
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        />
+        
         <div className="container mx-auto px-4 relative z-10">
           <motion.div 
             className="text-center max-w-3xl mx-auto mb-16"
@@ -519,27 +564,40 @@ export default function AboutPage() {
             animate={isMissionInView ? "visible" : "hidden"}
           >
             <motion.h2 
-              className="text-3xl md:text-4xl font-bold mb-6 text-gray-800 dark:text-gray-100"
+              className="text-3xl md:text-5xl font-bold mb-6 text-gray-800 dark:text-gray-100 tracking-tight"
               variants={itemVariants}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
             >
-              {t("aboutSection.missionVisionTitle")}
+              {t("aboutSection.missionAndManifesto")}
             </motion.h2>
             
+            <motion.div 
+              className="h-0.5 w-16 md:w-24 bg-primary mx-auto mb-6"
+              initial={{ width: 0, opacity: 0 }}
+              whileInView={{ width: 96, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            />
+            
             <motion.p 
-              className="text-lg text-gray-600 dark:text-gray-300"
+              className="text-lg md:text-xl text-gray-600 dark:text-gray-300 font-light"
               variants={itemVariants}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
             >
-              {t("aboutSection.missionVisionSubtitle")}
+              {t("aboutSection.coreIdealsPromise")}
             </motion.p>
           </motion.div>
           
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
             {/* 使命卡片 */}
             <motion.div 
-              className="bg-white dark:bg-gray-900 p-8 md:p-10 rounded-2xl shadow-lg hover:shadow-xl transition-shadow transform hover:-translate-y-1 duration-300 relative overflow-hidden"
-              initial={{ x: -50, opacity: 0 }}
+              className="bg-white dark:bg-gray-900 p-8 md:p-10 rounded-3xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2 duration-500 relative overflow-hidden border border-transparent hover:border-primary/10"
+              initial={{ x: -20, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.7, type: "spring", stiffness: 40, damping: 25 }}
               viewport={{ once: true }}
             >
               {/* 背景圖案 */}
@@ -565,34 +623,56 @@ export default function AboutPage() {
                 </svg>
               </div>
               
+              {/* 裝飾光暈 */}
+              <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-2xl"></div>
+              <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-gradient-to-tr from-primary/5 to-transparent rounded-full blur-2xl"></div>
+              
               <motion.div 
                 className="relative z-10"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.4 }}
                 viewport={{ once: true }}
               >
-                <div className="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center text-primary mb-6">
+                <motion.div 
+                  className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-8"
+                  whileHover={{ rotate: [0, 5, -5, 0], scale: 1.05 }}
+                  transition={{ duration: 0.5 }}
+                >
                   <FaRocket className="text-2xl" />
-                </div>
+                </motion.div>
                 
-                <h3 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100">
-                  {t("aboutSection.missionTitle")}
-                </h3>
+                <motion.h3 
+                  className="text-2xl md:text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {t("aboutSection.mission")}
+                </motion.h3>
                 
-                <div className="prose prose-lg text-gray-600 dark:text-gray-300">
-                  <p>{t("aboutSection.missionParagraph1")}</p>
-                  <p>{t("aboutSection.missionParagraph2")}</p>
+                <div className="space-y-5">
+                  {missionArr.map((line: string, idx: number) => (
+                    <motion.p
+                      key={idx}
+                      className="text-lg md:text-xl leading-relaxed text-gray-700 dark:text-gray-300 font-medium"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.05 + idx * 0.08 }}
+                    >
+                      {line}
+                    </motion.p>
+                  ))}
                 </div>
               </motion.div>
             </motion.div>
             
-            {/* 願景卡片 */}
+            {/* 宣言卡片 */}
             <motion.div 
-              className="bg-white dark:bg-gray-900 p-8 md:p-10 rounded-2xl shadow-lg hover:shadow-xl transition-shadow transform hover:-translate-y-1 duration-300 relative overflow-hidden"
-              initial={{ x: 50, opacity: 0 }}
+              className="bg-white dark:bg-gray-900 p-8 md:p-10 rounded-3xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2 duration-500 relative overflow-hidden border border-transparent hover:border-primary/10"
+              initial={{ x: 20, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.7, type: "spring", stiffness: 40, damping: 25 }}
               viewport={{ once: true }}
             >
               {/* 背景圖案 */}
@@ -619,24 +699,46 @@ export default function AboutPage() {
                 </svg>
               </div>
               
+              {/* 裝飾光暈 */}
+              <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-bl from-primary/5 to-transparent rounded-full blur-2xl"></div>
+              <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-gradient-to-tl from-primary/5 to-transparent rounded-full blur-2xl"></div>
+              
               <motion.div 
                 className="relative z-10"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.4 }}
                 viewport={{ once: true }}
               >
-                <div className="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center text-primary mb-6">
+                <motion.div 
+                  className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-8"
+                  whileHover={{ rotate: [0, -5, 5, 0], scale: 1.05 }}
+                  transition={{ duration: 0.5 }}
+                >
                   <FaMagic className="text-2xl" />
-                </div>
+                </motion.div>
                 
-                <h3 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100">
-                  {t("aboutSection.visionTitle")}
-                </h3>
+                <motion.h3 
+                  className="text-2xl md:text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {t("aboutSection.manifesto")}
+                </motion.h3>
                 
-                <div className="prose prose-lg text-gray-600 dark:text-gray-300">
-                  <p>{t("aboutSection.visionParagraph1")}</p>
-                  <p>{t("aboutSection.visionParagraph2")}</p>
+                <div className="space-y-5">
+                  {manifestoArr.map((line: string, idx: number) => (
+                    <motion.p
+                      key={idx}
+                      className="text-lg md:text-xl leading-relaxed text-gray-700 dark:text-gray-300 font-medium"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.05 + idx * 0.08 }}
+                    >
+                      {line}
+                    </motion.p>
+                  ))}
                 </div>
               </motion.div>
             </motion.div>
@@ -691,7 +793,10 @@ export default function AboutPage() {
           >
             <motion.h2 
               className="text-3xl md:text-4xl font-bold mb-6 text-gray-800 dark:text-gray-100"
-              variants={itemVariants}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
             >
               {t("aboutSection.coreValuesTitle", {
                 highlight: (text) => (
@@ -702,7 +807,10 @@ export default function AboutPage() {
             
             <motion.p 
               className="text-lg text-gray-600 dark:text-gray-300"
-              variants={itemVariants}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              viewport={{ once: true }}
             >
               {locale === 'zh-TW' 
                 ? "這些原則指導著我們的決策和行動"
@@ -737,9 +845,9 @@ export default function AboutPage() {
               <motion.div 
                 key={index}
                 className="bg-gray-50 dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-md hover:shadow-lg transition-all"
-                initial={{ y: 50, opacity: 0 }}
+                initial={{ opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
                 viewport={{ once: true, margin: "-100px" }}
                 whileHover={{ y: -5, transition: { duration: 0.2 } }}
               >
@@ -757,253 +865,361 @@ export default function AboutPage() {
               </motion.div>
             ))}
           </div>
+          
+          {/* CTA 部分 - 只在顯示團隊部分時才顯示 */}
+          {showTeamSection && (
+            <motion.div 
+              className="text-center mt-16"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
+                {t("aboutSection.ctaText")}
+              </p>
+              <button className="px-8 py-3 bg-primary text-white rounded-lg shadow-md hover:bg-primary-dark hover:shadow-lg transition-all font-medium">
+                {t("aboutSection.ctaButton")}
+              </button>
+            </motion.div>
+          )}
         </div>
       </motion.section>
       
-      {/* 團隊部分 */}
-      <motion.section
-        ref={teamRef}
-        className="py-24 bg-gray-50 dark:bg-gray-800 relative overflow-hidden"
+      {/* Notion 連結部分 */}
+      <motion.section 
+        className="py-16 bg-gray-50 dark:bg-gray-800 relative overflow-hidden"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
         {/* 背景裝飾 */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          <motion.div 
-            className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-primary/5 to-indigo-100/30 dark:from-primary/10 dark:to-indigo-800/10 rounded-full"
-            animate={{ 
-              scale: [1, 1.1, 1],
-              rotate: [0, 15, 0]
-            }}
-            transition={{ 
-              duration: 20, 
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-          <motion.div 
-            className="absolute -bottom-20 -left-20 w-60 h-60 bg-gradient-to-tr from-indigo-100/30 to-primary/5 dark:from-indigo-800/10 dark:to-primary/10 rounded-full"
-            animate={{ 
-              scale: [1, 0.9, 1],
-              rotate: [0, -10, 0]
-            }}
-            transition={{ 
-              duration: 18, 
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1
-            }}
-          />
-          
-          {/* 浮動代碼符號 */}
+        <div className="absolute inset-0 overflow-hidden">
           <motion.div
-            className="absolute bottom-20 right-[10%] text-gray-300 dark:text-gray-700 font-mono text-xl opacity-30 transform rotate-12"
+            className="absolute -right-20 top-1/3 w-40 h-40 bg-primary/5 dark:bg-primary/10 rounded-full"
             animate={{ 
               y: [0, -15, 0],
-              rotate: [12, 15, 12]
+              opacity: [0.5, 0.7, 0.5]
             }}
             transition={{ 
-              duration: 5, 
+              duration: 8, 
               repeat: Infinity,
               ease: "easeInOut"
             }}
-          >
-            &lt;/&gt;
-          </motion.div>
+          />
           <motion.div
-            className="absolute top-40 left-[15%] text-gray-300 dark:text-gray-700 font-mono text-2xl opacity-20 transform -rotate-12"
+            className="absolute left-1/4 bottom-10 w-24 h-24 bg-indigo-100/50 dark:bg-indigo-900/20 rounded-full"
             animate={{ 
-              y: [0, 15, 0],
-              rotate: [-12, -16, -12]
+              scale: [1, 1.1, 1],
+              opacity: [0.3, 0.5, 0.3]
             }}
             transition={{ 
-              duration: 7, 
+              duration: 10, 
               repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1
+              ease: "easeInOut"
             }}
-          >
-            {"{...}"}
-          </motion.div>
+          />
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
           <motion.div 
-            className="text-center max-w-3xl mx-auto mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            className="max-w-2xl mx-auto text-center"
+            initial={{ opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
             <motion.h2 
-              className="text-3xl md:text-4xl font-bold mb-6 text-gray-800 dark:text-gray-100"
+              className="text-2xl md:text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100"
+              initial={{ opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.4 }}
+              viewport={{ once: true }}
+            >
+              {t("aboutSection.learnMoreNotion")}
+            </motion.h2>
+            
+            <motion.p 
+              className="text-lg text-gray-600 dark:text-gray-300 mb-8"
+              initial={{ opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.05 }}
+              viewport={{ once: true }}
+            >
+              {t("aboutSection.notionDescription")}
+            </motion.p>
+            
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              viewport={{ once: true }}
+            >
+              <a 
+                href="https://hackittw.notion.site/wi-ki-about?pvs=4" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-8 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg shadow-md hover:shadow-lg transition-all font-medium gap-2"
+              >
+                {t("aboutSection.visitNotionButton")}
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.section>
+      
+      {/* 團隊部分 */}
+      {showTeamSection && (
+        <motion.section
+          ref={teamRef}
+          className="py-24 bg-gray-50 dark:bg-gray-800 relative overflow-hidden"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          {/* 背景裝飾 */}
+          <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <motion.div 
+              className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-primary/5 to-indigo-100/30 dark:from-primary/10 dark:to-indigo-800/10 rounded-full"
+              animate={{ 
+                scale: [1, 1.1, 1],
+                rotate: [0, 15, 0]
+              }}
+              transition={{ 
+                duration: 20, 
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            <motion.div 
+              className="absolute -bottom-20 -left-20 w-60 h-60 bg-gradient-to-tr from-indigo-100/30 to-primary/5 dark:from-indigo-800/10 dark:to-primary/10 rounded-full"
+              animate={{ 
+                scale: [1, 0.9, 1],
+                rotate: [0, -10, 0]
+              }}
+              transition={{ 
+                duration: 18, 
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1
+              }}
+            />
+            
+            {/* 浮動代碼符號 */}
+            <motion.div
+              className="absolute bottom-20 right-[10%] text-gray-300 dark:text-gray-700 font-mono text-xl opacity-30 transform rotate-12"
+              animate={{ 
+                y: [0, -15, 0],
+                rotate: [12, 15, 12]
+              }}
+              transition={{ 
+                duration: 5, 
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              &lt;/&gt;
+            </motion.div>
+            <motion.div
+              className="absolute top-40 left-[15%] text-gray-300 dark:text-gray-700 font-mono text-2xl opacity-20 transform -rotate-12"
+              animate={{ 
+                y: [0, 15, 0],
+                rotate: [-12, -16, -12]
+              }}
+              transition={{ 
+                duration: 7, 
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1
+              }}
+            >
+              {"{...}"}
+            </motion.div>
+          </div>
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <motion.div 
+              className="text-center max-w-3xl mx-auto mb-16"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
             >
-              {t("aboutSection.teamHeader")}
-            </motion.h2>
+              <motion.h2 
+                className="text-3xl md:text-4xl font-bold mb-6 text-gray-800 dark:text-gray-100"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+              >
+                {t("aboutSection.teamHeader")}
+              </motion.h2>
+              
+              <motion.p 
+                className="text-lg text-gray-600 dark:text-gray-300"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                viewport={{ once: true }}
+              >
+                {t("aboutSection.teamSubheader")}
+              </motion.p>
+            </motion.div>
             
-            <motion.p 
-              className="text-lg text-gray-600 dark:text-gray-300"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-            >
-              {t("aboutSection.teamSubheader")}
-            </motion.p>
-          </motion.div>
-          
-          <motion.div 
-            className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            animate={isTeamInView ? "visible" : "hidden"}
-          >
-            {teamMembers.map((member, index) => (
-              <motion.div 
-                key={index}
-                className="bg-white dark:bg-gray-900 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all group"
-                variants={itemVariants}
-                whileHover={{ y: -10, transition: { duration: 0.2 } }}
-                onClick={() => setSelectedMember(member)}
-              >
-                <div className="relative h-60 overflow-hidden">
-                  <Image 
-                    src={member.image} 
-                    alt={member.name}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    className="transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                    <p className="text-white text-sm font-medium invisible group-hover:visible">
-                      {t("aboutSection.clickForDetails")}
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-1">{member.name}</h3>
-                  <p className="text-primary font-medium text-sm mb-4">{member.title}</p>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3">{member.shortIntro}</p>
-                  
-                  <div className="flex gap-2 mt-5 text-gray-600 dark:text-gray-400">
-                    {member.specialties.slice(0, 2).map((specialty, i) => (
-                      <span key={i} className="inline-block px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 rounded-full">
-                        {specialty}
-                      </span>
-                    ))}
-                    {member.specialties.length > 2 && (
-                      <span className="inline-block px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 rounded-full">
-                        +{member.specialties.length - 2}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-          
-          {/* CTA Button */}
-          <motion.div 
-            className="text-center mt-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            <button className="px-8 py-3 bg-primary text-white rounded-lg shadow-md hover:bg-primary-dark hover:shadow-lg transition-all font-medium">
-              {t("aboutSection.viewFullTeam")}
-            </button>
-          </motion.div>
-        </div>
-        
-        {/* 團隊成員詳情彈窗 */}
-        <AnimatePresence>
-          {selectedMember && (
             <motion.div 
-              className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedMember(null)}
+              className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
+              variants={containerVariants}
+              initial="hidden"
+              animate={isTeamInView ? "visible" : "hidden"}
             >
-              <motion.div 
-                className="bg-white dark:bg-gray-800 w-full max-w-3xl rounded-2xl overflow-hidden relative"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ type: "spring", damping: 25 }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button 
-                  className="absolute top-4 right-4 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-800 dark:text-white shadow-md z-10"
-                  onClick={() => setSelectedMember(null)}
+              {teamMembers.map((member, index) => (
+                <motion.div 
+                  key={index}
+                  className="bg-white dark:bg-gray-900 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all group"
+                  variants={itemVariants}
+                  whileHover={{ y: -10, transition: { duration: 0.2 } }}
+                  onClick={() => setSelectedMember(member)}
                 >
-                  <FaTimes />
-                </button>
-                
-                <div className="flex flex-col md:flex-row">
-                  <div className="md:w-1/3 relative h-60 md:h-auto">
+                  <div className="relative h-60 overflow-hidden">
                     <Image 
-                      src={selectedMember.image}
-                      alt={selectedMember.name}
+                      src={member.image} 
+                      alt={member.name}
                       fill
                       style={{ objectFit: 'cover' }}
+                      className="transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:hidden"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                      <p className="text-white text-sm font-medium invisible group-hover:visible">
+                        {t("aboutSection.clickForDetails")}
+                      </p>
+                    </div>
                   </div>
                   
-                  <div className="md:w-2/3 p-6 md:p-8">
-                    <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-1">{selectedMember.name}</h3>
-                    <p className="text-primary font-medium mb-4">{selectedMember.title}</p>
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-1">{member.name}</h3>
+                    <p className="text-primary font-medium text-sm mb-4">{member.title}</p>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3">{member.shortIntro}</p>
                     
-                    <div className="prose prose-sm md:prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300">
-                      <p>{selectedMember.description}</p>
-                    </div>
-                    
-                    <div className="flex flex-wrap gap-2 mt-6">
-                      {selectedMember.specialties.map((specialty, i) => (
-                        <span key={i} className="inline-block px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full">
+                    <div className="flex gap-2 mt-5 text-gray-600 dark:text-gray-400">
+                      {member.specialties.slice(0, 2).map((specialty, i) => (
+                        <span key={i} className="inline-block px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 rounded-full">
                           {specialty}
                         </span>
                       ))}
-                    </div>
-                    
-                    <div className="flex gap-4 mt-6">
-                      {selectedMember.github && (
-                        <a href={`https://${selectedMember.github}`} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
-                          <FaGithub className="text-xl" />
-                        </a>
-                      )}
-                      {selectedMember.twitter && (
-                        <a href={`https://${selectedMember.twitter}`} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
-                          <FaTwitter className="text-xl" />
-                        </a>
-                      )}
-                      {selectedMember.linkedin && (
-                        <a href={`https://${selectedMember.linkedin}`} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
-                          <FaLinkedin className="text-xl" />
-                        </a>
-                      )}
-                      {selectedMember.email && (
-                        <a href={`mailto:${selectedMember.email}`} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
-                          <FaEnvelope className="text-xl" />
-                        </a>
+                      {member.specialties.length > 2 && (
+                        <span className="inline-block px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 rounded-full">
+                          +{member.specialties.length - 2}
+                        </span>
                       )}
                     </div>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              ))}
+            </motion.div>
+            
+                      {/* CTA Button - 只在顯示團隊部分時才顯示 */}
+          {showTeamSection && (
+            <motion.div 
+              className="text-center mt-16"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <button className="px-8 py-3 bg-primary text-white rounded-lg shadow-md hover:bg-primary-dark hover:shadow-lg transition-all font-medium">
+                {t("aboutSection.viewFullTeam")}
+              </button>
             </motion.div>
           )}
-        </AnimatePresence>
-      </motion.section>
+          </div>
+          
+          {/* 團隊成員詳情彈窗 */}
+          <AnimatePresence>
+            {selectedMember && (
+              <motion.div 
+                className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setSelectedMember(null)}
+              >
+                <motion.div 
+                  className="bg-white dark:bg-gray-800 w-full max-w-3xl rounded-2xl overflow-hidden relative"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  transition={{ type: "spring", damping: 25 }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button 
+                    className="absolute top-4 right-4 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-800 dark:text-white shadow-md z-10"
+                    onClick={() => setSelectedMember(null)}
+                  >
+                    <FaTimes />
+                  </button>
+                  
+                  <div className="flex flex-col md:flex-row">
+                    <div className="md:w-1/3 relative h-60 md:h-auto">
+                      <Image 
+                        src={selectedMember.image}
+                        alt={selectedMember.name}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:hidden"></div>
+                    </div>
+                    
+                    <div className="md:w-2/3 p-6 md:p-8">
+                      <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-1">{selectedMember.name}</h3>
+                      <p className="text-primary font-medium mb-4">{selectedMember.title}</p>
+                      
+                      <div className="prose prose-sm md:prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300">
+                        <p>{selectedMember.description}</p>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-2 mt-6">
+                        {selectedMember.specialties.map((specialty, i) => (
+                          <span key={i} className="inline-block px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full">
+                            {specialty}
+                          </span>
+                        ))}
+                      </div>
+                      
+                      <div className="flex gap-4 mt-6">
+                        {selectedMember.github && (
+                          <a href={`https://${selectedMember.github}`} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+                            <FaGithub className="text-xl" />
+                          </a>
+                        )}
+                        {selectedMember.twitter && (
+                          <a href={`https://${selectedMember.twitter}`} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+                            <FaTwitter className="text-xl" />
+                          </a>
+                        )}
+                        {selectedMember.linkedin && (
+                          <a href={`https://${selectedMember.linkedin}`} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+                            <FaLinkedin className="text-xl" />
+                          </a>
+                        )}
+                        {selectedMember.email && (
+                          <a href={`mailto:${selectedMember.email}`} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+                            <FaEnvelope className="text-xl" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.section>
+      )}
       
       <Footer />
     </main>

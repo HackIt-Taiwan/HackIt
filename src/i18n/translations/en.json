@@ -36,51 +36,65 @@
   },
   "aboutSection": {
     "aboutUs": "About Us",
-    "tagline": "Inspiring Future Tech Talents with <highlight>Innovative Thinking</highlight>",
-    "introduction": "HackIt is a community platform dedicated to empowering teenagers through programming education, inspiring them to become future tech innovators.",
-    "founderStoryTitle": "Our <highlight>Founding Story</highlight>",
-    "founderStoryTitlePlain": "Founding Story",
-    "founderStoryParagraph1": "Founded in 2020, HackIt was initiated by a group of senior software engineers and educators passionate about tech education. Amidst the challenges of remote teaching during the pandemic, we saw new opportunities in digital education and realized that traditional education systems struggled to meet the cultivation needs of modern tech talent.",
-    "founderStoryParagraph2": "As frontline tech professionals, we deeply understand the importance of practical experience and innovative thinking for future workers. Therefore, we decided to create a comprehensive platform integrating online learning, physical workshops, and hackathon competitions, allowing teenagers to engage in real tech project development in an edutaining environment.",
-    "founderStoryParagraph3": "Over the past three years, HackIt has served over 25,000 students, organized more than 50 online and offline events, and helped many students realize their innovative projects, some even receiving recognition in international competitions.",
-    "missionTitle": "Our Mission",
-    "missionParagraph1": "We are committed to inspiring young people's technical potential and creativity through practical and innovative programming education, cultivating them to become future digital innovators and problem solvers.",
-    "missionParagraph2": "We believe every young person should have the opportunity to access programming skills, regardless of their background or prior experience. Through our platform, we hope to remove barriers to tech education and enable more people to participate in building the digital future.",
-    "visionTitle": "Our Vision",
-    "visionParagraph1": "We aspire to build a thriving tech learning ecosystem where innovative thinking is encouraged, technical skills are empowered, and community collaboration is valued.",
-    "visionParagraph2": "We aim to become a leading brand in youth tech education in Taiwan, creating a positive impact on society through the talents we cultivate and helping Taiwan maintain its competitiveness in the global digital economy.",
+    "tagline": "Inspiring future tech leaders with <highlight>innovative thinking</highlight>",
+    "introduction": "HackIt is Taiwan's first teen-led creative community. We organize our own events, write our own code, and make our own impact. Rejecting rote learning and passive waiting, HackIt empowers every teenager to build their own future.",
+    "founderStoryTitle": "Our <highlight>Origin Story</highlight>",
+    "founderStoryTitlePlain": "Origin Story",
+    "founderStoryParagraph1": "HackIt was born in 2024, started by four high school students. After being invited to a global Hack Club hackathon, we challenged ourselves to create Taiwan's first-ever teen-organized hackathon. No one knew if it would work, but we believed that without trying, we'd never find out.",
+    "founderStoryParagraph2": "We refuse to let youth be defined by exams and textbooks alone. Through action, we prove that creativity and adventure aren't limited by age. From initial chaos to growing competence, we showed Taiwan that even a group of high schoolers can host impactful, inspiring events. HackIt became our gentle yet powerful challenge to the educational system.",
+    "founderStoryParagraph3": "When creativity becomes routine, HackIt transforms from an event into an attitude—a youth culture of curiosity, courage, and collaboration. We've seen participants find direction here, feel understood, and realize for the first time: 'I too can change something.' HackIt doesn't just offer a stage, but a place where teens regain confidence in themselves. We witness firsthand: when young people are truly believed in, they create possibilities adults can't even imagine. Learning should never be confined to the classroom.",
     "coreValuesTitle": "Our <highlight>Core Values</highlight>",
-    "coreValueInnovativeTitle": "Innovative Thinking",
-    "coreValueInnovativeDescription": "Encourage breaking traditional frameworks, cultivate creativity in problem-solving, and enable learners to think from different perspectives.",
-    "coreValueCommunityTitle": "Community Collaboration",
-    "coreValueCommunityDescription": "Establish a mutual learning environment, emphasize the importance of teamwork, and achieve greater success through collective growth rather than individual effort.",
-    "coreValuePracticalTitle": "Practical Orientation",
-    "coreValuePracticalDescription": "Emphasize both theory and practice, apply learning through real projects, and build a demonstrable portfolio to accelerate career development.",
-    "coreValueLifelongLearningTitle": "Lifelong Learning",
-    "coreValueLifelongLearningDescription": "Cultivate a habit of continuous learning; in an era of rapid technological change, curiosity and a passion for learning are the greatest competitive advantages.",
-    "ctaText": "Want to learn more about our story and team members?",
+    "coreValueInnovativeTitle": "Challenge Convention",
+    "coreValueInnovativeDescription": "We reject the mindset of 'it's always been this way.' Encouraging innovation, questioning norms, and redefining what truly matters in learning.",
+    "coreValueCommunityTitle": "Embrace Adventure",
+    "coreValueCommunityDescription": "Every day deserves a step outside your comfort zone. True growth comes from trying what scares yet excites you. We're here to stumble, laugh, and fly together.",
+    "coreValuePracticalTitle": "Believe in Yourself",
+    "coreValuePracticalDescription": "You don't need to meet others' standards of 'excellence'; you're strongest as yourself. We believe everyone has a spark waiting to be seen, needing only a place to ignite.",
+    "coreValueLifelongLearningTitle": "Hands-On Action",
+    "coreValueLifelongLearningDescription": "We say no to empty talk and theoretical exercises. Ideas matter only when executed, built by hand, and able to impact the world.",
+    "ctaText": "Want to learn more about our story and team?",
     "ctaButton": "Meet Our Team",
     "hackItFoundersAlt": "HackIt Founders",
     "ourOrigins": "Our Origins",
-    "missionVisionTitle": "Our Mission and Vision",
-    "missionVisionSubtitle": "The core ideals and ambitious goals that drive us forward",
+    "missionVisionTitle": "Our Mission & Vision",
+    "missionVisionSubtitle": "The core beliefs and ambitious goals driving us forward",
     "teamHeader": "Meet Our Team",
-    "teamSubheader": "A group of passionate, talented educators and tech experts",
+    "teamSubheader": "A passionate group of educators and tech experts",
     "clickForDetails": "Click for details",
     "viewFullTeam": "View Full Team",
     "students": "Students",
     "events": "Events",
-    "years": "Years"
+    "years": "Years of History",
+    "missionShort": [
+      "HackIt's mission is to make teens seen and believed in.",
+      "We believe Taiwanese students aren't lacking talent, just opportunity.",
+      "When education values creativity over standardized answers,",
+      "those silent teens will begin to shine, even lighting others' paths."
+    ],
+    "manifestoShort": [
+      "We're building more than events—we're creating a culture.",
+      "Making action, courage, and mutual inspiration daily youth experiences.",
+      "When young people are trusted, they become not just participants, but catalysts of change."
+    ],
+    "missionAndManifesto": "Mission & Manifesto",
+    "coreIdealsPromise": "Our core ideals and commitment to the future",
+    "mission": "Mission",
+    "manifesto": "Manifesto",
+    "learnMoreNotion": "Want to learn more?",
+    "visitNotionButton": "Visit our Notion Page",
+    "notionDescription": "Find detailed information about HackIt on Notion, including event histories, our origin story, and core philosophies."
   },
   "animatedConnector": {
     "unleashCreativityComment": "{ /* Your creativity here */ }"
   },
   "ctaSection": {
-    "readyTitle": "Ready to Dive In?",
-    "description": "Join our creative and vibrant tech community to explore, learn, create, and grow together! Whether you're a beginner or an experienced developer, there's a place for you here.",
-    "joinButton": "Join Us",
-    "contactButton": "Contact Us",
-    "noCommitment": "No commitment needed! Join our community today!",
+    "readyTitle": "Ready to Change the Game?",
+    "description": "Join a youth-driven tech community where dreaming big and building even bigger go hand in hand. Whether you're just starting out or already creating amazing things, there's a place for you here.",
+    "joinButton": "Join Now",
+    "joinButtonUrl": "https://discord.gg/fvasrGKNjP",
+    "contactButton": "Talk to Us About Your Dreams",
+    "contactButtonUrl": "https://discord.gg/fvasrGKNjP",
+    "noCommitment": "No commitment needed — jump in and start exploring with us today!",
     "bgText1": "<HackIntoIt className=\"future\" />",
     "bgText2": "function createFuture() { return innovation; }",
     "bgText3": "const youCanHackIt = true;"
@@ -96,15 +110,6 @@
     "noEventsFound": "No events found matching your criteria.",
     "endedBadge": "Ended"
   },
-  "eventsSection": {
-    "title": "Upcoming Events",
-    "subtitle": "Explore Our Activities",
-    "dragHint": "Drag to scroll or use arrows to navigate",
-    "spotsFull": "Full",
-    "spotsLeft": "{spotsLeft} / {spots} Spots",
-    "learnMore": "Learn More",
-    "viewAllEvents": "View All Events"
-  },
   "featuredEvents": {
     "tagline": "Must-Attend Events",
     "title": {
@@ -112,13 +117,14 @@
       "highlighted": "Events"
     },
     "subtitle": "Join these awesome major events, meet like-minded friends, and create unforgettable memories together!",
-    "eventSticker": "Exciting Event",
+    "eventSticker": "Must-Attend Event",
     "popularTag": "Popular Event",
     "month": "",
     "dateTo": "to",
     "dateLabel": "Date",
     "learnMoreButton": "Learn More",
-    "viewAllButton": "View All Events"
+    "viewAllButton": "View All Events",
+    "noMoreInfo": "No more info"
   },
   "heroSection": {
     "consoleText": "console.log('Hello, Hacker!')",
@@ -129,10 +135,12 @@
       "creative": "creative",
       "third": " programmers"
     },
-    "description": "We create, explore, and share the endless possibilities of programming together! Express your creativity, transform ideas into reality with code. HackIt is the place for all creators.",
+    "description": "Here, it's not just about writing code — it's about building the future together. At HackIt, we believe every idea deserves a chance, and every young person has the power to create real change.",
     "buttons": {
       "joinCommunity": "Join Community",
-      "viewProjects": "View Projects"
+      "joinCommunityUrl": "https://discord.gg/fvasrGKNjP",
+      "viewProjects": "View Events",
+      "viewProjectsUrl": "https://hackittw.notion.site/1f459188ed5280499052d8d3b813770c"
     },
     "stats": {
       "prefix": "We have",
@@ -188,37 +196,39 @@
     "participateButton": "Participate"
   },
   "youthIntroSection": {
-    "tagline": "Designed for Young Creators",
+    "tagline": "Built for young dreamers who dare to create",
     "title": {
-      "first": "Explore",
-      "second": "Creative Coding",
-      "third": "and its",
-      "fourth": "Endless Possibilities"
+      "first": "Embark on a journey",
+      "second": "of creation and adventure",
+      "third": "in your",
+      "fourth": " youthful chapter"
     },
     "description": {
-      "first": "HackIt is a secret base for creative 13-18 year-olds who love making things. Here we code, build projects, make friends, and ",
-      "highlighted": "create amazing digital possibilities for our generation",
-      "last": "!"
+      "first": "HackIt is a hidden haven for teens who dare to dream and build. Here, we challenge norms, break limits, and",
+      "highlighted": " take action to define our own future",
+      "last": "."
     },
     "features": {
       "coding": {
-        "title": "Build Cool Programming Projects",
-        "description": "Start from scratch and create your own websites, games, apps, and AI applications - no prior experience needed!"
+        "title": "Create to change the world",
+        "description": "We don't just code—we use tech and creativity to solve real problems and turn ideas into impactful actions."
       },
       "community": {
-        "title": "Find Your Tribe",
-        "description": "Connect with tech enthusiasts from all over, brainstorm together, help each other, and grow as a community!"
+        "title": "Find your people",
+        "description": "Join a tribe of bold and curious youth who support each other, share sparks of inspiration, and push boundaries together."
       },
       "portfolio": {
-        "title": "Create an Impressive Portfolio",
-        "description": "Complete projects with mentor guidance, gain hands-on experience, and prepare for your academic and career future."
+        "title": "Grow your impact and confidence",
+        "description": "Learn through building, grow through challenges, and turn every effort into the confidence to take on the world—one page ahead of the rest."
       }
     },
     "cta": {
-      "message1": "Whether you're a beginner just touching code for the first time or you already have some experience",
-      "message2": "Come to HackIt - there's an adventure waiting for you!",
+      "message1": "Whether you're just starting out or already building something that matters,",
+      "message2": "there's always a thrilling path waiting for you at HackIt.",
       "learnMoreButton": "Learn More",
-      "joinButton": "Join Now"
+      "learnMoreButtonUrl": "/about",
+      "joinButton": "Join Now",
+      "joinButtonUrl": "https://discord.gg/fvasrGKNjP"
     }
   },
   "scrollableEvents": {
@@ -229,7 +239,8 @@
     "dragHint": "← Hold and drag →",
     "completed": "Completed",
     "viewRecap": "View Recap",
-    "viewDetails": "View Details"
+    "viewDetails": "View Details",
+    "noMoreInfo": "No more info"
   },
   "latestNewsSection": {
     "title": "Latest <span>News</span>",

@@ -407,29 +407,39 @@ const FeaturedEvents: React.FC = () => {
                           viewport={{ once: true }}
                           className="relative"
                         >
-                          <Link
-                            href={`/events/${event.slug}`}
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 dark:bg-indigo-700 text-white rounded-lg font-bold group w-full justify-center md:w-auto"
-                          >
-                            <span>{t("featuredEvents.learnMoreButton")}</span> 
-                            <motion.div
-                              animate={{ x: [0, 5, 0] }}
-                              transition={{ 
-                                repeat: Infinity, 
-                                repeatType: "loop", 
-                                duration: 1.5, 
-                                repeatDelay: 1
-                              }}
+                          {event.frontmatter.url ? (
+                            <a
+                              href={event.frontmatter.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 dark:bg-indigo-700 text-white rounded-lg font-bold group w-full justify-center md:w-auto"
                             >
-                              <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-                            </motion.div>
-                          </Link>
-                          
+                              <span>{t("featuredEvents.learnMoreButton")}</span>
+                              <motion.div
+                                animate={{ x: [0, 5, 0] }}
+                                transition={{
+                                  repeat: Infinity,
+                                  repeatType: "loop",
+                                  duration: 1.5,
+                                  repeatDelay: 1
+                                }}
+                              >
+                                <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                              </motion.div>
+                            </a>
+                          ) : (
+                            <button
+                              className="inline-flex items-center gap-2 px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-400 rounded-lg font-bold w-full justify-center md:w-auto cursor-not-allowed"
+                              disabled
+                            >
+                              <span>{t("featuredEvents.noMoreInfo")}</span>
+                            </button>
+                          )}
                           {/* 手繪強調線 */}
                           <svg className="absolute -bottom-4 left-0 w-full" height="6" viewBox="0 0 100 6">
-                            <motion.path 
-                              d="M0,3 C20,1 40,5 60,3 C80,1 100,5 120,3" 
-                              stroke="#6366F1" 
+                            <motion.path
+                              d="M0,3 C20,1 40,5 60,3 C80,1 100,5 120,3"
+                              stroke="#6366F1"
                               strokeWidth="2"
                               strokeLinecap="round"
                               fill="none"

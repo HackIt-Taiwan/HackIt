@@ -550,16 +550,28 @@ const ScrollableEvents: React.FC = () => {
                     </div>
                   </div>
                   
-                  <Link 
-                    href={`/events/${event.slug}`} 
-                    className={`inline-block w-full text-center py-2 rounded-lg transition-colors ${
-                      event.frontmatter.isCompleted 
-                        ? 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600' 
-                        : 'bg-primary/10 dark:bg-primary/20 text-primary hover:bg-primary/20 dark:hover:bg-primary/30'
-                    }`}
-                  >
-                    {event.frontmatter.isCompleted ? t("scrollableEvents.viewRecap") : t("scrollableEvents.viewDetails")}
-                  </Link>
+                  {/* 活動詳情/外部連結按鈕 */}
+                  {event.frontmatter.url ? (
+                    <a 
+                      href={event.frontmatter.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className={`inline-block w-full text-center py-2 rounded-lg transition-colors ${
+                        event.frontmatter.isCompleted 
+                          ? 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600' 
+                          : 'bg-primary/10 dark:bg-primary/20 text-primary hover:bg-primary/20 dark:hover:bg-primary/30'
+                      }`}
+                    >
+                      {event.frontmatter.isCompleted ? t("scrollableEvents.viewRecap") : t("scrollableEvents.viewDetails")}
+                    </a>
+                  ) : (
+                    <button 
+                      className="inline-block w-full text-center py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed" 
+                      disabled
+                    >
+                      {t("scrollableEvents.noMoreInfo")}
+                    </button>
+                  )}
                 </div>
               </motion.div>
             ))}

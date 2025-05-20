@@ -339,7 +339,7 @@ const YouthIntroSection: React.FC = () => {
                     viewport={{ once: true }}
                   >
                     <Link 
-                      href="/about" 
+                      href={t("youthIntroSection.cta.learnMoreButtonUrl") as string} 
                       className="inline-block px-8 py-3 bg-white dark:bg-gray-700 border-2 border-primary text-primary rounded-full font-medium hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors"
                     >
                       {t("youthIntroSection.cta.learnMoreButton")}
@@ -355,7 +355,7 @@ const YouthIntroSection: React.FC = () => {
                     viewport={{ once: true }}
                   >
                     <Link 
-                      href="/signup" 
+                      href={t("youthIntroSection.cta.joinButtonUrl") as string} 
                       className="inline-block px-8 py-3 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-colors"
                     >
                       {t("youthIntroSection.cta.joinButton")}

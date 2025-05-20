@@ -10,7 +10,7 @@ import { useI18n } from '@/i18n';
 
 export default function NewsPage() {
   const { t } = useI18n();
-  
+
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
@@ -18,7 +18,7 @@ export default function NewsPage() {
       {/* 頁面內容 */}
       <section className="pt-32 md:pt-36 lg:pt-40 pb-20 md:pb-28 lg:pb-36 flex items-center">
         <div className="container mx-auto px-4 text-center">
-          <motion.div
+          <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -51,7 +51,7 @@ export default function NewsPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-lg transition-colors"
-              >
+                    >
                 <FaExternalLinkAlt className="mr-2" /> {t('newsPage.goToNotion')}
               </a>
             </div>
@@ -59,10 +59,10 @@ export default function NewsPage() {
             <Link 
               href="/"
               className="inline-flex items-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-medium py-3 px-6 rounded-lg transition-colors"
-            >
+                  >
               <FaArrowLeft className="mr-2" /> {t('newsPage.backToHome')}
             </Link>
-          </motion.div>
+            </motion.div>
         </div>
       </section>
       

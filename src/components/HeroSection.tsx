@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { FaArrowRight, FaGithub, FaDiscord } from "react-icons/fa";
+import { FaArrowRight, FaCalendarAlt, FaDiscord } from "react-icons/fa";
 import { useI18n } from "@/i18n";
 
 // 添加接口定義
@@ -221,7 +221,7 @@ const HeroSection: React.FC = () => {
               variants={itemVariants}
             >
               <Link
-                href="#join"
+                href={t("heroSection.buttons.joinCommunityUrl") as string}
                 className="px-4 sm:px-6 md:px-8 py-3 md:py-4 bg-primary text-white rounded-lg flex items-center font-medium hover:bg-primary/90 transition-colors text-sm sm:text-base md:text-lg"
               >
                 {t("heroSection.buttons.joinCommunity")}
@@ -229,11 +229,11 @@ const HeroSection: React.FC = () => {
               </Link>
               
               <Link
-                href="#projects"
+                href={t("heroSection.buttons.viewProjectsUrl") as string}
                 className="px-4 sm:px-6 md:px-8 py-3 md:py-4 bg-light dark:bg-dark border-2 border-dark dark:border-light text-dark dark:text-light rounded-lg hover:bg-dark hover:text-light dark:hover:bg-light dark:hover:text-dark transition-colors font-medium flex items-center text-sm sm:text-base md:text-lg"
               >
                 {t("heroSection.buttons.viewProjects")}
-                <FaGithub className="ml-2 md:ml-3" />
+                <FaCalendarAlt className="ml-2 md:ml-3" />
               </Link>
             </motion.div>
             
