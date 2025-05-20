@@ -39,7 +39,7 @@ const LanguageSelector: React.FC = () => {
         className="p-2 rounded-full focus:outline-none hover:bg-light dark:hover:bg-dark transition-colors flex items-center justify-center"
         onClick={() => setIsOpen(!isOpen)}
         whileTap={{ scale: 0.95 }}
-        aria-label={t('navbar.languageSelector')}
+        aria-label={String(t('navbar.languageSelector'))}
       >
         <FaGlobeAsia className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" />
       </motion.button>

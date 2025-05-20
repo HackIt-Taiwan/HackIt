@@ -20,7 +20,7 @@ export default function PodcastEventPage() {
   const eventId = params.eventId as string;
   
   const [podcast, setPodcast] = useState(() => getPodcastByEventId(eventId));
-  const [selectedEpisodeId, setSelectedEpisodeId] = useState<string | null>(null);
+  const [selectedEpisodeId, setSelectedEpisodeId] = useState<string | undefined>(undefined);
   const [currentEpisode, setCurrentEpisode] = useState<PodcastEpisode | null>(null);
   const [nextEpisode, setNextEpisode] = useState<PodcastEpisode | null>(null);
   const [autoplay, setAutoplay] = useState(false);

@@ -277,7 +277,7 @@ export default function PodcastPlayer({
                 whileTap={{ scale: 0.85 }}
                 onClick={togglePlay}
                 className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center"
-                aria-label={isPlaying ? t('podcastPage.pause') : t('podcastPage.play')}
+                aria-label={String(isPlaying ? t('podcastPage.pause') : t('podcastPage.play'))}
               >
                 {isPlaying ? <FaPause /> : <FaPlay className="ml-1" />}
               </motion.button>

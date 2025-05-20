@@ -32,6 +32,7 @@ const defaultContext: I18nContextType = {
   t: (key: string) => key,
 };
 
+// 創建上下文
 export const I18nContext = createContext<I18nContextType>(defaultContext);
 
 // i18n Provider
@@ -40,46 +41,31 @@ interface I18nProviderProps {
   initialLocale?: Locale;
 }
 
-export function I18nProvider({ children, initialLocale = 'zh-TW' }: I18nProviderProps) {
+export const I18nProvider: React.FC<I18nProviderProps> = ({ 
+  children, 
+  initialLocale = 'zh-TW' 
+}) => {
   const router = useRouter();
   const pathname = usePathname();
   const [locale, setLocaleState] = useState<Locale>(initialLocale);
 
-  // 從 localStorage 獲取初始語言 (客戶端才執行)
   useEffect(() => {
-    // 檢查是否在客戶端環境
-    if (typeof window === 'undefined') return;
-    
-    const savedLocale = localStorage.getItem('locale') as Locale;
-    if (savedLocale && Object.keys(translations).includes(savedLocale)) {
-      setLocaleState(savedLocale);
+    // 偵測 URL 中的語言設定
+    const pathLocale = pathname.split('/')[1] as Locale;
+    if (pathLocale && Object.keys(LANGUAGES).includes(pathLocale)) {
+      setLocaleState(pathLocale);
     }
-  }, []);
+  }, [pathname]);
 
-  // 設置語言並保存到 localStorage
+  // 設定語言時更新 URL
   const setLocale = (newLocale: Locale) => {
-    // 檢查是否在客戶端環境
-    if (typeof window === 'undefined') return;
-    
-    localStorage.setItem('locale', newLocale);
+    if (newLocale === locale) return;
+
     setLocaleState(newLocale);
-    
-    // 導航到相同頁面但使用新語言
-    if (pathname) {
-      let newPath = pathname;
-      // 處理語言前綴
-      const segments = pathname.split('/').filter(Boolean);
-      if (segments[0] && Object.keys(translations).includes(segments[0])) {
-        // 已有語言前綴，替換它
-        segments[0] = newLocale;
-        newPath = '/' + segments.join('/');
-      } else {
-        // 沒有語言前綴，添加它
-        newPath = `/${newLocale}${pathname}`;
-      }
-      
-      router.push(newPath);
-    }
+
+    // 更新 URL 中的語言路徑
+    const newPathname = pathname.split('/').slice(2).join('/');
+    router.push(`/${newLocale}/${newPathname}`);
   };
 
   // 翻譯函數
@@ -142,13 +128,13 @@ export function I18nProvider({ children, initialLocale = 'zh-TW' }: I18nProvider
     
     return key;
   };
-
+  
   return (
     <I18nContext.Provider value={{ locale, setLocale, t }}>
       {children}
     </I18nContext.Provider>
   );
-}
+};
 
 // 使用 i18n 的 Hook
 export function useI18n() {

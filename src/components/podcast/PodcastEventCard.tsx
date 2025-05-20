@@ -37,6 +37,7 @@ export default function PodcastEventCard({ podcast, index }: PodcastEventCardPro
               src={podcast.coverImage}
               alt={podcast.eventName}
               fill
+              unoptimized
               className="object-cover transition-transform duration-700"
               style={{
                 objectPosition: 'center'
@@ -52,7 +53,7 @@ export default function PodcastEventCard({ podcast, index }: PodcastEventCardPro
             
             {/* 集數指示器 */}
             <div className="absolute top-4 right-4 bg-white/90 dark:bg-gray-800/90 text-gray-800 dark:text-white px-3 py-1 rounded-full text-sm font-medium">
-              <span>{podcast.episodes.length} {t('podcastPage.episodes')}</span>
+              <span>{podcast.episodes.length} {t('podcastPage.episodes') as string}</span>
             </div>
             
             {/* 播放按鈕疊加層 */}
@@ -90,7 +91,7 @@ export default function PodcastEventCard({ podcast, index }: PodcastEventCardPro
                 className="text-sm bg-primary/10 text-primary dark:bg-primary/20 px-3 py-1 rounded-full font-medium"
                 whileHover={{ scale: 1.05 }}
               >
-                {t('podcastPage.play')}
+                {t('podcastPage.play') as string}
               </motion.div>
             </div>
           </div>

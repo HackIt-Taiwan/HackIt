@@ -96,7 +96,7 @@ export default function LatestNewsSection() {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 dark:text-white mb-4 relative z-10">
-                <span dangerouslySetInnerHTML={{ __html: t("latestNewsSection.title") }}></span>
+                <span dangerouslySetInnerHTML={{ __html: t("latestNewsSection.title") as string }}></span>
                   <motion.div 
                     className="absolute bottom-1 left-0 h-3 w-full bg-primary/20 -z-10 rounded-sm"
                     initial={{ width: 0 }}

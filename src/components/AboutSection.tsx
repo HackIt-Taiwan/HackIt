@@ -65,23 +65,23 @@ const AboutSection: React.FC = () => {
   const coreValues: CoreValue[] = [
     {
       icon: <FaLightbulb className="w-8 h-8 text-primary" />,
-      title: t("aboutSection.coreValueInnovativeTitle"),
-      description: t("aboutSection.coreValueInnovativeDescription")
+      title: t("aboutSection.coreValueInnovativeTitle") as string,
+      description: t("aboutSection.coreValueInnovativeDescription") as string
     },
     {
       icon: <FaUsers className="w-8 h-8 text-primary" />,
-      title: t("aboutSection.coreValueCommunityTitle"),
-      description: t("aboutSection.coreValueCommunityDescription")
+      title: t("aboutSection.coreValueCommunityTitle") as string,
+      description: t("aboutSection.coreValueCommunityDescription") as string
     },
     {
       icon: <FaRocket className="w-8 h-8 text-primary" />,
-      title: t("aboutSection.coreValuePracticalTitle"),
-      description: t("aboutSection.coreValuePracticalDescription")
+      title: t("aboutSection.coreValuePracticalTitle") as string,
+      description: t("aboutSection.coreValuePracticalDescription") as string
     },
     {
       icon: <FaChalkboardTeacher className="w-8 h-8 text-primary" />,
-      title: t("aboutSection.coreValueLifelongLearningTitle"),
-      description: t("aboutSection.coreValueLifelongLearningDescription")
+      title: t("aboutSection.coreValueLifelongLearningTitle") as string,
+      description: t("aboutSection.coreValueLifelongLearningDescription") as string
     }
   ];
 
@@ -170,7 +170,7 @@ const AboutSection: React.FC = () => {
             >
               <Image
                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2940&auto=format&fit=crop"
-                alt={t("aboutSection.hackItFoundersAlt")}
+                alt={t("aboutSection.hackItFoundersAlt") as string}
                 fill
                 sizes="(max-width: 768px) 90vw, (max-width: 1024px) 50vw, 40vw"
                 style={{ objectFit: "cover" }}

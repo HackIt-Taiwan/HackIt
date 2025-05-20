@@ -9,12 +9,13 @@ import Footer from '@/components/Footer';
 import PodcastEventCard from '@/components/podcast/PodcastEventCard';
 import EpisodesList from '@/components/podcast/EpisodesList';
 import PodcastPlayer from '@/components/podcast/PodcastPlayer';
-import { getAllPodcasts, getLatestEpisodes, formatDuration } from '@/utils/podcasts';
+import { getAllPodcasts, getLatestEpisodes, formatDuration, getAllPodcastEvents } from '@/utils/podcasts';
 import { useI18n } from '@/i18n';
 
 export default function PodcastPage() {
   const { t } = useI18n();
-  const [podcasts, setPodcasts] = useState(getAllPodcasts());
+  const [podcastEpisodes, setPodcastEpisodes] = useState(getAllPodcasts());
+  const [podcastEvents, setPodcastEvents] = useState(getAllPodcastEvents());
   const [latestEpisodes, setLatestEpisodes] = useState(getLatestEpisodes(4));
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredEpisode, setHoveredEpisode] = useState<string | null>(null);
@@ -57,7 +58,7 @@ export default function PodcastPage() {
               HackCast
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-800 dark:text-white">
-              <span dangerouslySetInnerHTML={{ __html: t('podcastPage.title') }}></span>
+              <span dangerouslySetInnerHTML={{ __html: t('podcastPage.title') as string }}></span>
             </h1>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8">
               {t('podcastPage.subtitle')}
@@ -68,7 +69,7 @@ export default function PodcastPage() {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder={t('podcastPage.searchPlaceholder')}
+                  placeholder={String(t('podcastPage.searchPlaceholder'))}
                   className="w-full px-4 py-3 pl-10 rounded-lg border-2 border-gray-200 dark:border-gray-700 focus:outline-none focus:border-primary dark:bg-gray-800 dark:text-white"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -128,9 +129,10 @@ export default function PodcastPage() {
                 <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md h-full">
                   <div className="relative aspect-square">
                     <Image
-                      src={episode.coverImage}
-                      alt={episode.title}
+                      src={episode.coverImage || ''}
+                      alt={episode.title || ''}
                       fill
+                      unoptimized
                       className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -177,7 +179,7 @@ export default function PodcastPage() {
           </motion.div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-            {podcasts.map((podcast, index) => (
+            {podcastEvents.map((podcast, index) => (
               <PodcastEventCard 
                 key={podcast.eventId} 
                 podcast={podcast} 

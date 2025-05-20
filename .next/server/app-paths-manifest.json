@@ -1,6 +1,22 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
+  "/[locale]/news/page": "app/[locale]/news/page.js",
+  "/[locale]/podcast/page": "app/[locale]/podcast/page.js",
+  "/api/discord-members/check/route": "app/api/discord-members/check/route.js",
   "/[locale]/about/page": "app/[locale]/about/page.js",
+  "/[locale]/news/[slug]/page": "app/[locale]/news/[slug]/page.js",
+  "/[locale]/podcast/[eventId]/episodes/[episodeId]/page": "app/[locale]/podcast/[eventId]/episodes/[episodeId]/page.js",
+  "/events/[slug]/page": "app/events/[slug]/page.js",
+  "/[locale]/podcast/[eventId]/page": "app/[locale]/podcast/[eventId]/page.js",
+  "/events/page": "app/events/page.js",
+  "/finance/page": "app/finance/page.js",
+  "/faq/page": "app/faq/page.js",
+  "/news/[slug]/page": "app/news/[slug]/page.js",
+  "/news/page": "app/news/page.js",
+  "/podcast/[eventId]/page": "app/podcast/[eventId]/page.js",
+  "/podcast/page": "app/podcast/page.js",
+  "/podcast/[eventId]/episodes/[episodeId]/page": "app/podcast/[eventId]/episodes/[episodeId]/page.js",
   "/[locale]/page": "app/[locale]/page.js",
-  "/api/discord-members/route": "app/api/discord-members/route.js",
-  "/[locale]/podcast/page": "app/[locale]/podcast/page.js"
+  "/page": "app/page.js",
+  "/api/discord-members/route": "app/api/discord-members/route.js"
 }

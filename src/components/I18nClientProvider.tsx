@@ -8,7 +8,7 @@ interface I18nClientProviderProps {
   locale: Locale;
 }
 
-// 這是一個客戶端組件包裝器，專門用來包裝 I18nProvider
+// 客戶端 I18n 提供者
 const I18nClientProvider: React.FC<I18nClientProviderProps> = ({ 
   children, 
   locale 

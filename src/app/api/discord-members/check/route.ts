@@ -25,12 +25,16 @@ export async function GET(request: NextRequest) {
         const cacheData = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8'));
         if (cacheData.timestamp) {
           const ageInMs = Date.now() - cacheData.timestamp;
-          cacheStatus.cacheAge = {
-            seconds: Math.floor(ageInMs / 1000),
-            minutes: Math.floor(ageInMs / 1000 / 60),
-            hours: Math.floor(ageInMs / 1000 / 60 / 60),
-            days: Math.floor(ageInMs / 1000 / 60 / 60 / 24)
-          };
+          const seconds = Math.floor(ageInMs / 1000) % 60;
+          const minutes = Math.floor(ageInMs / 1000 / 60) % 60;
+          const hours = Math.floor(ageInMs / 1000 / 60 / 60) % 24;
+          const days = Math.floor(ageInMs / 1000 / 60 / 60 / 24);
+          let ageString = '';
+          if (days > 0) ageString += `${days}天`;
+          if (hours > 0) ageString += `${hours}小時`;
+          if (minutes > 0) ageString += `${minutes}分`;
+          if (seconds > 0 || ageString === '') ageString += `${seconds}秒`;
+          cacheStatus.cacheAge = ageString;
           cacheStatus.cacheData = {
             memberCount: cacheData.memberCount,
             guildName: cacheData.guildName,

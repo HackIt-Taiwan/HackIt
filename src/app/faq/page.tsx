@@ -7,8 +7,14 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 
-// FAQ Item component with animation
-const FAQItem = ({ question, answer, isOpen, toggleOpen }) => {
+interface FAQItemProps {
+  question: string;
+  answer: React.ReactNode;
+  isOpen: boolean;
+  toggleOpen: () => void;
+}
+
+const FAQItem: React.FC<FAQItemProps> = ({ question, answer, isOpen, toggleOpen }) => {
   return (
     <motion.div 
       className="border-b border-gray-200 dark:border-gray-700 last:border-b-0"
@@ -49,8 +55,13 @@ const FAQItem = ({ question, answer, isOpen, toggleOpen }) => {
   );
 };
 
-// FAQ Category component
-const FAQCategory = ({ title, icon, children }) => {
+interface FAQCategoryProps {
+  title: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}
+
+const FAQCategory: React.FC<FAQCategoryProps> = ({ title, icon, children }) => {
   return (
     <motion.div 
       className="mb-10"
@@ -74,8 +85,8 @@ const FAQCategory = ({ title, icon, children }) => {
 
 export default function FAQPage() {
   // State to track which FAQ items are open
-  const [openItems, setOpenItems] = useState({});
-  const sectionRefs = {
+  const [openItems, setOpenItems] = useState<Record<string, boolean>>({});
+  const sectionRefs: Record<string, React.RefObject<HTMLDivElement>> = {
     projects: useRef(null),
     hours: useRef(null),
     logistics: useRef(null),
@@ -83,7 +94,7 @@ export default function FAQPage() {
   };
   
   // Toggle function for FAQ items
-  const toggleItem = (categoryKey, index) => {
+  const toggleItem = (categoryKey: string, index: number) => {
     setOpenItems(prev => {
       const key = `${categoryKey}-${index}`;
       return { ...prev, [key]: !prev[key] };
@@ -91,7 +102,7 @@ export default function FAQPage() {
   };
   
   // Function to check if an item is open
-  const isItemOpen = (categoryKey, index) => {
+  const isItemOpen = (categoryKey: string, index: number) => {
     const key = `${categoryKey}-${index}`;
     return openItems[key] || false;
   };
@@ -333,7 +344,7 @@ export default function FAQPage() {
   };
 
   // Scroll to section function
-  const scrollToSection = (sectionKey) => {
+  const scrollToSection = (sectionKey: string) => {
     sectionRefs[sectionKey].current?.scrollIntoView({ behavior: 'smooth' });
   };
 
