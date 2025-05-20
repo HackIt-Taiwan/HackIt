@@ -4,39 +4,45 @@
     "easterEgg": "嘿！你發現了彩蛋！你真是個探索者 👀"
   },
   "footer": {
-    "copyright": "版權所有",
     "allRightsReserved": "保留所有權利",
-    "privacyPolicy": "隱私政策",
-    "termsOfService": "服務條款",
-    "description": "培養台灣青少年為青少年籌辦黑客松的能力，並在台灣推廣黑客松風氣。",
+    "description": "讓創意不再關進教室。HackIt 讓青少年親手打造屬於他們的創造力教育革命。",
     "social": {
       "facebook": "Facebook",
-      "twitter": "Twitter",
+      "discord": "Discord",
       "instagram": "Instagram",
       "github": "GitHub"
     },
+    "socialLinks": {
+      "facebook": "https://www.facebook.com/people/Hackit/61567019608090/?_rdr",
+      "discord": "https://discord.gg/fvasrGKNjP",
+      "instagram": "https://www.instagram.com/hackit.tw/",
+      "github": "https://github.com/HackIt-Taiwan"
+    },
     "sections": {
-      "events": "活動",
+      "events": "HackIt",
       "resources": "資源",
       "contactUs": "聯絡我們"
     },
-    "eventsLinks": ["黑客松", "工作坊", "講座", "社群聚會"],
-    "resourcesLinks": ["學習資源", "參賽指南", "常見問題", "合作夥伴"],
+    "eventsLinks": [
+      {"name": "黑客歷史", "href": "https://hackittw.notion.site/1a459188ed528024aa0be368754f6adf"}
+    ],
+    "resourcesLinks": [
+      {"name": "維基百科", "href": "https://hackittw.notion.site/wi-ki"}
+    ],
     "contactInfo": {
-      "email": "contact@hackit.org.tw",
-      "phone": "(02) 1234-5678",
-      "address": "台北市信義區松高路1號"
+      "email": "contact@hackit.tw",
+      "discord": "https://discord.gg/fvasrGKNjP"
     }
   },
   "aboutSection": {
     "aboutUs": "關於我們",
     "tagline": "用<highlight>創新思維</highlight>啟發未來科技人才",
-    "introduction": "HackIt是一個致力於透過編程教育賦能青少年，啟發他們成為未來科技創新者的社群平台",
+    "introduction": "HackIt 是台灣首個由青少年主導的創造型社群，我們自己辦活動、自己寫程式、自己改變世界。拒絕填鴨、拒絕等待，HackIt 要讓每一位青少年，親手打造屬於自己的未來。",
     "founderStoryTitle": "我們的<highlight>創辦故事</highlight>",
     "founderStoryTitlePlain": "創辦故事",
-    "founderStoryParagraph1": "HackIt創立於2020年，由一群熱愛科技教育的資深軟體工程師和教育工作者共同發起。在疫情帶來的遠距教學挑戰中，我們看見了數位教育的新機會，也發現傳統教育體系難以滿足現代科技人才的培育需求。",
-    "founderStoryParagraph2": "作為第一線的科技從業人員，我們深知實作經驗和創新思維對於未來工作者的重要性。因此，我們決定打造一個結合線上學習、實體工作坊和黑客松競賽的綜合平台，讓青少年能在寓教於樂的環境中接觸真實的科技專案開發。",
-    "founderStoryParagraph3": "三年來，HackIt已經服務超過25,000名學生，舉辦了50多場線上及實體活動，並協助多位學員實現了自己的創新項目，甚至獲得國際級競賽的肯定。",
+    "founderStoryParagraph1": "HackIt 誕生於 2024 年，由四位高中生親手發起。在一次全球性的 Hack Club 黑客松邀請下，我們決定挑戰一件台灣從未發生過的事——讓青少年自己籌辦、自己打造一場屬於青少年自己的黑客松。當時沒有人知道這是不是行得通，但我們知道，不試試看，永遠不會知道。",
+    "founderStoryParagraph2": "我們拒絕讓青春只剩下考試與課本，希望用行動證明：「創造力與冒險精神，不該被年齡侷限。」從一開始的手忙腳亂到逐漸上手，我們向全台證明：即使只有一群高中生，也能辦出真正有影響力、讓人熱血沸騰的活動。HackIt，成了我們對教育體制提出的一場溫柔又強悍的反擊。",
+    "founderStoryParagraph3": "當創造變成一種日常，HackIt 不再只是一場活動的名字，而成為一種態度——一種敢於提問、勇於嘗試、習慣合作的青少年文化。我們看見許多參與者在這裡找到方向、第一次被理解、第一次被需要，也第一次發現：原來我也可以改變點什麼。HackIt 所打造的，不只是舞台，更是一個讓年輕人重新相信自己的起點。我們正在見證：當一個空間真正相信年輕人，他們會創造出連大人都想不到的可能。學習，從來不該只發生在教室裡。",
     "missionTitle": "我們的使命",
     "missionParagraph1": "我們致力於透過實用且創新的編程教育，啟發年輕人的技術潛能和創造力，培養他們成為未來的數位創新者和問題解決者。",
     "missionParagraph2": "我們相信每個年輕人都應該有機會接觸編程技能，不論其背景或先前經驗。透過我們的平台，我們希望消除科技教育的障礙，讓更多人能夠參與數位未來的建設。",
@@ -234,22 +240,6 @@
       "title": "暫無最新消息",
       "description": "我們正在更新最新消息區塊。請稍後再查看或前往我們的 Notion 頁面獲取最新資訊。",
       "notionLink": "前往 Notion 頁面"
-    }
-  },
-  "categories": {
-    "events": {
-      "title": "活動",
-      "hackathons": "黑客松",
-      "workshops": "工作坊",
-      "talks": "講座",
-      "meetups": "社群聚會"
-    },
-    "resources": {
-      "title": "資源",
-      "learningResources": "學習資源",
-      "competitionGuide": "參賽指南",
-      "faq": "常見問題",
-      "partners": "合作夥伴"
     }
   },
   "newsPage": {

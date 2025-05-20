@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { FaLightbulb, FaUsers, FaRocket, FaChalkboardTeacher, FaCode, FaStar, FaMagic, FaGithub, FaTwitter, FaLinkedin, FaEnvelope, FaTimes } from 'react-icons/fa';
@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
 import { useI18n } from '@/i18n';
+import { getAllEvents } from '@/utils/events';
 
 // 更新團隊成員接口
 interface TeamMember {
@@ -75,6 +76,14 @@ const teamMembers: TeamMember[] = [
   // ...可以添加更多團隊成員
 ]; 
 
+// 獲取Discord成員數量的接口
+interface DiscordMemberResponse {
+  memberCount: number;
+  guildName?: string;
+  error?: string;
+  fromCache?: boolean;
+}
+
 export default function AboutPage() {
   const { t, locale } = useI18n();
   
@@ -135,6 +144,61 @@ export default function AboutPage() {
   );
 
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+
+  // 添加狀態來保存動態數據
+  const [memberCount, setMemberCount] = useState<number | string>("•••");
+  const [eventsCount, setEventsCount] = useState<number | string>("•••");
+  const [yearsCount, setYearsCount] = useState<number | string>("•••");
+  
+  // 添加useEffect以獲取並計算數據
+  useEffect(() => {
+    // 1. 獲取Discord成員數量
+    const fetchMemberCount = async () => {
+      try {
+        const response = await fetch('/api/discord-members');
+        if (response.ok) {
+          const data: DiscordMemberResponse = await response.json();
+          if (data.memberCount && data.memberCount > 0) {
+            setMemberCount(data.memberCount);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch Discord members:', error);
+        setMemberCount("0"); // 如果失敗則使用預設值
+      }
+    };
+    
+    // 2. 計算從2024/9/26至今的年份
+    const calculateYears = () => {
+      const foundingDate = new Date('2024-09-26');
+      const currentDate = new Date();
+      
+      // 計算差距（以毫秒為單位）
+      const timeDiff = currentDate.getTime() - foundingDate.getTime();
+      
+      // 轉換為年份（大約估算）
+      const yearsDiff = timeDiff / (1000 * 60 * 60 * 24 * 365.25);
+      
+      if (yearsDiff < 1) {
+        // 如果不到一年，顯示"<1"
+        setYearsCount("<1");
+      } else {
+        // 四捨五入到最接近的整數
+        setYearsCount(Math.round(yearsDiff));
+      }
+    };
+    
+    // 3. 獲取活動總數
+    const getEventsCount = () => {
+      const events = getAllEvents();
+      setEventsCount(events.length);
+    };
+    
+    // 執行所有數據獲取函數
+    fetchMemberCount();
+    calculateYears();
+    getEventsCount();
+  }, []);
 
   return (
     <main className="relative">
@@ -249,10 +313,13 @@ export default function AboutPage() {
                   transition={{ duration: 1.5 }}
                 >
                   <Image
-                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2940&auto=format&fit=crop"
+                    src="/images/scrapyard_taiwan_all.jpg"
                     alt={t("aboutSection.hackItFoundersAlt") as string}
                     fill
-                    style={{ objectFit: "cover" }}
+                    style={{ 
+                      objectFit: "cover",
+                      filter: "saturate(0.9) hue-rotate(-10deg) brightness(0.99)"
+                    }}
                     className="transition-transform duration-500 hover:scale-105"
                   />
                   
@@ -263,16 +330,16 @@ export default function AboutPage() {
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 1 }}
                   />
-                  
-                  {/* 浮動代碼符號 */}
-                  <motion.div
-                    className="absolute bottom-4 right-4 p-3 bg-white/20 backdrop-blur-md rounded-lg text-white font-mono"
-                    initial={{ y: 50, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.8 }}
-                  >
-                    &lt;hack&gt;it&lt;/hack&gt;
-                  </motion.div>
+                  {/* 攝影師浮水印 */}
+                  <div className="absolute bottom-3 right-4 flex items-center group select-none">
+                    <span
+                      className="text-xs text-white/60 bg-black/30 rounded px-2 py-1 backdrop-blur-sm transition-all duration-300 group-hover:text-white group-hover:bg-black/70 group-hover:scale-110 flex items-center gap-1"
+                      style={{ fontFamily: 'monospace', letterSpacing: '0.02em', cursor: 'pointer' }}
+                    >
+                      <svg className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M15 10l4.553-2.276A2 2 0 0 1 22 9.618V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9.618a2 2 0 0 1 2.447-1.894L9 10m6 0V7a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v3m6 0l-3 2.5L9 10"/></svg>
+                      攝影：劉研軾
+                    </span>
+                  </div>
                 </motion.div>
                 
                 {/* 裝飾元素 */}
@@ -298,15 +365,15 @@ export default function AboutPage() {
               <div className="flex justify-center mt-10 gap-8">
                 {[
                   { 
-                    value: '25,000+', 
+                    value: memberCount, 
                     label: t("aboutSection.students")
                   },
                   { 
-                    value: '50+', 
+                    value: eventsCount, 
                     label: t("aboutSection.events")
                   },
                   { 
-                    value: '3', 
+                    value: yearsCount, 
                     label: t("aboutSection.years")
                   }
                 ].map((stat, i) => (

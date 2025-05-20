@@ -1,7 +1,5 @@
 {
-  "/[locale]/podcast/page": "app/[locale]/podcast/page.js",
-  "/[locale]/podcast/[eventId]/page": "app/[locale]/podcast/[eventId]/page.js",
+  "/[locale]/about/page": "app/[locale]/about/page.js",
   "/[locale]/page": "app/[locale]/page.js",
-  "/[locale]/news/page": "app/[locale]/news/page.js",
   "/api/discord-members/route": "app/api/discord-members/route.js"
 }

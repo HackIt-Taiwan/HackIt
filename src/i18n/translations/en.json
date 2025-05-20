@@ -4,28 +4,34 @@
     "easterEgg": "Hey! You found an easter egg! You're quite the explorer 👀"
   },
   "footer": {
-    "copyright": "Copyright",
     "allRightsReserved": "All Rights Reserved",
-    "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service",
-    "description": "Cultivating the ability of Taiwanese youth to organize hackathons for youth and promoting hackathon culture in Taiwan.",
+    "description": "Let creativity out of the classroom. HackIt empowers teenagers to build their own creative education revolution.",
     "social": {
       "facebook": "Facebook",
-      "twitter": "Twitter",
+      "discord": "Discord",
       "instagram": "Instagram",
       "github": "GitHub"
     },
+    "socialLinks": {
+      "facebook": "https://www.facebook.com/people/Hackit/61567019608090/?_rdr",
+      "discord": "https://discord.gg/fvasrGKNjP",
+      "instagram": "https://www.instagram.com/hackit.tw/",
+      "github": "https://github.com/HackIt-Taiwan"
+    },
     "sections": {
-      "events": "Events",
+      "events": "HackIt",
       "resources": "Resources",
       "contactUs": "Contact Us"
     },
-    "eventsLinks": ["Hackathons", "Workshops", "Talks", "Meetups"],
-    "resourcesLinks": ["Learning Resources", "Competition Guide", "FAQ", "Partners"],
+    "eventsLinks": [
+      {"name": "Hack History", "href": "https://hackittw.notion.site/1a459188ed528024aa0be368754f6adf"}
+    ],
+    "resourcesLinks": [
+      {"name": "Wikipedia", "href": "https://hackittw.notion.site/wi-ki"}
+    ],
     "contactInfo": {
-      "email": "contact@hackit.org.tw",
-      "phone": "(02) 1234-5678",
-      "address": "No. 1, Songgao Road, Xinyi District, Taipei City"
+      "email": "contact@hackit.tw",
+      "discord": "https://discord.gg/fvasrGKNjP"
     }
   },
   "aboutSection": {
@@ -234,22 +240,6 @@
       "title": "No News at the Moment",
       "description": "We are updating our news section. Please check back later or visit our Notion page for the latest updates.",
       "notionLink": "Visit Our Notion Page"
-    }
-  },
-  "categories": {
-    "events": {
-      "title": "Events",
-      "hackathons": "Hackathons",
-      "workshops": "Workshops",
-      "talks": "Talks",
-      "meetups": "Meetups"
-    },
-    "resources": {
-      "title": "Resources",
-      "learningResources": "Learning Resources",
-      "competitionGuide": "Competition Guide",
-      "faq": "FAQ",
-      "partners": "Partners"
     }
   },
   "newsPage": {

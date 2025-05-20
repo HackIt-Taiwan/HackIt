@@ -135,6 +135,11 @@ export function I18nProvider({ children, initialLocale = 'zh-TW' }: I18nProvider
       return value;
     }
     
+    // 如果值是陣列或物件，直接返回
+    if (value !== null && typeof value === 'object') {
+      return value;
+    }
+    
     return key;
   };
 
