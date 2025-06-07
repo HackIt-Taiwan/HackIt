@@ -12,7 +12,7 @@ import Footer from '@/components/Footer';
 // 定義 metadata 用於 SEO
 export const metadata = {
   title: 'HackIt - 青少年程式創意社群',
-  description: 'HackIt 是一個專為 13-18 歲青少年打造的科技學習平台，透過實作工作坊、黑客松和課程，培養未來的科技創新者。',
+  description: 'HackIt 是台灣首個由青少年主導的創造型社群，我們自己辦活動、自己寫程式、自己改變世界。拒絕填鴨、拒絕等待，HackIt 要讓每一位青少年，親手打造屬於自己的未來。',
 };
 
 export default function LocaleHome() {
