@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{\"components\\\\Navbar.tsx -> ./LanguageSelector\":{\"id\":\"components\\\\Navbar.tsx -> ./LanguageSelector\",\"files\":[\"static/chunks/_app-pages-browser_src_components_LanguageSelector_tsx.js\"]},\"components\\\\Navbar.tsx -> ./ThemeToggle\":{\"id\":\"components\\\\Navbar.tsx -> ./ThemeToggle\",\"files\":[\"static/chunks/_app-pages-browser_src_components_ThemeToggle_tsx.js\"]}}"
+self.__REACT_LOADABLE_MANIFEST="{}"
