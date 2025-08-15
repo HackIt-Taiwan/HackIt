@@ -1,5 +1,5 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
   "/[locale]/page": "app/[locale]/page.js",
-  "/api/discord-members/route": "app/api/discord-members/route.js"
+  "/[locale]/about/page": "app/[locale]/about/page.js"
 }
