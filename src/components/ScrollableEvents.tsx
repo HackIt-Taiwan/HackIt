@@ -11,15 +11,30 @@ import { useI18n } from '@/i18n';
 const ScrollableEvents: React.FC = () => {
   const { t, locale } = useI18n();
   
-  // 從 Markdown 文件獲取活動數據
-  const upcomingEvents = getUpcomingEvents();
-  const pastEvents = getPastEvents();
+  // Load events asynchronously on client
+  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
+  const [pastEvents, setPastEvents] = useState<Event[]>([]);
+  useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      try {
+        const [upcoming, past] = await Promise.all([
+          getUpcomingEvents(),
+          getPastEvents(),
+        ]);
+        if (!isMounted) return;
+        setUpcomingEvents(upcoming || []);
+        setPastEvents(past || []);
+      } catch (err) {
+        console.error('Failed to load events:', err);
+        if (!isMounted) return;
+        setUpcomingEvents([]);
+        setPastEvents([]);
+      }
+    })();
+    return () => { isMounted = false; };
+  }, []);
   const events = [...upcomingEvents, ...pastEvents];
-  
-  // 如果沒有活動，則不顯示該部分
-  if (events.length === 0) {
-    return null;
-  }
   
   // 基本狀態和引用
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -28,6 +43,7 @@ const ScrollableEvents: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [isAutoScrollEnabled, setIsAutoScrollEnabled] = useState(false);
   const rafIdRef = useRef<number | null>(null);
+
   
   // 當元素進入視圖時啟用自動滾動
   useEffect(() => {
