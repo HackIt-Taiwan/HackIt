@@ -10,7 +10,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import EpisodesList from '@/components/podcast/EpisodesList';
 import PodcastPlayer from '@/components/podcast/PodcastPlayer';
-import { getPodcastByEventId, getEpisodeById, getNextEpisode, PodcastEpisode } from '@/utils/podcasts';
+import { getPodcastByEventId, getEpisodeById, getNextEpisode, PodcastEpisode, PodcastEvent } from '@/utils/podcasts';
 import { useI18n } from '@/i18n';
 
 export default function PodcastEventPage() {
@@ -19,30 +19,56 @@ export default function PodcastEventPage() {
   const router = useRouter();
   const eventId = params.eventId as string;
   
-  const [podcast, setPodcast] = useState(() => getPodcastByEventId(eventId));
+  const [podcast, setPodcast] = useState<PodcastEvent | null>(null);
   const [selectedEpisodeId, setSelectedEpisodeId] = useState<string | undefined>(undefined);
   const [currentEpisode, setCurrentEpisode] = useState<PodcastEpisode | null>(null);
   const [nextEpisode, setNextEpisode] = useState<PodcastEpisode | null>(null);
   const [autoplay, setAutoplay] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   
-  // 如果找不到活動，重定向到主頁
+  // Load podcast data
   useEffect(() => {
-    if (!podcast) {
-      router.push('/podcast');
-    } else if (podcast.episodes.length > 0 && !selectedEpisodeId) {
-      // 默認選中第一集
-      handleSelectEpisode(podcast.episodes[0].id);
-    }
-  }, [podcast, router, selectedEpisodeId]);
+    const loadPodcast = async () => {
+      setIsLoading(true);
+      try {
+        const podcastData = await getPodcastByEventId(eventId);
+        if (!podcastData) {
+          router.push('/podcast');
+          return;
+        }
+        setPodcast(podcastData);
+        
+        // 默認選中第一集
+        if (podcastData.episodes.length > 0 && !selectedEpisodeId) {
+          setSelectedEpisodeId(podcastData.episodes[0].id);
+        }
+      } catch (error) {
+        console.error('Error loading podcast:', error);
+        router.push('/podcast');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadPodcast();
+  }, [eventId, router]);
   
   // 更新當前播放的集數和下一集
   useEffect(() => {
-    if (selectedEpisodeId && podcast) {
-      const episode = getEpisodeById(eventId, selectedEpisodeId);
-      const next = getNextEpisode(eventId, selectedEpisodeId);
-      setCurrentEpisode(episode || null);
-      setNextEpisode(next || null);
-    }
+    const loadEpisodeData = async () => {
+      if (selectedEpisodeId && podcast) {
+        try {
+          const episode = await getEpisodeById(eventId, selectedEpisodeId);
+          const next = await getNextEpisode(eventId, selectedEpisodeId);
+          setCurrentEpisode(episode || null);
+          setNextEpisode(next || null);
+        } catch (error) {
+          console.error('Error loading episode data:', error);
+        }
+      }
+    };
+    
+    loadEpisodeData();
   }, [selectedEpisodeId, eventId, podcast]);
   
   // 選擇集數
@@ -63,6 +89,17 @@ export default function PodcastEventPage() {
     setAutoplay(!autoplay);
   };
   
+  if (isLoading) {
+    return (
+      <main className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">{t('common.loading')}</p>
+        </div>
+      </main>
+    );
+  }
+
   if (!podcast) {
     return null; // 等待重定向
   }

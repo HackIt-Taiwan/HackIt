@@ -9,7 +9,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PodcastPlayer from '@/components/podcast/PodcastPlayer';
 import EpisodesList from '@/components/podcast/EpisodesList';
-import { getPodcastByEventId, getEpisodeById, getNextEpisode, PodcastEpisode } from '@/utils/podcasts';
+import { getPodcastByEventId, getEpisodeById, getNextEpisode, PodcastEpisode, PodcastEvent } from '@/utils/podcasts';
 import { useI18n } from '@/i18n';
 
 export default function PodcastEpisodePage() {
@@ -19,28 +19,46 @@ export default function PodcastEpisodePage() {
   const eventId = params.eventId as string;
   const episodeId = params.episodeId as string;
   
-  const [podcast, setPodcast] = useState(() => getPodcastByEventId(eventId));
+  const [podcast, setPodcast] = useState<PodcastEvent | null>(null);
   const [episode, setEpisode] = useState<PodcastEpisode | null>(null);
   const [nextEpisode, setNextEpisode] = useState<PodcastEpisode | null>(null);
   const [autoplay, setAutoplay] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   
-  // 如果找不到集數，重定向到活動頁面
   useEffect(() => {
-    if (!podcast) {
-      router.push('/podcast');
-      return;
-    }
+    const loadData = async () => {
+      setIsLoading(true);
+      
+      try {
+        // Load podcast data first
+        const podcastData = await getPodcastByEventId(eventId);
+        if (!podcastData) {
+          router.push('/podcast');
+          return;
+        }
+        setPodcast(podcastData);
+        
+        // Load episode data
+        const foundEpisode = await getEpisodeById(eventId, episodeId);
+        if (!foundEpisode) {
+          router.push(`/podcast/${eventId}`);
+          return;
+        }
+        setEpisode(foundEpisode);
+        
+        // Load next episode
+        const next = await getNextEpisode(eventId, episodeId);
+        setNextEpisode(next || null);
+      } catch (error) {
+        console.error('Error loading podcast data:', error);
+        router.push('/podcast');
+      } finally {
+        setIsLoading(false);
+      }
+    };
     
-    const foundEpisode = getEpisodeById(eventId, episodeId);
-    if (!foundEpisode) {
-      router.push(`/podcast/${eventId}`);
-      return;
-    }
-    
-    setEpisode(foundEpisode);
-    const next = getNextEpisode(eventId, episodeId);
-    setNextEpisode(next || null);
-  }, [eventId, episodeId, podcast, router]);
+    loadData();
+  }, [eventId, episodeId, router]);
   
   // 處理集數結束
   const handleEpisodeEnd = () => {
@@ -63,6 +81,17 @@ export default function PodcastEpisodePage() {
     }
   };
   
+  if (isLoading) {
+    return (
+      <main className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">{t('common.loading')}</p>
+        </div>
+      </main>
+    );
+  }
+
   if (!podcast || !episode) {
     return null; // 等待重定向或數據載入
   }

@@ -1,14 +1,18 @@
 {
   "components\\Navbar.tsx -> ./LanguageSelector": {
-    "id": "components\\Navbar.tsx -> ./LanguageSelector",
+    "id": 4590,
     "files": [
-      "static/chunks/_app-pages-browser_src_components_LanguageSelector_tsx.js"
+      "static/chunks/8e1d74a4-edbf0ce4077e4aeb.js",
+      "static/chunks/39-ef39146c1e816f71.js",
+      "static/chunks/590.9251f8da236759ce.js"
     ]
   },
   "components\\Navbar.tsx -> ./ThemeToggle": {
-    "id": "components\\Navbar.tsx -> ./ThemeToggle",
+    "id": 7569,
     "files": [
-      "static/chunks/_app-pages-browser_src_components_ThemeToggle_tsx.js"
+      "static/chunks/8e1d74a4-edbf0ce4077e4aeb.js",
+      "static/chunks/39-ef39146c1e816f71.js",
+      "static/chunks/569.cb6b3e424c41ebb1.js"
     ]
   }
 }

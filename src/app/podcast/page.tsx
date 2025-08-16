@@ -9,16 +9,41 @@ import Footer from '@/components/Footer';
 import PodcastEventCard from '@/components/podcast/PodcastEventCard';
 import EpisodesList from '@/components/podcast/EpisodesList';
 import PodcastPlayer from '@/components/podcast/PodcastPlayer';
-import { getAllPodcasts, getLatestEpisodes, formatDuration, getAllPodcastEvents } from '@/utils/podcasts';
+import { getAllPodcasts, getLatestEpisodes, formatDuration, getAllPodcastEvents, PodcastEpisode, PodcastEvent } from '@/utils/podcasts';
 import { useI18n } from '@/i18n';
 
 export default function PodcastPage() {
   const { t } = useI18n();
-  const [podcastEpisodes, setPodcastEpisodes] = useState(getAllPodcasts());
-  const [podcastEvents, setPodcastEvents] = useState(getAllPodcastEvents());
-  const [latestEpisodes, setLatestEpisodes] = useState(getLatestEpisodes(4));
+  const [podcastEpisodes, setPodcastEpisodes] = useState<PodcastEpisode[]>([]);
+  const [podcastEvents, setPodcastEvents] = useState<PodcastEvent[]>([]);
+  const [latestEpisodes, setLatestEpisodes] = useState<PodcastEpisode[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredEpisode, setHoveredEpisode] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Load podcast data
+  useEffect(() => {
+    const loadData = async () => {
+      setIsLoading(true);
+      try {
+        const [episodes, events, latest] = await Promise.all([
+          getAllPodcasts(),
+          getAllPodcastEvents(),
+          getLatestEpisodes(4)
+        ]);
+        
+        setPodcastEpisodes(episodes);
+        setPodcastEvents(events);
+        setLatestEpisodes(latest);
+      } catch (error) {
+        console.error('Error loading podcast data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
 
   // 動畫變體
   const containerVariants = {
@@ -39,6 +64,17 @@ export default function PodcastPage() {
       transition: { duration: 0.3 }
     }
   };
+
+  if (isLoading) {
+    return (
+      <main className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">{t('common.loading')}</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">

@@ -10,7 +10,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PodcastPlayer from '@/components/podcast/PodcastPlayer';
 import EpisodesList from '@/components/podcast/EpisodesList';
-import { getPodcastByEventId, getEpisodeById, getNextEpisode, PodcastEpisode } from '@/utils/podcasts';
+import { getPodcastByEventId, getEpisodeById, getNextEpisode, PodcastEpisode, PodcastEvent } from '@/utils/podcasts';
 import { useI18n } from '@/i18n';
 
 // Placeholder for a nicer loading state
@@ -37,29 +37,45 @@ export default function PodcastEpisodePage() {
   const eventId = params.eventId as string;
   const episodeId = params.episodeId as string;
   
-  const [podcast, setPodcast] = useState(() => getPodcastByEventId(eventId));
+  const [podcast, setPodcast] = useState<PodcastEvent | null>(null);
   const [episode, setEpisode] = useState<PodcastEpisode | null>(null);
   const [nextEpisode, setNextEpisode] = useState<PodcastEpisode | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    setIsLoading(true);
-    if (!podcast) {
-      router.push('/podcast');
-      return;
-    }
+    const loadData = async () => {
+      setIsLoading(true);
+      
+      try {
+        // Load podcast data first
+        const podcastData = await getPodcastByEventId(eventId);
+        if (!podcastData) {
+          router.push('/podcast');
+          return;
+        }
+        setPodcast(podcastData);
+        
+        // Load episode data
+        const foundEpisode = await getEpisodeById(eventId, episodeId);
+        if (!foundEpisode) {
+          router.push(`/podcast/${eventId}`);
+          return;
+        }
+        setEpisode(foundEpisode);
+        
+        // Load next episode
+        const next = await getNextEpisode(eventId, episodeId);
+        setNextEpisode(next || null);
+      } catch (error) {
+        console.error('Error loading podcast data:', error);
+        router.push('/podcast');
+      } finally {
+        setIsLoading(false);
+      }
+    };
     
-    const foundEpisode = getEpisodeById(eventId, episodeId);
-    if (!foundEpisode) {
-      router.push(`/podcast/${eventId}`);
-      return;
-    }
-    
-    setEpisode(foundEpisode);
-    const next = getNextEpisode(eventId, episodeId);
-    setNextEpisode(next || null);
-    setIsLoading(false);
-  }, [eventId, episodeId, podcast, router]);
+    loadData();
+  }, [eventId, episodeId, router]);
   
   const handleEpisodeEnd = () => {
     if (nextEpisode) {
