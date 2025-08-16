@@ -16,11 +16,6 @@
       "static/chunks/main-app.js",
       "static/chunks/app/[locale]/about/page.js"
     ],
-    "/[locale]/podcast/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/podcast/page.js"
-    ],
     "/_not-found/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",

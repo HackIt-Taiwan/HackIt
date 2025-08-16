@@ -61,6 +61,11 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
   const setLocale = (newLocale: Locale) => {
     if (newLocale === locale) return;
 
+    try {
+      // Persist locale in cookie for middleware/SSR
+      document.cookie = `locale=${newLocale}; Path=/; Max-Age=31536000; SameSite=Lax`;
+    } catch {}
+
     setLocaleState(newLocale);
 
     // 更新 URL 中的語言路徑

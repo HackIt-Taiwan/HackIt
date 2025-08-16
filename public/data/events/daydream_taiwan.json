@@ -1,0 +1,23 @@
+{
+  "slug": "daydream_taiwan",
+  "frontmatter": {
+    "id": 3,
+    "title": "Daydream Taiwan",
+    "date": "2025-09-27",
+    "endDate": "2025-09-28",
+    "time": "",
+    "location": "待定（北部地區）",
+    "image": "/images/image.png",
+    "url": "daydream.hackclub.com/taiwan",
+    "category": "黑客松",
+    "tags": ["hack club", "hackathon"],
+    "spots": 0,
+    "spotsLeft": 0,
+    "isCompleted": false,
+    "isFeatured": true,
+    "color": "indigo",
+    "emoji": "🌙",
+    "description": "Daydream 是由 Hack Club 發起專為青少年打造、入門友善的 Game Jam（遊戲創作馬拉松）。參與者將在 32 小時內組隊完成一款遊戲，從發想、設計到實作，並透過跨領域合作將程式、藝術、音樂等專長融合，激發創意與團隊默契。"
+  },
+  "content": ""
+}

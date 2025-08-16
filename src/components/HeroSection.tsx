@@ -325,7 +325,7 @@ const HeroSection: React.FC = () => {
       
       {/* 向下滾動指示器 - 在小屏幕上調整尺寸和位置 */}
       <motion.div 
-        className="absolute bottom-6 sm:bottom-8 md:bottom-12 left-1/2 transform -translate-x-1/2 flex flex-col items-center z-10 hidden sm:flex"
+        className="absolute bottom-6 sm:bottom-8 md:bottom-12 left-0 right-0 flex flex-col items-center z-10 hidden sm:flex"
         initial={{ opacity: 0, y: 15 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
         transition={{ 
@@ -335,7 +335,7 @@ const HeroSection: React.FC = () => {
         }}
       >
         <motion.span 
-          className="text-xs sm:text-sm font-mono text-primary mb-2 sm:mb-3 font-bold"
+          className="text-xs sm:text-sm font-mono text-primary mb-2 sm:mb-3 font-bold text-center"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ 
@@ -367,7 +367,7 @@ const HeroSection: React.FC = () => {
           />
         </motion.div>
         <motion.div
-          className="mt-2 sm:mt-3 md:mt-4 text-xs font-mono text-accent"
+          className="mt-2 sm:mt-3 md:mt-4 text-xs font-mono text-accent text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: [0, 1, 0.8, 1] }}
           transition={{ 

@@ -1,0 +1,17 @@
+{
+  "eventId": "scrapyard-taiwan",
+  "eventName": "Scrapyard Taiwan",
+  "coverImage": "/images/scrapyard_taiwan_all.jpg",
+  "description": "Scrapyard Taiwan 活動相關的播客錄音",
+  "episodes": [
+    {
+      "id": "scrapyard-intro",
+      "title": "Scrapyard Taiwan 活動介紹",
+      "description": "介紹 Scrapyard Taiwan 黑客松活動的背景和目標",
+      "audioUrl": "/audio/scrapyard-intro.mp3",
+      "duration": 1800,
+      "releaseDate": "2025-02-01T10:00:00.000Z",
+      "hosts": ["HackIt 團隊"]
+    }
+  ]
+}

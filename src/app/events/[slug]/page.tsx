@@ -14,8 +14,8 @@ interface EventPageProps {
   };
 }
 
-export default function EventPage({ params }: EventPageProps) {
-  const event = getEventBySlug(params.slug);
+export default async function EventPage({ params }: EventPageProps) {
+  const event = await getEventBySlug(params.slug);
   
   // 如果活動不存在，返回 404
   if (!event) {

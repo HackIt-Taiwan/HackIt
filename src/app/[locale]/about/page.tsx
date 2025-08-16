@@ -192,9 +192,14 @@ export default function AboutPage() {
     };
     
     // 3. 獲取活動總數
-    const getEventsCount = () => {
-      const events = getAllEvents();
-      setEventsCount(events.length);
+    const getEventsCount = async () => {
+      try {
+        const events = await getAllEvents();
+        setEventsCount((events || []).length);
+      } catch (error) {
+        console.error('Failed to get events count:', error);
+        setEventsCount("0");
+      }
     };
     
     // 執行所有數據獲取函數

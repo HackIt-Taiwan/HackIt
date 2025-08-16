@@ -21,7 +21,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setMounted(true);
     
     // Check if user has a saved preference
-    const savedTheme = localStorage.getItem('theme') as Theme | null;
+    const savedTheme = (localStorage.getItem('theme') as Theme | null) || (typeof document !== 'undefined' ? (document.cookie.match(/(?:^|; )theme=([^;]+)/)?.[1] as Theme | null) : null);
     
     if (savedTheme) {
       setTheme(savedTheme);
@@ -38,7 +38,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!mounted) return;
     
-    localStorage.setItem('theme', theme);
+    try {
+      localStorage.setItem('theme', theme);
+    } catch {}
+    try {
+      document.cookie = `theme=${theme}; Path=/; Max-Age=31536000; SameSite=Lax`;
+    } catch {}
     
     // Apply theme class to document
     const root = document.documentElement;

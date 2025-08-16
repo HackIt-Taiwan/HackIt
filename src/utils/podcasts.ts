@@ -1,5 +1,3 @@
-import podcastsData from '@/data/podcasts/podcasts.json';
-
 export interface PodcastEpisode {
   id: string;
   title: string;
@@ -19,6 +17,51 @@ export interface PodcastEvent {
   coverImage: string;
   description: string;
   episodes: PodcastEpisode[];
+}
+
+// Cache for loaded podcasts data
+let podcastsCache: PodcastEvent[] | null = null;
+
+// Clear cache for development/testing
+export function clearPodcastsCache(): void {
+  podcastsCache = null;
+}
+
+// Load podcasts from JSON files
+async function loadPodcastsData(): Promise<PodcastEvent[]> {
+  if (podcastsCache) {
+    return podcastsCache;
+  }
+
+  try {
+    // Check if we're running on the server or client
+    if (typeof window === 'undefined') {
+      // Server-side: use API route
+      const response = await fetch(`http://localhost:3000/api/data/podcasts`);
+      if (response.ok) {
+        podcastsCache = await response.json();
+        return podcastsCache || [];
+      }
+    } else {
+      // Client-side: use API route
+      const response = await fetch(`/api/data/podcasts`);
+      if (response.ok) {
+        podcastsCache = await response.json();
+        return podcastsCache || [];
+      }
+    }
+  } catch (error) {
+    console.error('Failed to load podcasts data:', error);
+  }
+
+  podcastsCache = [];
+  return [];
+}
+
+// Get available podcast event files dynamically
+async function getAvailablePodcastEvents(): Promise<string[]> {
+  const events = await loadPodcastsData();
+  return events.map(event => event.eventId);
 }
 
 // 格式化發布日期
@@ -45,13 +88,9 @@ export function formatDuration(seconds: number): string {
 }
 
 // 獲取所有播客集數
-export function getAllPodcasts(): PodcastEpisode[] {
-  // 確保 podcastsData 是數組
-  if (!Array.isArray(podcastsData)) {
-    console.error('播客數據格式錯誤:', podcastsData);
-    return [];
-  }
-
+export async function getAllPodcasts(): Promise<PodcastEpisode[]> {
+  const podcastsData = await loadPodcastsData();
+  
   // 將所有事件的集數整合到一個數組，並附加事件資訊
   return podcastsData.flatMap((event: PodcastEvent) => 
     event.episodes.map(episode => ({
@@ -64,34 +103,26 @@ export function getAllPodcasts(): PodcastEpisode[] {
 }
 
 // 獲取所有播客事件
-export function getAllPodcastEvents(): PodcastEvent[] {
-  if (!Array.isArray(podcastsData)) {
-    console.error('播客數據格式錯誤:', podcastsData);
-    return [];
-  }
-  return podcastsData;
+export async function getAllPodcastEvents(): Promise<PodcastEvent[]> {
+  return await loadPodcastsData();
 }
 
 // 根據事件 ID 獲取整個播客事件
-export function getPodcastByEventId(eventId: string): PodcastEvent | null {
-  if (!Array.isArray(podcastsData)) {
-    console.error('播客數據格式錯誤:', podcastsData);
-    return null;
-  }
-
+export async function getPodcastByEventId(eventId: string): Promise<PodcastEvent | null> {
+  const podcastsData = await loadPodcastsData();
   const podcast = podcastsData.find((event: PodcastEvent) => event.eventId === eventId);
   return podcast || null;
 }
 
 // 獲取最新的幾集播客
-export function getLatestEpisodes(count: number): PodcastEpisode[] {
-  const allEpisodes = getAllPodcasts();
+export async function getLatestEpisodes(count: number): Promise<PodcastEpisode[]> {
+  const allEpisodes = await getAllPodcasts();
   return allEpisodes.slice(0, count);
 }
 
 // 根據事件 ID 獲取該事件的所有集數
-export function getEpisodesByEventId(eventId: string): PodcastEpisode[] {
-  const event = podcastsData.find((event: PodcastEvent) => event.eventId === eventId);
+export async function getEpisodesByEventId(eventId: string): Promise<PodcastEpisode[]> {
+  const event = await getPodcastByEventId(eventId);
   if (!event) return [];
   
   return event.episodes.map(episode => ({
@@ -103,8 +134,8 @@ export function getEpisodesByEventId(eventId: string): PodcastEpisode[] {
 }
 
 // 根據事件 ID 和集數 ID 獲取特定集數
-export function getEpisodeById(eventId: string, episodeId: string): PodcastEpisode | null {
-  const event = getPodcastByEventId(eventId);
+export async function getEpisodeById(eventId: string, episodeId: string): Promise<PodcastEpisode | null> {
+  const event = await getPodcastByEventId(eventId);
   if (!event) return null;
   
   const episode = event.episodes.find(ep => ep.id === episodeId);
@@ -119,8 +150,8 @@ export function getEpisodeById(eventId: string, episodeId: string): PodcastEpiso
 }
 
 // 獲取下一集
-export function getNextEpisode(eventId: string, currentEpisodeId: string): PodcastEpisode | null {
-  const event = getPodcastByEventId(eventId);
+export async function getNextEpisode(eventId: string, currentEpisodeId: string): Promise<PodcastEpisode | null> {
+  const event = await getPodcastByEventId(eventId);
   if (!event) return null;
   
   // 按照日期順序排序集數 (從新到舊)
@@ -142,19 +173,20 @@ export function getNextEpisode(eventId: string, currentEpisodeId: string): Podca
 
 // 原始函數 - 不綁定特定事件
 // 根據 ID 獲取特定集數
-export function getEpisodeByIdGlobal(episodeId: string): PodcastEpisode | null {
-  const allEpisodes = getAllPodcasts();
+export async function getEpisodeByIdGlobal(episodeId: string): Promise<PodcastEpisode | null> {
+  const allEpisodes = await getAllPodcasts();
   return allEpisodes.find(episode => episode.id === episodeId) || null;
 }
 
 // 搜索播客集數
-export function searchEpisodes(query: string): PodcastEpisode[] {
-  if (!query) return getAllPodcasts();
+export async function searchEpisodes(query: string): Promise<PodcastEpisode[]> {
+  const allEpisodes = await getAllPodcasts();
+  if (!query) return allEpisodes;
   
   const lowerQuery = query.toLowerCase();
-  return getAllPodcasts().filter(episode => 
+  return allEpisodes.filter(episode => 
     episode.title.toLowerCase().includes(lowerQuery) || 
     episode.description.toLowerCase().includes(lowerQuery) ||
     episode.eventName?.toLowerCase().includes(lowerQuery)
   );
-} 
+}

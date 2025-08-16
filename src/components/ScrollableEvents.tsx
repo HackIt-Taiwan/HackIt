@@ -4,7 +4,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaCalendar, FaMapMarkerAlt, FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaCalendar, FaMapMarkerAlt, FaArrowRight, FaChevronLeft, FaChevronRight, FaCheckCircle } from 'react-icons/fa';
 import { getUpcomingEvents, getPastEvents, Event } from '@/utils/events';
 import { useI18n } from '@/i18n';
 
@@ -527,16 +527,10 @@ const ScrollableEvents: React.FC = () => {
                     aria-hidden="true"
                     style={{ touchAction: 'pan-x' }}
                   ></div>
-                  {/* Top-left category chip */}
-                  <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-full text-[11px] font-medium text-white bg-black/50 dark:bg-black/40 backdrop-blur-md border border-white/20">
-                    {event.frontmatter.category}
-                  </div>
-                  {/* Top-right status chip for ended events */}
-                  {event.frontmatter.isCompleted && (
-                    <div className="absolute top-3 right-3 z-20 px-2.5 py-1 rounded-full text-[11px] font-semibold text-white bg-gray-800/80 dark:bg-gray-900/70 backdrop-blur-md border border-white/20">
-                      {t("scrollableEvents.completed")}
-                    </div>
-                  )}
+                  
+                  
+                  
+                  
                 </div>
                 
                 <div className="p-5">

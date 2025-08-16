@@ -1,0 +1,20 @@
+{
+  "slug": "scrapyard-taiwan",
+  "frontmatter": {
+    "id": 1,
+    "title": "Scrapyard Taiwan",
+    "date": "2025-03-15",
+    "endDate": "2025-03-16",
+    "time": "",
+    "location": "新北市立三民高級中學",
+    "image": "/images/scrapyard_taiwan_all.jpg",
+    "url": "https://scrapyard.hackit.tw/",
+    "category": "黑客松",
+    "tags": ["hack club", "hackathon"],
+    "spots": 0,
+    "spotsLeft": 0,
+    "isCompleted": true,
+    "description": "由 Hack Club 在全球各地發起的 Scrapyard 黑客松活動，在台灣由 HackIt 於 2025 年 3/15、3/16 在三民高中舉辦兩天一夜的跨夜黑客松，主題是'Build Stupid Thing, Get Stupid Thing'."
+  },
+  "content": ""
+}

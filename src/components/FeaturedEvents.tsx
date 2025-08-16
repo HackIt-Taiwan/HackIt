@@ -8,17 +8,7 @@ import { FaCalendar, FaMapMarkerAlt, FaArrowRight, FaRegLightbulb, FaRegCompass,
 import { Event, getFeaturedEvents } from '@/utils/events';
 import { useI18n } from '@/i18n';
 
-// 筆記紙背景效果
-const notePaperBg = {
-  background: "linear-gradient(to bottom, white 29px, #f0f0f0 1px)",
-  backgroundSize: "100% 30px",
-};
-
-// 深色模式筆記紙背景效果 - 修改為更深、對比更強的背景
-const darkNotePaperBg = {
-  background: "linear-gradient(to bottom, #0F172A 29px, #1E293B 1px)",
-  backgroundSize: "100% 30px",
-};
+// 保留說明：改以 Tailwind 任意值背景 + dark: 變體處理，避免自動深色時樣式不同步
 
 // 手繪效果 SVG 路徑
 const randomSquiggle = () => {
@@ -30,61 +20,29 @@ const randomSquiggle = () => {
     T${start + 80},10`;
 };
 
-// 替代方法：使用JavaScript來應用深色模式樣式
-const useDarkModeStyles = () => {
-  React.useEffect(() => {
-    // 檢測深色模式
-    const applyDarkStyles = () => {
-      const elements = document.querySelectorAll('[data-dark-mode-style]');
-      elements.forEach(el => {
-        if (document.documentElement.classList.contains('dark-theme')) {
-          const darkStyle = el.getAttribute('data-dark-mode-style');
-          if (darkStyle) {
-            const styleObj = JSON.parse(darkStyle);
-            Object.keys(styleObj).forEach(key => {
-              (el as HTMLElement).style[key as any] = styleObj[key];
-            });
-          }
-        } else {
-          // 重置為原始樣式
-          const originalStyle = (el as HTMLElement).getAttribute('data-original-style');
-          if (originalStyle) {
-            const styleObj = JSON.parse(originalStyle);
-            Object.keys(styleObj).forEach(key => {
-              (el as HTMLElement).style[key as any] = styleObj[key];
-            });
-          }
-        }
-      });
-    };
-
-    // 監聽主題變更
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'class') {
-          applyDarkStyles();
-        }
-      });
-    });
-
-    observer.observe(document.documentElement, { attributes: true });
-    
-    // 初始應用
-    applyDarkStyles();
-    
-    return () => observer.disconnect();
-  }, []);
-};
+// 移除舊的 DOM 觀察法，避免與 React 重渲染衝突
 
 const FeaturedEvents: React.FC = () => {
-  // 使用深色模式樣式的鉤子
-  useDarkModeStyles();
-  
   // 使用國際化翻譯
   const { t } = useI18n();
   
-  // 從 Markdown 文件獲取特色活動
-  const featuredEvents = getFeaturedEvents();
+  // Load featured events on client
+  const [featuredEvents, setFeaturedEvents] = React.useState<Event[]>([]);
+  React.useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      try {
+        const events = await getFeaturedEvents();
+        if (isMounted) setFeaturedEvents(events || []);
+      } catch (err) {
+        console.error('Failed to load featured events:', err);
+        if (isMounted) setFeaturedEvents([]);
+      }
+    })();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
   
   // 如果沒有特色活動，則不顯示該部分
   if (featuredEvents.length === 0) {
@@ -301,12 +259,9 @@ const FeaturedEvents: React.FC = () => {
                       </div>
                     </div>
                     
-                    {/* 右側內容區域 - 筆記紙風格 */}
+                    {/* 右側內容區域 - 筆記紙風格（Tailwind 任意值 + dark 變體） */}
                     <div 
-                      className="p-6 md:p-8 flex flex-col dark:text-white" 
-                      style={notePaperBg}
-                      data-original-style={JSON.stringify(notePaperBg)}
-                      data-dark-mode-style={JSON.stringify(darkNotePaperBg)}
+                      className="p-6 md:p-8 flex flex-col dark:text-white bg-[linear-gradient(to_bottom,_white_29px,_#f0f0f0_1px)] dark:bg-[linear-gradient(to_bottom,_#0F172A_29px,_#1E293B_1px)] bg-[length:100%_30px] dark:bg-[length:100%_30px]"
                     >
                       {/* 標題區域 */}
                       <div className="relative mb-2">

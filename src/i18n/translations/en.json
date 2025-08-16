@@ -168,7 +168,7 @@
     },
     "scroll": {
       "ready": "Ready?",
-      "action": "Click or scroll"
+      "action": "Scroll to see more"
     },
     "logs": {
       "fetchSuccess": "Successfully fetched member count({0}):",

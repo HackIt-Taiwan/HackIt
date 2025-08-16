@@ -412,10 +412,6 @@ const EventsSection: React.FC = () => {
                       style={{ objectFit: 'cover' }}
                       className="transition-transform duration-500"
                     />
-                    {/* Top-left category chip (unified) */}
-                    <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-full text-[11px] font-medium text-white bg-black/50 dark:bg-black/40 backdrop-blur-md border border-white/20">
-                      {event.frontmatter.category}
-                    </div>
                   </motion.div>
                   
                   <div className="p-5 md:p-6 flex-grow flex flex-col">

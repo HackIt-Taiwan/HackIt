@@ -182,10 +182,6 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
                           fill
                           style={{ objectFit: 'cover' }}
                         />
-                        {/* Top-left category chip (unified) */}
-                        <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-full text-[11px] font-medium text-white bg-black/50 dark:bg-black/40 backdrop-blur-md border border-white/20">
-                          {event.frontmatter.category}
-                        </div>
                       </div>
                       <div className="p-5">
                         <div className="flex items-center mb-3 text-xs text-gray-500 dark:text-gray-400">
@@ -247,6 +243,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
                       whileHover={{ y: -5, transition: { duration: 0.2 } }}
                     >
                       <div className="relative h-48 overflow-hidden">
+                        
                         <Image 
                           src={event.frontmatter.image} 
                           alt={event.frontmatter.title} 
@@ -254,14 +251,6 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
                           style={{ objectFit: 'cover' }}
                           className="filter grayscale"
                         />
-                        {/* Top-left category chip (unified) */}
-                        <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-full text-[11px] font-medium text-white bg-black/50 dark:bg-black/40 backdrop-blur-md border border-white/20">
-                          {event.frontmatter.category}
-                        </div>
-                        {/* Top-right status chip for ended events (subtle) */}
-                        <div className="absolute top-3 right-3 z-20 px-2.5 py-1 rounded-full text-[11px] font-semibold text-white bg-gray-800/80 dark:bg-gray-900/70 backdrop-blur-md border border-white/20">
-                          {t("eventsList.endedBadge")}
-                        </div>
                       </div>
                       <div className="p-5">
                         <div className="flex items-center mb-3 text-xs text-gray-500 dark:text-gray-400">

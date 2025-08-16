@@ -34,6 +34,35 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-light dark:bg-dark min-h-screen antialiased">
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            (function() {
+              try {
+                var cookieMap = document.cookie.split(';').reduce(function(acc, pair){
+                  var p = pair.split('=');
+                  var k = p[0] ? p[0].trim() : '';
+                  if (!k) return acc;
+                  acc[k] = decodeURIComponent((p[1]||'').trim());
+                  return acc;
+                }, {});
+                var savedTheme = cookieMap.theme || localStorage.getItem('theme');
+                var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                var effective = savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : (systemDark ? 'dark' : 'light');
+                var root = document.documentElement;
+                root.classList.remove('light-theme','dark-theme');
+                root.classList.add(effective + '-theme');
+                if (effective === 'dark') {
+                  root.setAttribute('data-theme','dark');
+                  root.classList.add('dark');
+                } else {
+                  root.setAttribute('data-theme','light');
+                  root.classList.remove('dark');
+                }
+              } catch (e) {}
+            })();
+          `}}
+        />
         <I18nClientProvider locale={locale}>
         <ClientThemeProvider>
           <div className="absolute w-full h-40 top-0 left-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 dark:from-primary/20 dark:via-secondary/20 dark:to-accent/20"></div>

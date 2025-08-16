@@ -168,7 +168,7 @@
     },
     "scroll": {
       "ready": "準備好了嗎？",
-      "action": "點擊或滾動"
+      "action": "滾動看更多"
     },
     "logs": {
       "fetchSuccess": "成功獲取成員數量({0}):",

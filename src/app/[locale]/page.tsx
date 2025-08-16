@@ -3,7 +3,6 @@ import HeroSection from '@/components/HeroSection';
 import YouthIntroSection from '@/components/YouthIntroSection';
 import FeaturedEvents from '@/components/FeaturedEvents';
 import ScrollableEvents from '@/components/ScrollableEvents';
-import LatestNewsSection from '@/components/LatestNewsSection';
 import CTASection from '@/components/CTASection';
 import TechAnimation from '@/components/TechAnimation';
 import Navbar from '@/components/Navbar';
@@ -37,8 +36,7 @@ export default function LocaleHome() {
       {/* 小型活動 (可橫向滾動) */}
       <ScrollableEvents />
       
-      {/* 最新消息 */}
-      <LatestNewsSection />
+      
       
       {/* 加入我們 CTA */}
       <CTASection />
