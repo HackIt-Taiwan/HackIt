@@ -8,15 +8,29 @@ import { FaCalendar, FaMapMarkerAlt, FaUsers, FaArrowRight, FaChevronLeft, FaChe
 import { getUpcomingEvents, type Event } from '@/utils/events';
 import { useI18n } from "@/i18n";
 
-// 從 utils/events.ts 獲取活動數據
-const events = getUpcomingEvents();
+// Load upcoming events asynchronously on client
 
 const EventsSection: React.FC = () => {
+  const [events, setEvents] = useState<Event[]>([]);
   const ref = useRef(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
   const controls = useAnimation();
   const { t } = useI18n();
+
+  useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      try {
+        const data = await getUpcomingEvents();
+        if (isMounted) setEvents(data || []);
+      } catch (err) {
+        console.error('Failed to load upcoming events:', err);
+        if (isMounted) setEvents([]);
+      }
+    })();
+    return () => { isMounted = false; };
+  }, []);
 
   // 拖動滑動相關狀態
   const [isDragging, setIsDragging] = useState(false);
@@ -398,7 +412,8 @@ const EventsSection: React.FC = () => {
                       style={{ objectFit: 'cover' }}
                       className="transition-transform duration-500"
                     />
-                    <div className="absolute top-3 left-3 bg-primary text-white px-3 py-1 rounded-full text-xs font-semibold">
+                    {/* Top-left category chip (unified) */}
+                    <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-full text-[11px] font-medium text-white bg-black/50 dark:bg-black/40 backdrop-blur-md border border-white/20">
                       {event.frontmatter.category}
                     </div>
                   </motion.div>
