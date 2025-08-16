@@ -4,7 +4,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaCalendar, FaMapMarkerAlt, FaArrowRight, FaChevronLeft, FaChevronRight, FaCheckCircle } from 'react-icons/fa';
+import { FaCalendar, FaMapMarkerAlt, FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { getUpcomingEvents, getPastEvents, Event } from '@/utils/events';
 import { useI18n } from '@/i18n';
 
@@ -528,16 +528,7 @@ const ScrollableEvents: React.FC = () => {
                     style={{ touchAction: 'pan-x' }}
                   ></div>
                   
-                  <div className="absolute top-3 left-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-primary flex items-center gap-1 z-20">
-                    {event.frontmatter.isCompleted ? (
-                      <>
-                        <FaCheckCircle className="text-green-500 dark:text-green-400" />
-                        <span>{t("scrollableEvents.completed")}</span>
-                      </>
-                    ) : (
-                      event.frontmatter.category
-                    )}
-                  </div>
+                  {/* Removed top-left status/category badge for cleaner visual */}
                   
                   {/* 右上角活動狀態 */}
                   {event.frontmatter.isCompleted && (
