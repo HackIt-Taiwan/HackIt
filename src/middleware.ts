@@ -58,21 +58,40 @@ export function middleware(request: NextRequest) {
   }
   
   // 檢查當前路徑是否已有支持的語言前綴
-  const pathnameHasLocale = locales.some(
+  const pathnameLocale = locales.find(
     locale => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
+  const pathnameHasLocale = Boolean(pathnameLocale);
   
-  // 如果已有語言前綴，直接返回
+  // 如果已有語言前綴，寫入 cookie 後直接返回
   if (pathnameHasLocale) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    const savedLocale = request.cookies.get('locale')?.value;
+    if (pathnameLocale && savedLocale !== pathnameLocale) {
+      response.cookies.set('locale', pathnameLocale, {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 365, // 1 year
+        sameSite: 'lax',
+      });
+    }
+    return response;
   }
   
   // 獲取用戶偏好語言
   const locale = getLocale(request);
   
-  // 重定向到帶有語言前綴的路徑
+  // 重定向到帶有語言前綴的路徑，並同時寫入 cookie
   const newUrl = new URL(`/${locale}${pathname.startsWith('/') ? pathname : `/${pathname}`}`, request.url);
-  return NextResponse.redirect(newUrl);
+  const response = NextResponse.redirect(newUrl);
+  const savedLocale = request.cookies.get('locale')?.value;
+  if (savedLocale !== locale) {
+    response.cookies.set('locale', locale, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365, // 1 year
+      sameSite: 'lax',
+    });
+  }
+  return response;
 }
 
 // 符合所有路徑
