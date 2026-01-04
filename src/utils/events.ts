@@ -24,31 +24,29 @@ export type Event = {
   content: string;
 };
 
-// Cache for loaded events data
+// In-memory cache for events data.
 let eventsCache: Event[] | null = null;
 
-// Clear cache for development/testing
+// Clear cache (useful for development/testing).
 export function clearEventsCache(): void {
   eventsCache = null;
 }
 
-// Load events from JSON files
+// Load events from the API.
 async function loadEventsData(): Promise<Event[]> {
   if (eventsCache) {
     return eventsCache;
   }
 
   try {
-    // Check if we're running on the server or client
+    // Use absolute URLs on the server and relative URLs on the client.
     if (typeof window === 'undefined') {
-      // Server-side: use API route
       const response = await fetch(`http://localhost:3000/api/data/events`);
       if (response.ok) {
         eventsCache = await response.json();
         return eventsCache || [];
       }
     } else {
-      // Client-side: use API route
       const response = await fetch(`/api/data/events`);
       if (response.ok) {
         eventsCache = await response.json();
@@ -63,39 +61,39 @@ async function loadEventsData(): Promise<Event[]> {
   return [];
 }
 
-// Get available event files dynamically
+// Get available event slugs.
 async function getAvailableEventFiles(): Promise<string[]> {
   const events = await loadEventsData();
   return events.map(event => event.slug);
 }
 
-// 獲取所有活動檔案路徑
+// Get all event file names.
 export async function getEventFiles(): Promise<string[]> {
   return await getAvailableEventFiles();
 }
 
-// 解析單個活動檔案
+// Resolve a single event by filename.
 export async function parseEventFile(filename: string): Promise<Event | null> {
   const events = await loadEventsData();
   const event = events.find(e => e.slug === filename.replace(/\.md$/, ''));
   return event || null;
 }
 
-// 獲取所有活動資料
+// Get all events sorted by date (newest first).
 export async function getAllEvents(): Promise<Event[]> {
   const events = await loadEventsData();
   return [...events].sort((a, b) => {
     const dateA = new Date(a.frontmatter.date).getTime();
     const dateB = new Date(b.frontmatter.date).getTime();
-    return dateB - dateA; // 最新的排在前面
+    return dateB - dateA;
   });
 }
 
-// 獲取即將到來的活動 (日期 >= 今天)
+// Get upcoming events (date >= today).
 export async function getUpcomingEvents(): Promise<Event[]> {
   const events = await loadEventsData();
   const today = new Date();
-  today.setHours(0, 0, 0, 0); // 設置為今天的開始時間
+  today.setHours(0, 0, 0, 0); // Start of today.
   
   return events.filter(event => {
     if (event.frontmatter.isCompleted) return false;
@@ -105,11 +103,11 @@ export async function getUpcomingEvents(): Promise<Event[]> {
   }).sort((a, b) => {
     const dateA = new Date(a.frontmatter.date).getTime();
     const dateB = new Date(b.frontmatter.date).getTime();
-    return dateA - dateB; // 日期較早的排在前面
+    return dateA - dateB;
   });
 }
 
-// 獲取過去活動 (日期 < 今天 或 已標記為已完成)
+// Get past events (date < today or marked completed).
 export async function getPastEvents(): Promise<Event[]> {
   const events = await loadEventsData();
   const today = new Date();
@@ -123,30 +121,30 @@ export async function getPastEvents(): Promise<Event[]> {
   }).sort((a, b) => {
     const dateA = new Date(a.frontmatter.date).getTime();
     const dateB = new Date(b.frontmatter.date).getTime();
-    return dateB - dateA; // 日期較晚的排在前面 (最近的過去活動優先)
+    return dateB - dateA;
   });
 }
 
-// 獲取特色活動 (標記為 isFeatured)
+// Get featured events (marked as isFeatured).
 export async function getFeaturedEvents(): Promise<Event[]> {
   const events = await loadEventsData();
   return events.filter(event => event.frontmatter.isFeatured);
 }
 
-// 根據 slug 獲取單個活動
+// Get a single event by slug.
 export async function getEventBySlug(slug: string): Promise<Event | null> {
   const events = await loadEventsData();
   return events.find(event => event.slug === slug) || null;
 }
 
-// 按分類獲取活動
+// Get events by category.
 export async function getEventsByCategory(category: string): Promise<Event[]> {
   const events = await loadEventsData();
   return events.filter(event => event.frontmatter.category === category);
 }
 
-// 按標籤獲取活動
+// Get events by tag.
 export async function getEventsByTag(tag: string): Promise<Event[]> {
   const events = await loadEventsData();
   return events.filter(event => event.frontmatter.tags.includes(tag));
-} 
+}

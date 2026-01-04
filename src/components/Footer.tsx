@@ -7,7 +7,7 @@ import { useI18n } from '@/i18n';
 const Footer: React.FC = () => {
   const { t, locale } = useI18n();
   
-  // 取得社群連結
+  // Social links.
   const socialLinks = {
     facebook: t("footer.socialLinks.facebook") as string,
     discord: t("footer.socialLinks.discord") as string,
@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
     github: t("footer.socialLinks.github") as string,
   };
   
-  // 從語言檔獲取活動和資源連結
+  // Load event/resource links from translations.
   const eventsLinks = t("footer.eventsLinks") as Array<{name: string, href: string}>;
   const resourcesLinks = t("footer.resourcesLinks") as Array<{name: string, href: string}>;
   

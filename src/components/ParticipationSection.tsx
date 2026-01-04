@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import { FaCheck, FaTimes, FaAngleDown, FaUsers, FaGraduationCap, FaHandsHelping } from "react-icons/fa";
 
-// FAQ 問題和答案
+// FAQ data.
 const faqItems = [
   {
     question: "HackIt 的活動難度如何？適合初學者嗎？",
@@ -34,12 +34,12 @@ const ParticipationSection: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
 
-  // 切換FAQ顯示
+  // Toggle FAQ visibility.
   const toggleFaq = (index: number) => {
     setExpandedFaqIndex(expandedFaqIndex === index ? null : index);
   };
 
-  // 動畫變體
+  // Motion variants.
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -59,7 +59,7 @@ const ParticipationSection: React.FC = () => {
     },
   };
 
-  // 參與方式資料
+  // Participation options data.
   const participationOptions = [
     {
       name: "開放學習",
@@ -140,7 +140,7 @@ const ParticipationSection: React.FC = () => {
           </motion.p>
         </div>
 
-        {/* 參與方式卡片 */}
+        {/* Participation cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 lg:gap-8 max-w-6xl mx-auto">
           {participationOptions.map((option, index) => (
             <motion.div
@@ -198,7 +198,7 @@ const ParticipationSection: React.FC = () => {
           ))}
         </div>
 
-        {/* FAQ 部分 */}
+        {/* FAQ section */}
         <motion.div
           className="mt-24 max-w-3xl mx-auto"
           variants={itemVariants}
@@ -249,7 +249,7 @@ const ParticipationSection: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* 社群理念 */}
+        {/* Community philosophy */}
         <motion.div
           className="mt-24 bg-gray-50 rounded-2xl p-8 md:p-12 text-center max-w-4xl mx-auto"
           variants={itemVariants}

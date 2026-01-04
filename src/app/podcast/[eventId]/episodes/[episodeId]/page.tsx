@@ -60,14 +60,14 @@ export default function PodcastEpisodePage() {
     loadData();
   }, [eventId, episodeId, router]);
   
-  // 處理集數結束
+  // Handle episode end.
   const handleEpisodeEnd = () => {
     if (nextEpisode) {
       router.push(`/podcast/${eventId}/episodes/${nextEpisode.id}`);
     }
   };
   
-  // 分享播客集數
+  // Share the episode.
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
@@ -93,7 +93,7 @@ export default function PodcastEpisodePage() {
   }
 
   if (!podcast || !episode) {
-    return null; // 等待重定向或數據載入
+    return null; // Wait for redirect or data.
   }
 
   return (
@@ -137,7 +137,7 @@ export default function PodcastEpisodePage() {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* 左側：播放器 */}
+            {/* Left: player */}
             <div className="lg:w-3/5">
               <PodcastPlayer
                 episode={episode}
@@ -147,7 +147,7 @@ export default function PodcastEpisodePage() {
               />
             </div>
             
-            {/* 右側：其他集數 */}
+            {/* Right: other episodes */}
             <div className="lg:w-2/5">
               <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">
                 {t('podcastPage.episodes')}

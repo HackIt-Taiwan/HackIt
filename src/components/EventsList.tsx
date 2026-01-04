@@ -16,12 +16,12 @@ interface EventsListProps {
 
 const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, categories }) => {
   const { t } = useI18n();
-  const [activeTab, setActiveTab] = useState("upcoming"); // 'upcoming' 或 'past'
+  const [activeTab, setActiveTab] = useState("upcoming"); // 'upcoming' or 'past'
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(t("common.all"));
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  // 處理搜索和過濾
+  // Handle search and filters.
   const filteredUpcomingEvents = upcomingEvents.filter(event => {
     const matchesSearch = event.frontmatter.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          event.frontmatter.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -57,7 +57,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
 
   return (
     <>
-      {/* 搜索欄 */}
+      {/* Search bar */}
       <div className="bg-white dark:bg-gray-800 py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto relative">
@@ -82,7 +82,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
               </button>
             </div>
             
-            {/* 篩選選項 */}
+            {/* Filter options */}
             {isFilterOpen && (
               <motion.div 
                 className="absolute z-10 mt-2 w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4"
@@ -113,7 +113,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
         </div>
       </div>
 
-      {/* 活動標籤頁 */}
+      {/* Event tabs */}
       <section className="py-8 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="container mx-auto px-4">
           <div className="flex justify-center">
@@ -157,7 +157,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
         </div>
       </section>
       
-      {/* 活動列表 */}
+      {/* Event list */}
       <section className="py-16 md:py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
           {activeTab === 'upcoming' ? (

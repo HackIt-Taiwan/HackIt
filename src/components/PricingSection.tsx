@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import { FaCheck, FaTimes, FaAngleDown } from "react-icons/fa";
 
-// FAQ 問題和答案
+// FAQ data.
 const faqItems = [
   {
     question: "HackIt 的課程難度如何？適合初學者嗎？",
@@ -37,12 +37,12 @@ const PricingSection: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
 
-  // 切換FAQ顯示
+  // Toggle FAQ visibility.
   const toggleFaq = (index: number) => {
     setExpandedFaqIndex(expandedFaqIndex === index ? null : index);
   };
 
-  // 動畫變體
+  // Motion variants.
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -62,7 +62,7 @@ const PricingSection: React.FC = () => {
     },
   };
 
-  // 定價方案資料
+  // Pricing plan data.
   const pricingPlans = [
     {
       name: "基本版",
@@ -157,7 +157,7 @@ const PricingSection: React.FC = () => {
           </motion.p>
         </div>
 
-        {/* 切換按鈕 */}
+        {/* Toggle buttons */}
         <motion.div
           className="flex justify-center mb-12 md:mb-16"
           variants={itemVariants}
@@ -189,7 +189,7 @@ const PricingSection: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* 價格卡片 */}
+        {/* Pricing cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 lg:gap-8 max-w-6xl mx-auto">
           {pricingPlans.map((plan, index) => (
             <motion.div
@@ -273,7 +273,7 @@ const PricingSection: React.FC = () => {
           ))}
         </div>
 
-        {/* 企業方案 */}
+        {/* Enterprise plan */}
         <motion.div
           className="mt-16 md:mt-20 bg-gray-50 rounded-2xl p-6 md:p-10 max-w-5xl mx-auto"
           variants={itemVariants}
@@ -294,7 +294,7 @@ const PricingSection: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* FAQ 部分 */}
+        {/* FAQ section */}
         <motion.div
           className="mt-20 md:mt-28 max-w-3xl mx-auto"
           variants={itemVariants}
@@ -330,7 +330,7 @@ const PricingSection: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* 底部CTA */}
+        {/* Bottom CTA */}
         <motion.div
           className="mt-20 md:mt-28 text-center"
           variants={itemVariants}

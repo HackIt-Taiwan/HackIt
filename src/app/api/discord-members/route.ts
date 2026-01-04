@@ -3,16 +3,16 @@ import fs from 'fs';
 import path from 'path';
 import { NextRequest } from 'next/server';
 
-// 改為使用靜態生成，允許緩存
+// Force dynamic rendering while allowing revalidation.
 export const dynamic = 'force-dynamic';
-export const revalidate = 3600; // 每小時重新驗證一次（3600秒）
+export const revalidate = 3600; // Revalidate hourly (3600 seconds).
 
-// 緩存路徑和文件名
+// Cache paths and file name.
 const CACHE_DIR = path.join(process.cwd(), '.cache');
 const CACHE_FILE = path.join(CACHE_DIR, 'discord-members.json');
-const CACHE_EXPIRY = 60 * 60 * 1000; // 緩存有效期：1小時（毫秒）
+const CACHE_EXPIRY = 60 * 60 * 1000; // Cache TTL: 1 hour (ms).
 
-// 定義緩存數據類型
+// Cache data shape.
 interface CacheData {
   memberCount: number;
   guildName: string;
@@ -20,7 +20,7 @@ interface CacheData {
   [key: string]: any;
 }
 
-// 檢查並創建緩存目錄
+// Ensure the cache directory exists.
 if (!fs.existsSync(CACHE_DIR)) {
   try {
     fs.mkdirSync(CACHE_DIR, { recursive: true });
@@ -29,13 +29,13 @@ if (!fs.existsSync(CACHE_DIR)) {
   }
 }
 
-// 讀取緩存數據
+// Read cached data.
 function getCachedData(): CacheData | null {
   try {
     if (fs.existsSync(CACHE_FILE)) {
       const cacheData = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8')) as CacheData;
       
-      // 檢查緩存是否過期
+      // Check cache expiry.
       if (cacheData.timestamp && (Date.now() - cacheData.timestamp) < CACHE_EXPIRY) {
         console.log('使用緩存的Discord成員數據', {
           memberCount: cacheData.memberCount,
@@ -50,10 +50,10 @@ function getCachedData(): CacheData | null {
   return null;
 }
 
-// 保存數據到緩存
+// Persist data to cache.
 function saveCacheData(data: Record<string, any>): void {
   try {
-    // 添加緩存時間戳
+    // Add cache timestamp.
     const cacheData = {
       ...data,
       timestamp: Date.now()
@@ -67,11 +67,11 @@ function saveCacheData(data: Record<string, any>): void {
 }
 
 export async function GET(request: NextRequest) {
-  // 檢查是否有強制刷新參數
+  // Check for forced refresh.
   const { searchParams } = new URL(request.url);
   const forceRefresh = searchParams.get('force') === 'true';
   
-  // 如果不是強制刷新，嘗試獲取緩存
+  // Use cache unless forced to refresh.
   if (!forceRefresh) {
     const cachedData = getCachedData();
     if (cachedData) {
@@ -84,9 +84,9 @@ export async function GET(request: NextRequest) {
     }
   }
   
-  // 如果緩存不存在或已過期，從Discord API獲取數據
+  // Fetch from Discord API when cache is missing or expired.
   try {
-    // 需要在環境變數中設置 DISCORD_BOT_TOKEN 和 DISCORD_SERVER_ID
+    // Requires DISCORD_BOT_TOKEN and DISCORD_SERVER_ID env vars.
     const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
     const DISCORD_SERVER_ID = process.env.DISCORD_SERVER_ID;
 
@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
 
     console.log('正在從Discord API獲取成員數據...');
     
-    // 嘗試使用/guilds/{guild.id}?with_counts=true 端點獲取近似成員數量
+    // Use /guilds/{guild.id}?with_counts=true for approximate counts.
     const response = await fetch(`https://discord.com/api/v10/guilds/${DISCORD_SERVER_ID}?with_counts=true`, {
       headers: {
         Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
@@ -132,14 +132,14 @@ export async function GET(request: NextRequest) {
       guildName: result.guildName
     });
     
-    // 保存數據到緩存
+    // Cache the result.
     saveCacheData(result);
     
     return NextResponse.json(result);
   } catch (error) {
     console.error('獲取Discord成員數量失敗:', error);
     
-    // 如果API請求失敗，嘗試使用可能過期的緩存作為後備
+    // If the API fails, fall back to stale cache if available.
     const expiredCache = getCachedData();
     if (expiredCache) {
       console.log('API請求失敗，使用過期緩存作為後備');

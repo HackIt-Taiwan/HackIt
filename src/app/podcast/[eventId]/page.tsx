@@ -38,7 +38,7 @@ export default function PodcastEventPage() {
         }
         setPodcast(podcastData);
         
-        // 默認選中第一集
+        // Default to the first episode.
         if (podcastData.episodes.length > 0 && !selectedEpisodeId) {
           setSelectedEpisodeId(podcastData.episodes[0].id);
         }
@@ -53,7 +53,7 @@ export default function PodcastEventPage() {
     loadPodcast();
   }, [eventId, router]);
   
-  // 更新當前播放的集數和下一集
+  // Update the current and next episode.
   useEffect(() => {
     const loadEpisodeData = async () => {
       if (selectedEpisodeId && podcast) {
@@ -71,12 +71,12 @@ export default function PodcastEventPage() {
     loadEpisodeData();
   }, [selectedEpisodeId, eventId, podcast]);
   
-  // 選擇集數
+  // Select an episode.
   const handleSelectEpisode = (episodeId: string) => {
     setSelectedEpisodeId(episodeId);
   };
   
-  // 處理集數結束
+  // Handle episode end.
   const handleEpisodeEnd = () => {
     if (nextEpisode) {
       setSelectedEpisodeId(nextEpisode.id);
@@ -84,7 +84,7 @@ export default function PodcastEventPage() {
     }
   };
   
-  // 切換自動播放
+  // Toggle autoplay.
   const toggleAutoplay = () => {
     setAutoplay(!autoplay);
   };
@@ -101,14 +101,14 @@ export default function PodcastEventPage() {
   }
 
   if (!podcast) {
-    return null; // 等待重定向
+    return null; // Wait for redirect.
   }
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
       
-      {/* 頂部區域 */}
+      {/* Top area */}
       <section className="pt-28 md:pt-32 pb-12 md:pb-16 bg-gradient-to-b from-primary/5 to-indigo-50/50 dark:from-primary/10 dark:to-gray-900">
         <div className="container mx-auto px-4">
           <Link href="/podcast" className="flex items-center text-gray-600 dark:text-gray-300 mb-6 group">
@@ -155,7 +155,7 @@ export default function PodcastEventPage() {
                 {podcast.description}
               </p>
               
-              {/* 控制與資訊 */}
+              {/* Controls and info */}
               <div className="flex flex-wrap gap-4 items-center mb-6">
                 <button
                   onClick={toggleAutoplay}
@@ -186,7 +186,7 @@ export default function PodcastEventPage() {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* 左側：集數列表 */}
+            {/* Left: episode list */}
             <div className="lg:w-2/5">
               <EpisodesList
                 episodes={podcast.episodes}
@@ -196,7 +196,7 @@ export default function PodcastEventPage() {
               />
             </div>
             
-            {/* 右側：播放器 */}
+            {/* Right: player */}
             <div className="lg:w-3/5">
               {currentEpisode && (
                 <PodcastPlayer

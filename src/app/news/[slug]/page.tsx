@@ -23,14 +23,14 @@ export default function NewsDetailPage({ params }: NewsDetailPageProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 獲取新聞內容
+    // Fetch the news content.
     const currentNews = getNewsBySlug(slug);
     if (!currentNews) {
       notFound();
     }
     setNews(currentNews);
 
-    // 獲取相關新聞（這裡簡單取最新的 3 則，排除當前文章）
+    // Fetch related news (latest 3 excluding the current item).
     const latestNews = getLatestNews(4).filter(item => item.slug !== slug).slice(0, 3);
     setRelatedNews(latestNews);
     
@@ -52,7 +52,7 @@ export default function NewsDetailPage({ params }: NewsDetailPageProps) {
     return notFound();
   }
 
-  // 將 Markdown 內容分解為標題和內容部分
+  // Split Markdown into headings and content sections.
   const contentWithoutTitle = news.content.split('\n').slice(2).join('\n');
   const contentSections = contentWithoutTitle.split('\n\n').filter(Boolean);
 
@@ -60,7 +60,7 @@ export default function NewsDetailPage({ params }: NewsDetailPageProps) {
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
       
-      {/* 文章頁頭部 */}
+      {/* Article header */}
       <section className="pt-28 md:pt-32 lg:pt-36 pb-8 bg-gradient-to-b from-primary/5 to-white dark:from-primary/10 dark:to-gray-900">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
@@ -111,7 +111,7 @@ export default function NewsDetailPage({ params }: NewsDetailPageProps) {
         </div>
       </section>
       
-      {/* 文章主體 */}
+      {/* Article body */}
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
@@ -121,7 +121,7 @@ export default function NewsDetailPage({ params }: NewsDetailPageProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              {/* 文章主圖 */}
+              {/* Hero image */}
               <div className="relative w-full h-80 md:h-96">
                 <Image 
                   src={news.frontmatter.image} 
@@ -133,11 +133,11 @@ export default function NewsDetailPage({ params }: NewsDetailPageProps) {
                 />
               </div>
               
-              {/* 文章內容 */}
+              {/* Article content */}
               <div className="p-6 md:p-10">
                 <div className="prose prose-lg max-w-none dark:prose-invert">
                   {contentSections.map((section, index) => {
-                    // 檢查是否為標題
+                    // Check for heading.
                     if (section.startsWith('##')) {
                       return (
                         <h2 key={index} className="text-2xl font-bold mt-8 mb-4 text-gray-800 dark:text-white">
@@ -146,7 +146,7 @@ export default function NewsDetailPage({ params }: NewsDetailPageProps) {
                       );
                     }
                     
-                    // 檢查是否為列表
+                    // Check for list.
                     if (section.includes('- ')) {
                       const listItems = section.split('\n').filter(Boolean);
                       return (
@@ -160,7 +160,7 @@ export default function NewsDetailPage({ params }: NewsDetailPageProps) {
                       );
                     }
                     
-                    // 檢查是否為數字列表
+                    // Check for ordered list.
                     if (section.match(/^\d\.\s/)) {
                       const listItems = section.split('\n').filter(Boolean);
                       return (
@@ -174,7 +174,7 @@ export default function NewsDetailPage({ params }: NewsDetailPageProps) {
                       );
                     }
                     
-                    // 一般段落
+                    // Regular paragraph.
                     return (
                       <p 
                         key={index} 
@@ -189,7 +189,7 @@ export default function NewsDetailPage({ params }: NewsDetailPageProps) {
                   })}
                 </div>
                 
-                {/* 分享區域 */}
+                {/* Share section */}
                 <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
                   <div className="flex items-center justify-between">
                     <div className="text-gray-600 dark:text-gray-400">
@@ -206,7 +206,7 @@ export default function NewsDetailPage({ params }: NewsDetailPageProps) {
               </div>
             </motion.div>
             
-            {/* 相關新聞 */}
+            {/* Related news */}
             {relatedNews.length > 0 && (
               <div className="mt-16">
                 <h2 className="text-2xl font-bold mb-8 text-gray-800 dark:text-white">相關新聞</h2>

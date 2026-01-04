@@ -45,7 +45,7 @@ export default function PodcastPage() {
     loadData();
   }, []);
 
-  // 動畫變體
+  // Motion variants.
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -80,7 +80,7 @@ export default function PodcastPage() {
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
       
-      {/* 主視覺 */}
+      {/* Hero */}
       <section className="pt-28 md:pt-36 pb-16 md:pb-20 bg-gradient-to-b from-primary/5 to-indigo-50 dark:from-primary/10 dark:to-gray-900">
         <div className="container mx-auto px-4">
           <motion.div 
@@ -100,7 +100,7 @@ export default function PodcastPage() {
               {t('podcastPage.subtitle')}
             </p>
             
-            {/* 搜尋欄 */}
+            {/* Search bar */}
             <div className="max-w-2xl mx-auto mt-8 relative">
               <div className="relative">
                 <input
@@ -116,7 +116,7 @@ export default function PodcastPage() {
           </motion.div>
         </div>
         
-        {/* 裝飾 */}
+        {/* Decorations */}
         <div className="hidden md:block absolute -bottom-10 left-0 transform rotate-180 opacity-10 dark:opacity-5">
           <svg width="300" height="300" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="2" className="text-primary"/>
@@ -133,7 +133,7 @@ export default function PodcastPage() {
         </div>
       </section>
       
-      {/* 最新集數 */}
+      {/* Latest episodes */}
       <section className="py-12 md:py-16">
         <div className="container mx-auto px-4">
           <motion.div
@@ -197,7 +197,7 @@ export default function PodcastPage() {
         </div>
       </section>
       
-      {/* 所有活動的播客 */}
+      {/* Podcasts by event */}
       <section className="py-12 md:py-16 bg-gray-100 dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <motion.div

@@ -10,13 +10,13 @@ import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'fra
 import { useI18n } from '@/i18n';
 import { getAllEvents } from '@/utils/events';
 
-// 更新團隊成員接口
+// Team member type.
 interface TeamMember {
   image: string;
   name: string;
   title: string;
-  shortIntro: string; // 卡片上顯示的簡短介紹
-  description: string; // Popup中顯示的詳細描述
+  shortIntro: string; // Short blurb shown on cards.
+  description: string; // Detailed description shown in the modal.
   specialties: string[];
   github?: string;
   twitter?: string;
@@ -24,7 +24,7 @@ interface TeamMember {
   email?: string;
 }
 
-// 示範團隊數據（請根據實際情況擴充）
+// Sample team data (extend as needed).
 const teamMembers: TeamMember[] = [
   {
     image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1961&auto=format&fit=crop",
@@ -73,10 +73,10 @@ const teamMembers: TeamMember[] = [
     linkedin: "linkedin.com/in/cxh",
     email: "cxh@hackit.tw"
   }
-  // ...可以添加更多團隊成員
+  // Add more team members as needed.
 ]; 
 
-// 獲取Discord成員數量的接口
+// Discord member count response.
 interface DiscordMemberResponse {
   memberCount: number;
   guildName?: string;
@@ -87,28 +87,28 @@ interface DiscordMemberResponse {
 export default function AboutPage() {
   const { t, locale } = useI18n();
   
-  // 參考各個區塊，用於檢測滾動到視圖
+  // Section refs for in-view detection.
   const heroRef = useRef(null);
   const storyRef = useRef(null);
   const missionRef = useRef(null);
   const valuesRef = useRef(null);
   const teamRef = useRef(null);
   
-  // 控制是否顯示團隊部分
-  const showTeamSection = false; // 設為false以暫時隱藏團隊部分
+  // Toggle team section visibility.
+  const showTeamSection = false; // Set to false to hide the team section for now.
   
-  // 滾動進度動畫
+  // Scroll-based animation controls.
   const { scrollYProgress } = useScroll();
   const opacityHero = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
   
-  // 檢測各區塊是否在視圖中
+  // In-view detection for sections.
   const isHeroInView = useInView(heroRef, { once: false, amount: 0.3 });
   const isStoryInView = useInView(storyRef, { once: false, amount: 0.3 });
   const isMissionInView = useInView(missionRef, { once: false, amount: 0.2 });
   const isValuesInView = useInView(valuesRef, { once: false, amount: 0.2 });
   const isTeamInView = useInView(teamRef, { once: false, amount: 0.1 });
   
-  // 動畫變體
+  // Motion variants.
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -129,7 +129,7 @@ export default function AboutPage() {
     }
   };
   
-  // 漂浮動畫元素
+  // Floating decorative element.
   const FloatingElement = ({ delay, className }: { delay: number, className: string }) => (
     <motion.div
       className={`absolute ${className}`}
@@ -148,14 +148,14 @@ export default function AboutPage() {
 
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 
-  // 添加狀態來保存動態數據
-  const [memberCount, setMemberCount] = useState<number | string>("•••");
-  const [eventsCount, setEventsCount] = useState<number | string>("•••");
-  const [yearsCount, setYearsCount] = useState<number | string>("•••");
+  // State for dynamic stats.
+  const [memberCount, setMemberCount] = useState<number | string>('•••');
+  const [eventsCount, setEventsCount] = useState<number | string>('•••');
+  const [yearsCount, setYearsCount] = useState<number | string>('•••');
   
-  // 添加useEffect以獲取並計算數據
+  // Fetch and compute stats.
   useEffect(() => {
-    // 1. 獲取Discord成員數量
+    // 1) Fetch Discord member count.
     const fetchMemberCount = async () => {
       try {
         const response = await fetch('/api/discord-members');
@@ -167,42 +167,42 @@ export default function AboutPage() {
         }
       } catch (error) {
         console.error('Failed to fetch Discord members:', error);
-        setMemberCount("0"); // 如果失敗則使用預設值
+        setMemberCount('0'); // Fall back to a safe default.
       }
     };
     
-    // 2. 計算從2024/9/26至今的年份
+    // 2) Calculate years since 2024-09-26.
     const calculateYears = () => {
       const foundingDate = new Date('2024-09-26');
       const currentDate = new Date();
       
-      // 計算差距（以毫秒為單位）
+      // Compute the time delta in ms.
       const timeDiff = currentDate.getTime() - foundingDate.getTime();
       
-      // 轉換為年份（大約估算）
+      // Convert to years (approx).
       const yearsDiff = timeDiff / (1000 * 60 * 60 * 24 * 365.25);
       
       if (yearsDiff < 1) {
-        // 如果不到一年，顯示"<1"
-        setYearsCount("<1");
+        // Display "<1" if under one year.
+        setYearsCount('<1');
       } else {
-        // 四捨五入到最接近的整數
+        // Round to the nearest integer.
         setYearsCount(Math.round(yearsDiff));
       }
     };
     
-    // 3. 獲取活動總數
+    // 3) Fetch total event count.
     const getEventsCount = async () => {
       try {
         const events = await getAllEvents();
         setEventsCount((events || []).length);
       } catch (error) {
         console.error('Failed to get events count:', error);
-        setEventsCount("0");
+        setEventsCount('0');
       }
     };
     
-    // 執行所有數據獲取函數
+    // Run all data fetchers.
     fetchMemberCount();
     calculateYears();
     getEventsCount();
@@ -217,12 +217,12 @@ export default function AboutPage() {
     <main className="relative">
       <Navbar />
       
-      {/* 頁面標題區塊 - 簡化動畫 */}
+      {/* Page title section (simplified animation) */}
       <section
         ref={heroRef}
         className="pt-32 pb-20 bg-gradient-to-br from-indigo-50 to-white dark:from-gray-800 dark:to-gray-900 relative overflow-hidden"
       >
-        {/* 簡化背景 */}
+        {/* Simplified background */}
         <div className="absolute top-0 right-0 w-1/3 h-64 bg-indigo-100/70 dark:bg-indigo-900/20 blur-3xl opacity-50"></div>
         <div className="absolute bottom-0 left-0 w-1/4 h-64 bg-purple-100/70 dark:bg-purple-900/30 blur-3xl opacity-50"></div>
         
@@ -269,7 +269,7 @@ export default function AboutPage() {
         </div>
       </section>
       
-      {/* 創辦故事 */}
+      {/* Origin story */}
       <motion.section 
         ref={storyRef}
         className="py-24 bg-white dark:bg-gray-900 relative"
@@ -278,7 +278,7 @@ export default function AboutPage() {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        {/* 背景裝飾 */}
+        {/* Background decoration */}
         <div className="absolute w-full h-full overflow-hidden">
           <motion.div
             className="absolute -left-16 top-1/4 w-32 h-32 border-2 border-primary/10 rounded-lg"
@@ -336,14 +336,14 @@ export default function AboutPage() {
                     className="transition-transform duration-500 hover:scale-105"
                   />
                   
-                  {/* 圖片疊加效果 */}
+                  {/* Image overlay effect */}
                   <motion.div 
                     className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 1 }}
                   />
-                  {/* 攝影師浮水印 */}
+                  {/* Photographer watermark */}
                   <div className="absolute bottom-3 right-4 flex items-center group select-none">
                     <span
                       className="text-xs text-white/60 bg-black/30 rounded px-2 py-1 backdrop-blur-sm transition-all duration-300 group-hover:text-white group-hover:bg-black/70 group-hover:scale-110 flex items-center gap-1"
@@ -355,7 +355,7 @@ export default function AboutPage() {
                   </div>
                 </motion.div>
                 
-                {/* 裝飾元素 */}
+                {/* Decorative elements */}
                 <motion.div 
                   className="absolute -bottom-6 -left-6 w-24 h-24 bg-primary/10 rounded-xl -z-10"
                   animate={{ 
@@ -374,7 +374,7 @@ export default function AboutPage() {
                 />
               </motion.div>
               
-              {/* 統計數字 */}
+              {/* Stats */}
               <div className="flex justify-center mt-10 gap-8">
                 {[
                   { 
@@ -468,7 +468,7 @@ export default function AboutPage() {
         </div>
       </motion.section>
       
-      {/* 使命與願景 */}
+      {/* Mission and vision */}
       <motion.section 
         ref={missionRef}
         className="py-28 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 relative overflow-hidden"
@@ -477,7 +477,7 @@ export default function AboutPage() {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        {/* 動態背景形狀 */}
+        {/* Animated background shapes */}
         <div className="absolute top-0 left-0 w-full h-full">
           <motion.div 
             className="absolute top-0 left-0 w-1/3 h-1/3 bg-primary/5 dark:bg-primary/10 rounded-full transform -translate-x-1/3 -translate-y-1/3"
@@ -505,7 +505,7 @@ export default function AboutPage() {
             }}
           />
           
-          {/* 增加一些裝飾性元素 */}
+          {/* Additional decorative elements */}
           <motion.div 
             className="absolute top-1/4 right-[15%] w-24 h-24 bg-gradient-to-br from-purple-100/30 to-indigo-100/20 dark:from-purple-900/10 dark:to-indigo-900/5 rounded-full blur-xl"
             animate={{ 
@@ -533,7 +533,7 @@ export default function AboutPage() {
           />
         </div>
         
-        {/* 裝飾性圖形 */}
+        {/* Decorative graphics */}
         <motion.div
           className="absolute left-[10%] top-[20%] w-16 h-16"
           style={{ 
@@ -551,7 +551,7 @@ export default function AboutPage() {
           transition={{ duration: 20, repeat: Infinity }}
         />
         
-        {/* 矩形裝飾 */}
+        {/* Rectangular decoration */}
         <motion.div
           className="absolute right-[15%] bottom-[15%] w-12 h-12 border-2 border-primary/10 rounded-lg opacity-50"
           animate={{ 
@@ -597,7 +597,7 @@ export default function AboutPage() {
           </motion.div>
           
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-            {/* 使命卡片 */}
+            {/* Mission card */}
             <motion.div 
               className="bg-white dark:bg-gray-900 p-8 md:p-10 rounded-3xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2 duration-500 relative overflow-hidden border border-transparent hover:border-primary/10"
               initial={{ x: -20, opacity: 0 }}
@@ -605,7 +605,7 @@ export default function AboutPage() {
               transition={{ duration: 0.7, type: "spring", stiffness: 40, damping: 25 }}
               viewport={{ once: true }}
             >
-              {/* 背景圖案 */}
+              {/* Background pattern */}
               <div className="absolute inset-0 overflow-hidden opacity-5">
                 <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
                   <motion.path
@@ -628,7 +628,7 @@ export default function AboutPage() {
                 </svg>
               </div>
               
-              {/* 裝飾光暈 */}
+              {/* Decorative glow */}
               <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-2xl"></div>
               <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-gradient-to-tr from-primary/5 to-transparent rounded-full blur-2xl"></div>
               
@@ -672,7 +672,7 @@ export default function AboutPage() {
               </motion.div>
             </motion.div>
             
-            {/* 宣言卡片 */}
+            {/* Manifesto card */}
             <motion.div 
               className="bg-white dark:bg-gray-900 p-8 md:p-10 rounded-3xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2 duration-500 relative overflow-hidden border border-transparent hover:border-primary/10"
               initial={{ x: 20, opacity: 0 }}
@@ -680,7 +680,7 @@ export default function AboutPage() {
               transition={{ duration: 0.7, type: "spring", stiffness: 40, damping: 25 }}
               viewport={{ once: true }}
             >
-              {/* 背景圖案 */}
+              {/* Background pattern */}
               <div className="absolute inset-0 overflow-hidden opacity-5">
                 <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
                   <motion.path
@@ -704,7 +704,7 @@ export default function AboutPage() {
                 </svg>
               </div>
               
-              {/* 裝飾光暈 */}
+              {/* Decorative glow */}
               <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-bl from-primary/5 to-transparent rounded-full blur-2xl"></div>
               <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-gradient-to-tl from-primary/5 to-transparent rounded-full blur-2xl"></div>
               
@@ -751,7 +751,7 @@ export default function AboutPage() {
         </div>
       </motion.section>
       
-      {/* 核心價值 */}
+      {/* Core values */}
       <motion.section 
         ref={valuesRef}
         className="py-24 bg-white dark:bg-gray-900 relative"
@@ -760,7 +760,7 @@ export default function AboutPage() {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        {/* 左上角裝飾 */}
+        {/* Top-left decoration */}
         <motion.div 
           className="absolute top-0 left-0 w-64 h-64 bg-primary/5 dark:bg-primary/10 rounded-full -translate-x-1/2 -translate-y-1/2"
           animate={{
@@ -774,7 +774,7 @@ export default function AboutPage() {
           }}
         />
         
-        {/* 右下角裝飾 */}
+        {/* Bottom-right decoration */}
         <motion.div 
           className="absolute bottom-0 right-0 w-80 h-80 bg-indigo-50 dark:bg-indigo-900/10 rounded-full translate-x-1/3 translate-y-1/3"
           animate={{
@@ -823,7 +823,7 @@ export default function AboutPage() {
             </motion.p>
           </motion.div>
           
-          {/* 核心價值卡片 */}
+          {/* Core value cards */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
@@ -871,7 +871,7 @@ export default function AboutPage() {
             ))}
           </div>
           
-          {/* CTA 部分 - 只在顯示團隊部分時才顯示 */}
+          {/* CTA section (only when team section is shown) */}
           {showTeamSection && (
             <motion.div 
               className="text-center mt-16"
@@ -891,7 +891,7 @@ export default function AboutPage() {
         </div>
       </motion.section>
       
-      {/* Notion 連結部分 */}
+      {/* Notion link section */}
       <motion.section 
         className="py-16 bg-gray-50 dark:bg-gray-800 relative overflow-hidden"
         initial={{ opacity: 0 }}
@@ -899,7 +899,7 @@ export default function AboutPage() {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        {/* 背景裝飾 */}
+        {/* Background decoration */}
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
             className="absolute -right-20 top-1/3 w-40 h-40 bg-primary/5 dark:bg-primary/10 rounded-full"
@@ -977,7 +977,7 @@ export default function AboutPage() {
         </div>
       </motion.section>
       
-      {/* 團隊部分 */}
+      {/* Team section */}
       {showTeamSection && (
         <motion.section
           ref={teamRef}
@@ -987,7 +987,7 @@ export default function AboutPage() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          {/* 背景裝飾 */}
+          {/* Background decoration */}
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
             <motion.div 
               className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-primary/5 to-indigo-100/30 dark:from-primary/10 dark:to-indigo-800/10 rounded-full"
@@ -1015,7 +1015,7 @@ export default function AboutPage() {
               }}
             />
             
-            {/* 浮動代碼符號 */}
+            {/* Floating code symbols */}
             <motion.div
               className="absolute bottom-20 right-[10%] text-gray-300 dark:text-gray-700 font-mono text-xl opacity-30 transform rotate-12"
               animate={{ 
@@ -1127,7 +1127,7 @@ export default function AboutPage() {
               ))}
             </motion.div>
             
-                      {/* CTA Button - 只在顯示團隊部分時才顯示 */}
+                      {/* CTA button (only when team section is shown) */}
           {showTeamSection && (
             <motion.div 
               className="text-center mt-16"
@@ -1143,7 +1143,7 @@ export default function AboutPage() {
           )}
           </div>
           
-          {/* 團隊成員詳情彈窗 */}
+          {/* Team member modal */}
           <AnimatePresence>
             {selectedMember && (
               <motion.div 

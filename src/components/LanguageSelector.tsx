@@ -13,7 +13,7 @@ const LanguageSelector: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  // 關閉下拉列表的點擊外部處理
+  // Close the dropdown when clicking outside.
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -27,7 +27,7 @@ const LanguageSelector: React.FC = () => {
     };
   }, []);
 
-  // 切換語言處理
+  // Handle language switching.
   const handleLanguageChange = (newLocale: Locale) => {
     setLocale(newLocale);
     setIsOpen(false);

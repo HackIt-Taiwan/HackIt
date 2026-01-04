@@ -68,7 +68,7 @@ export default function EpisodesList({
               whileHover={{ y: -2, boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)' }}
             >
               <div className="flex p-4 cursor-pointer">
-                {/* 播放按鈕 */}
+                {/* Play button */}
                 <div className="flex-shrink-0">
                   <motion.div
                     whileHover={{ scale: 1.2 }}
@@ -85,7 +85,7 @@ export default function EpisodesList({
                   </motion.div>
                 </div>
                 
-                {/* 集數內容 */}
+                {/* Episode content */}
                 <div className="ml-4 flex-grow min-w-0">
                   <div className="flex items-center text-xs text-primary dark:text-primary/90 font-medium mb-1">
                     <span className="bg-primary/10 dark:bg-primary/20 px-2 py-0.5 rounded-full">
@@ -115,7 +115,7 @@ export default function EpisodesList({
                   </div>
                 </div>
                 
-                {/* 選中標記 */}
+                {/* Selected indicator */}
                 {selectedEpisodeId === episode.id && (
                   <div className="absolute top-3 right-3 text-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

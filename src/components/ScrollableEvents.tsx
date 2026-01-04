@@ -36,7 +36,7 @@ const ScrollableEvents: React.FC = () => {
   }, []);
   const events = [...upcomingEvents, ...pastEvents];
   
-  // 基本狀態和引用
+  // Core state and refs.
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.2 });
@@ -45,7 +45,7 @@ const ScrollableEvents: React.FC = () => {
   const rafIdRef = useRef<number | null>(null);
 
   
-  // 當元素進入視圖時啟用自動滾動
+  // Enable auto-scroll when the section is in view.
   useEffect(() => {
     if (isInView) {
       setIsAutoScrollEnabled(true);
@@ -54,20 +54,20 @@ const ScrollableEvents: React.FC = () => {
     }
   }, [isInView]);
   
-  // 拖動相關的參考值
+  // Drag-related refs.
   const startXRef = useRef(0);
   const scrollLeftRef = useRef(0);
   const velocityRef = useRef(0);
   const lastXRef = useRef(0);
   const lastMoveTimeRef = useRef(0);
   
-  // 生成重複的活動數據用於無限滑動
+  // Duplicate events to simulate infinite scrolling.
   const repeatedEvents = [...events, ...events, ...events];
 
-  // 1. 基本實用函數（不依賴其他回調函數）
+  // 1) Base utilities (no dependencies on other callbacks).
   // ----------------------------------------
   
-  // 安全獲取容器的各種屬性
+  // Safely read container metrics.
   const getContainerInfo = useCallback(() => {
     if (!scrollContainerRef.current) {
       return { container: null, totalWidth: 0, viewWidth: 0, maxScroll: 0, currentScroll: 0 };
@@ -82,21 +82,21 @@ const ScrollableEvents: React.FC = () => {
     return { container, totalWidth, viewWidth, maxScroll, currentScroll };
   }, []);
   
-  // 計算單個卡片組的總寬度
+  // Calculate the width of one full card set.
   const getCardSetWidth = useCallback(() => {
     if (!scrollContainerRef.current) return 0;
     
     const container = scrollContainerRef.current;
     const cardElements = container.querySelectorAll('[data-event-card]');
     
-    // 如果還沒有渲染卡片，返回估計值
-    if (!cardElements.length) return events.length * 324; // 估計一張卡片寬度300px + 間距24px
+    // If cards have not rendered yet, return an estimate.
+    if (!cardElements.length) return events.length * 324; // 300px card width + 24px gap (estimate).
     
-    // 取第一個完整卡片組的總寬度
+    // Measure the first complete card set.
     const firstCardSet = Array.from(cardElements).slice(0, events.length);
     if (firstCardSet.length === 0) return 0;
     
-    // 獲取第一個和最後一個卡片的位置來計算總寬度
+    // Measure first and last card positions to calculate total width.
     const firstCard = firstCardSet[0];
     const lastCard = firstCardSet[firstCardSet.length - 1];
     
@@ -105,22 +105,22 @@ const ScrollableEvents: React.FC = () => {
     const firstRect = firstCard.getBoundingClientRect();
     const lastRect = lastCard.getBoundingClientRect();
     
-    // 計算整個卡片組的寬度，包括最後一張卡片的寬度和間距
+    // Include the final card width and its trailing gap.
     return (lastRect.right - firstRect.left);
   }, [events.length]);
   
-  // 修復異常滾動位置
+  // Fix out-of-range scroll positions.
   const checkAndFixScroll = useCallback(() => {
     const { container, maxScroll, currentScroll } = getContainerInfo();
     if (!container) return false;
     
-    // 如果滾動位置變為負數，重設為0
+    // Clamp negative scroll positions.
     if (currentScroll < 0) {
       container.scrollLeft = 0;
       return true;
     }
     
-    // 處理異常極限位置
+    // Clamp overflow beyond max scroll.
     if (currentScroll > maxScroll && maxScroll > 0) {
       container.scrollLeft = maxScroll;
       return true;
@@ -129,31 +129,31 @@ const ScrollableEvents: React.FC = () => {
     return false;
   }, [getContainerInfo]);
   
-  // 2. 無限滾動邏輯（依賴基本函數）
+  // 2) Infinite scroll logic (depends on base utilities).
   // ----------------------------------------
   
-  // 處理無限滾動逻辑
+  // Handle infinite scroll adjustments.
   const handleInfiniteScroll = useCallback(() => {
     const { container, maxScroll, currentScroll } = getContainerInfo();
     if (!container) return false;
     
-    // 先檢查和修復任何異常的滾動位置
+    // First, fix any out-of-range scroll position.
     if (checkAndFixScroll()) return true;
     
     const cardSetWidth = getCardSetWidth();
     if (cardSetWidth <= 0) return false;
     
-    // 適應性閾值：確保在各種尺寸下都有效
+    // Adaptive threshold to keep behavior consistent across sizes.
     const jumpThreshold = Math.max(30, cardSetWidth * 0.15);
     
-    // 檢測滾動位置並調整 - 左側邊界
+    // Detect and adjust at the left boundary.
     if (currentScroll < jumpThreshold) {
-      // 為避免視覺跳躍，精確計算位置
+      // Adjust precisely to avoid a visible jump.
       container.scrollLeft = currentScroll + cardSetWidth;
       return true;
     }
     
-    // 檢測滾動位置並調整 - 右側邊界
+    // Detect and adjust at the right boundary.
     if (currentScroll > maxScroll - jumpThreshold && maxScroll > 0) {
       container.scrollLeft = currentScroll - cardSetWidth;
       return true;
@@ -162,10 +162,10 @@ const ScrollableEvents: React.FC = () => {
     return false;
   }, [getContainerInfo, checkAndFixScroll, getCardSetWidth]);
   
-  // 3. 處理滑動和動畫（依賴無限滾動邏輯）
+  // 3) Scroll + animation (depends on infinite scroll logic).
   // ----------------------------------------
   
-  // 處理滑動慣性動畫
+  // Inertia animation.
   const animateScroll = useCallback(() => {
     const { container } = getContainerInfo();
     if (!container) return;
@@ -173,24 +173,24 @@ const ScrollableEvents: React.FC = () => {
     const now = Date.now();
     const elapsed = now - lastMoveTimeRef.current;
     
-    // 應用慣性減速
+    // Apply inertia deceleration.
     if (elapsed > 40 && Math.abs(velocityRef.current) > 0.1) {
-      // 動態摩擦力：提供更自然的滑動體驗
+      // Dynamic friction for a more natural feel.
       const friction = Math.min(0.98, 0.96 + (Math.abs(velocityRef.current) * 0.01));
       velocityRef.current *= friction;
       
-      // 平滑滾動
+      // Smooth scrolling.
       container.scrollLeft += velocityRef.current;
       
-      // 檢查並處理無限滾動
+      // Check and handle infinite scrolling.
       handleInfiniteScroll();
       
-      // 當速度變得非常小時，停止動畫
+      // Stop animation once velocity is negligible.
       if (Math.abs(velocityRef.current) < 0.1) {
         velocityRef.current = 0;
         rafIdRef.current = null;
         
-        // 重新啟用自動滾動
+        // Re-enable auto-scroll after deceleration.
         setTimeout(() => {
           setIsAutoScrollEnabled(true);
         }, 300);
@@ -204,15 +204,15 @@ const ScrollableEvents: React.FC = () => {
     }
   }, [getContainerInfo, handleInfiniteScroll]);
   
-  // 4. 處理用戶交互事件（依賴動畫和無限滾動）
+  // 4) User interaction handlers (depends on animation + infinite scroll).
   // ----------------------------------------
   
-  // 觸摸/滑鼠按下開始
+  // Touch/mouse down.
   const handleDragStart = useCallback((clientX: number) => {
     const { container } = getContainerInfo();
     if (!container) return;
     
-    // 取消所有進行中的動畫
+    // Cancel any ongoing animations.
     if (rafIdRef.current) {
       cancelAnimationFrame(rafIdRef.current);
       rafIdRef.current = null;
@@ -229,7 +229,7 @@ const ScrollableEvents: React.FC = () => {
     velocityRef.current = 0;
   }, [getContainerInfo]);
   
-  // 觸摸/滑鼠移動
+  // Touch/mouse move.
   const handleDragMove = useCallback((clientX: number) => {
     const { container } = getContainerInfo();
     if (!isDragging || !container) return;
@@ -239,48 +239,48 @@ const ScrollableEvents: React.FC = () => {
     
     if (deltaTime > 0) {
       const deltaX = clientX - lastXRef.current;
-      velocityRef.current = deltaX * 0.4; // 增加慣性係數
+      velocityRef.current = deltaX * 0.4; // Increase inertia multiplier.
       lastXRef.current = clientX;
       lastMoveTimeRef.current = now;
     }
     
     const x = clientX - container.getBoundingClientRect().left;
-    const walk = (startXRef.current - x) * 1.1; // 增加倍率提高靈敏度
+    const walk = (startXRef.current - x) * 1.1; // Increase multiplier for responsiveness.
     
-    // 直接更新滾動位置
+    // Update scroll position immediately.
     container.scrollLeft = scrollLeftRef.current + walk;
     
-    // 隨機檢查以平衡性能和體驗
+    // Randomized checks balance performance and UX.
     if (Math.random() < 0.1) {
       handleInfiniteScroll();
     }
   }, [isDragging, getContainerInfo, handleInfiniteScroll]);
   
-  // 觸摸/滑鼠結束
+  // Touch/mouse up.
   const handleDragEnd = useCallback(() => {
     setIsDragging(false);
     
-    // 檢查是否滾動到了邊界
+    // Check if we reached the boundary.
     handleInfiniteScroll();
     
-    // 應用慣性滾動
+    // Apply inertia.
     if (Math.abs(velocityRef.current) > 0.1) {
       if (rafIdRef.current) {
         cancelAnimationFrame(rafIdRef.current);
       }
       rafIdRef.current = requestAnimationFrame(animateScroll);
     } else {
-      // 沒有顯著的速度，直接重新啟用自動滾動
+      // No significant velocity: re-enable auto-scroll immediately.
       setTimeout(() => {
         setIsAutoScrollEnabled(true);
       }, 300);
     }
   }, [handleInfiniteScroll, animateScroll]);
   
-  // 5. 自動滾動（依賴無限滾動邏輯）
+  // 5) Auto-scroll (depends on infinite scroll logic).
   // ----------------------------------------
   
-  // 實現自動滾動
+  // Auto-scroll loop.
   useEffect(() => {
     let frameId: number | null = null;
     let lastTimestamp = 0;
@@ -297,33 +297,33 @@ const ScrollableEvents: React.FC = () => {
         return;
       }
       
-      // 計算時間增量
+      // Compute time delta.
       if (!lastTimestamp) lastTimestamp = timestamp;
       const deltaTime = timestamp - lastTimestamp;
       lastTimestamp = timestamp;
       
-      // 限制最大時間差
+      // Cap maximum time delta.
       const effectiveDelta = Math.min(deltaTime, 32);
       
-      // 計算滾動增量
-      const scrollIncrement = (effectiveDelta / 1000) * 25; // 每秒滾動25px
+      // Compute scroll increment.
+      const scrollIncrement = (effectiveDelta / 1000) * 25; // 25px per second.
       
-      // 滾動並檢查無限滾動
+      // Scroll and check infinite loop.
       container.scrollLeft += scrollIncrement;
       handleInfiniteScroll();
       
-      // 繼續循環
+      // Continue loop.
       if (isAutoScrollEnabled) {
         frameId = requestAnimationFrame(autoScroll);
       }
     };
     
-    // 啟動自動滾動
+    // Start auto-scroll.
     if (isAutoScrollEnabled) {
       frameId = requestAnimationFrame(autoScroll);
     }
     
-    // 清理函數
+    // Cleanup.
     return () => {
       if (frameId !== null) {
         cancelAnimationFrame(frameId);
@@ -331,12 +331,12 @@ const ScrollableEvents: React.FC = () => {
     };
   }, [isAutoScrollEnabled, getContainerInfo, handleInfiniteScroll]);
   
-  // 6. 設置事件監聽
+  // 6) Event listeners.
   // ----------------------------------------
   
-  // 添加事件監聽
+  // Add event listeners.
   useEffect(() => {
-    // 觸摸事件處理
+    // Touch event handling.
     const handleTouchStart = (e: TouchEvent) => {
       handleDragStart(e.touches[0].clientX);
     };
@@ -352,7 +352,7 @@ const ScrollableEvents: React.FC = () => {
       }
     };
 
-    // 滑鼠事件處理
+    // Mouse event handling.
     const handleMouseDown = (e: MouseEvent) => {
       handleDragStart(e.clientX);
     };
@@ -370,7 +370,7 @@ const ScrollableEvents: React.FC = () => {
       }
     };
 
-    // 添加事件監聽
+    // Add event listeners.
     const element = scrollContainerRef.current;
     if (element) {
       element.addEventListener('touchstart', handleTouchStart, { passive: true });
@@ -382,7 +382,7 @@ const ScrollableEvents: React.FC = () => {
       document.addEventListener('mouseup', handleMouseUp);
     }
 
-    // 清理函數
+    // Cleanup.
     return () => {
       if (rafIdRef.current) {
         cancelAnimationFrame(rafIdRef.current);
@@ -400,10 +400,10 @@ const ScrollableEvents: React.FC = () => {
     };
   }, [isDragging, handleDragStart, handleDragMove, handleDragEnd]);
   
-  // 7. 輔助功能
+  // 7) Accessibility helpers.
   // ----------------------------------------
   
-  // 滾動左右切換按鈕功能
+  // Scroll buttons.
   const scrollToLeft = () => {
     const { container } = getContainerInfo();
     if (container) {
@@ -426,7 +426,7 @@ const ScrollableEvents: React.FC = () => {
     }
   };
 
-  // 8. 渲染部分
+  // 8) Render.
   // ----------------------------------------
   return (
     <section className="py-20 bg-gray-50 dark:bg-gray-900" ref={sectionRef}>
@@ -448,7 +448,7 @@ const ScrollableEvents: React.FC = () => {
         </div>
         
         <div className="relative">
-          {/* 左右滾動按鈕 */}
+          {/* Scroll buttons */}
           <button 
             onClick={scrollToLeft}
             className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-3 rounded-full shadow-md hover:shadow-lg transition-shadow transform -translate-x-1/2 focus:outline-none"
@@ -465,7 +465,7 @@ const ScrollableEvents: React.FC = () => {
             <FaChevronRight className="text-gray-700 dark:text-gray-300" />
           </button>
           
-          {/* 拖動提示 */}
+          {/* Drag hint */}
           <div className="text-center mb-4 text-gray-500 dark:text-gray-400 text-sm">
             <span className="inline-flex items-center">
               <motion.div 
@@ -478,7 +478,7 @@ const ScrollableEvents: React.FC = () => {
             </span>
           </div>
           
-          {/* 可滾動容器 */}
+          {/* Scrollable container */}
           <div 
             ref={scrollContainerRef}
             className={`flex space-x-6 overflow-x-auto py-4 px-2 scrollbar-hide select-none ${
@@ -489,7 +489,7 @@ const ScrollableEvents: React.FC = () => {
               msOverflowStyle: 'none',
               WebkitOverflowScrolling: 'touch',
               scrollBehavior: 'auto',
-              scrollSnapType: 'none', // 移除捕捉，提高滑動流暢度
+              scrollSnapType: 'none', // Disable snapping for smoother scrolling.
               touchAction: 'pan-x',
             }}
           >
@@ -521,7 +521,7 @@ const ScrollableEvents: React.FC = () => {
                     draggable="false"
                   />
                   
-                  {/* 透明防點擊覆蓋層 - 防止直接觸碰到圖片 */}
+                  {/* Transparent hit shield to prevent direct image clicks */}
                   <div 
                     className="absolute inset-0 z-10 cursor-grab" 
                     aria-hidden="true"
@@ -550,7 +550,7 @@ const ScrollableEvents: React.FC = () => {
                     </div>
                   </div>
                   
-                  {/* 活動詳情/外部連結按鈕 */}
+                  {/* Event details / external link button */}
                   {event.frontmatter.url ? (
                     <a 
                       href={event.frontmatter.url} 

@@ -45,18 +45,18 @@ export default function PodcastEventCard({ podcast, index }: PodcastEventCardPro
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
             
-            {/* 播客徽章 */}
+            {/* Podcast badge */}
             <div className="absolute top-4 left-4 bg-primary/90 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center">
               <FaMicrophone className="mr-1.5" size={12} />
               <span>HackCast</span>
             </div>
             
-            {/* 集數指示器 */}
+            {/* Episode indicator */}
             <div className="absolute top-4 right-4 bg-white/90 dark:bg-gray-800/90 text-gray-800 dark:text-white px-3 py-1 rounded-full text-sm font-medium">
               <span>{podcast.episodes.length} {t('podcastPage.episodes') as string}</span>
             </div>
             
-            {/* 播放按鈕疊加層 */}
+            {/* Play button overlay */}
             <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
               <motion.div 
                 className="bg-white dark:bg-primary rounded-full p-3 shadow-xl"
@@ -67,7 +67,7 @@ export default function PodcastEventCard({ podcast, index }: PodcastEventCardPro
               </motion.div>
             </div>
             
-            {/* 標題在圖片上 */}
+            {/* Title overlay */}
             <div className="absolute bottom-0 left-0 p-4 text-white">
               <h3 className="text-xl font-bold line-clamp-2">{podcast.eventName}</h3>
             </div>

@@ -12,7 +12,7 @@ const CTASection = () => {
   const isInView = useInView(sectionRef, { once: false, amount: 0.3 });
   const { t } = useI18n();
   
-  // 使用 useMemo 生成固定的隨機值，避免重新渲染時變化
+  // Use useMemo to keep deterministic values between renders.
   const floatingElements = useMemo(() => {
     return Array.from({ length: 8 }, (_, i) => ({
       width: 20 + (i * 5) % 40,
@@ -134,7 +134,7 @@ const CTASection = () => {
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
           >
-            {/* 程式碼風格的打字動畫 - 適合暗色背景 */}
+            {/* Code-style typing animation (dark background) */}
             <div className="font-mono flex items-center text-2xl md:text-3xl relative">
               <motion.span
                 className="absolute -left-5 top-1/2 -translate-y-1/2 w-3 h-6 bg-yellow-300"
@@ -253,7 +253,7 @@ const CTASection = () => {
                     into
                   </motion.span>
                   
-                  {/* 添加布料紋理 */}
+                  {/* Add fabric-like texture */}
                   {[...Array(6)].map((_, i) => (
                     <motion.div
                       key={i}
@@ -352,14 +352,14 @@ const CTASection = () => {
               </motion.div>
             </div>
             
-            {/* 添加布料風格的動畫效果 */}
+            {/* Fabric-style animated overlay */}
             <motion.div
               className="absolute top-0 left-0 w-full h-full -z-5 pointer-events-none overflow-hidden"
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 0.3 } : { opacity: 0 }}
               transition={{ delay: isInView ? 2.5 : 0, duration: 1.2 }}
             >
-              {/* 背景紋理 */}
+              {/* Background texture */}
               <svg width="100%" height="100%" className="absolute opacity-10">
                 <defs>
                   <pattern id="fabric" patternUnits="userSpaceOnUse" width="40" height="40">
@@ -389,7 +389,7 @@ const CTASection = () => {
                 />
               </svg>
               
-              {/* 漂浮元素 - 使用預先計算的隨機值 */}
+              {/* Floating elements with precomputed values */}
               {floatingElements.map((element, i) => (
                 <motion.div
                   key={i}
@@ -417,7 +417,7 @@ const CTASection = () => {
                 />
               ))}
               
-              {/* 添加波浪效果 */}
+              {/* Wave effect */}
               <svg className="absolute inset-0 w-full h-full opacity-20" preserveAspectRatio="none">
                 <motion.path
                   d="M0,50 C20,40 40,60 60,50 C80,40 100,60 120,50"
@@ -448,7 +448,7 @@ const CTASection = () => {
               </svg>
             </motion.div>
 
-            {/* 輸入後的閃爍效果 */}
+            {/* Post-typing blink effect */}
             <motion.div
               className="absolute bottom-0 left-0 h-0.5 bg-green-400"
               initial={{ width: "0%" }}
@@ -464,7 +464,7 @@ const CTASection = () => {
               }}
             />
             
-            {/* 程式碼風格的背景元素 */}
+            {/* Code-styled background elements */}
             <motion.div
               className="absolute inset-0 -z-10 bg-indigo-900/30 rounded-md border border-indigo-700"
               initial={{ opacity: 0 }}
@@ -472,7 +472,7 @@ const CTASection = () => {
               transition={{ delay: isInView ? 0.5 : 0, duration: 0.8 }}
             />
             
-            {/* 浮動的程式碼符號 - 使用靜態固定值 */}
+            {/* Floating code symbols with fixed values */}
             {isMounted && isInView && [...Array(8)].map((_, i) => {
               const symbols = ["{", "}", "<", ">", "/", "*", "#", "="];
               const char = symbols[i % symbols.length];

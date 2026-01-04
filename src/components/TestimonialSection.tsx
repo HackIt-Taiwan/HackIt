@@ -69,17 +69,17 @@ const TestimonialSection: React.FC = () => {
       }
     };
 
-    // 初始設置
+    // Initial setup.
     handleResize();
     
-    // 監聽視窗大小變化
+    // Track viewport size changes.
     window.addEventListener("resize", handleResize);
     
-    // 清理監聽器
+    // Cleanup listeners.
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 動畫變體
+  // Motion variants.
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -134,7 +134,7 @@ const TestimonialSection: React.FC = () => {
     }
   };
 
-  // 處理導航
+  // Handle navigation.
   const nextTestimonial = () => {
     setActiveIndex((prev) => (prev + 1) % testimonials.length);
   };
@@ -143,7 +143,7 @@ const TestimonialSection: React.FC = () => {
     setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
 
-  // 創建星星評分
+  // Build star ratings.
   const renderStars = (count: number) => {
     return Array(5)
       .fill(0)
@@ -155,7 +155,7 @@ const TestimonialSection: React.FC = () => {
       ));
   };
 
-  // 顯示卡片
+  // Render cards.
   const visibleTestimonials = () => {
     const result = [];
     for (let i = 0; i < displayCount; i++) {
@@ -165,7 +165,7 @@ const TestimonialSection: React.FC = () => {
     return result;
   };
 
-  // 自動切換見證
+  // Auto-rotate testimonials.
   useEffect(() => {
     const interval = setInterval(() => {
       nextTestimonial();
@@ -176,7 +176,7 @@ const TestimonialSection: React.FC = () => {
 
   return (
     <section id="見證分享" className="py-20 md:py-28 lg:py-32 bg-gray-50 overflow-hidden relative">
-      {/* 背景裝飾 */}
+      {/* Background decoration */}
       <motion.div 
         className="absolute top-[20%] right-[10%] w-[30vw] h-[30vw] max-w-[500px] max-h-[500px] bg-yellow-400/20 rounded-full blur-3xl"
         initial={{ opacity: 0 }}
@@ -303,7 +303,7 @@ const TestimonialSection: React.FC = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            {/* 程式碼風格的打字動畫 - 適合淺色背景 */}
+            {/* Code-style typing animation (light background) */}
             <div className="font-mono flex items-center text-xl md:text-2xl relative">
               <motion.span
                 className="absolute -left-4 top-1/2 -translate-y-1/2 w-2 h-5 bg-primary"
@@ -417,7 +417,7 @@ const TestimonialSection: React.FC = () => {
               </motion.div>
             </div>
             
-            {/* 輸入後的閃爍效果 */}
+            {/* Post-typing blink effect */}
             <motion.div
               className="absolute bottom-0 left-0 h-0.5 bg-green-500"
               initial={{ width: "0%" }}
@@ -433,7 +433,7 @@ const TestimonialSection: React.FC = () => {
               }}
             />
             
-            {/* 程式碼風格的背景元素 */}
+            {/* Code-styled background elements */}
             <motion.div
               className="absolute inset-0 -z-10 bg-gray-100 rounded-md border border-gray-200"
               initial={{ opacity: 0 }}
@@ -478,7 +478,7 @@ const TestimonialSection: React.FC = () => {
           </motion.p>
         </div>
 
-        {/* 見證卡片 */}
+        {/* Testimonial cards */}
         <div className="relative max-w-7xl mx-auto px-4">
           <motion.div 
             className="flex justify-between mb-8 md:mb-12"
@@ -627,7 +627,7 @@ const TestimonialSection: React.FC = () => {
             </AnimatePresence>
           </div>
 
-          {/* 導航點 */}
+          {/* Navigation dots */}
           <div className="flex justify-center mt-8 md:mt-12 space-x-2">
             {testimonials.map((_, idx) => (
               <motion.button
@@ -671,7 +671,7 @@ const TestimonialSection: React.FC = () => {
           </div>
         </div>
 
-        {/* CTA 區域 */}
+        {/* CTA area */}
         <motion.div
           className="mt-20 md:mt-28 text-center max-w-3xl mx-auto"
           variants={itemVariants}

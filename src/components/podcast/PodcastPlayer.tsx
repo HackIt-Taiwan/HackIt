@@ -34,7 +34,7 @@ export default function PodcastPlayer({
   const progressBarRef = useRef<HTMLDivElement>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // 自動播放
+  // Auto-play.
   useEffect(() => {
     if (autoplay && audioRef.current) {
       const playPromise = audioRef.current.play();
@@ -46,7 +46,7 @@ export default function PodcastPlayer({
     }
   }, [autoplay, episode]);
 
-  // 處理播放/暫停
+  // Handle play/pause.
   const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -58,7 +58,7 @@ export default function PodcastPlayer({
     }
   };
 
-  // 處理音量變化
+  // Handle volume changes.
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
     setVolume(value);
@@ -72,7 +72,7 @@ export default function PodcastPlayer({
     }
   };
 
-  // 處理靜音切換
+  // Handle mute toggling.
   const toggleMute = () => {
     if (audioRef.current) {
       const newMuteState = !isMuted;
@@ -81,7 +81,7 @@ export default function PodcastPlayer({
     }
   };
 
-  // 處理播放速度
+  // Handle playback speed.
   const changePlaybackRate = (rate: number) => {
     if (audioRef.current) {
       audioRef.current.playbackRate = rate;
@@ -89,28 +89,28 @@ export default function PodcastPlayer({
     }
   };
 
-  // 處理音訊載入後事件
+  // Handle audio loaded metadata.
   const handleLoadedMetadata = () => {
     if (audioRef.current) {
       setDuration(audioRef.current.duration || 0);
     }
   };
 
-  // 處理時間更新
+  // Handle time updates.
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       setCurrentTime(audioRef.current.currentTime);
     }
   };
 
-  // 格式化時間顯示
+  // Format time display.
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  // 處理進度條點擊
+  // Handle progress bar clicks.
   const handleProgressBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (progressBarRef.current && audioRef.current) {
       const progressBar = progressBarRef.current;
@@ -121,19 +121,19 @@ export default function PodcastPlayer({
     }
   };
 
-  // 處理前進/後退
+  // Handle skip forward/backward.
   const handleSeek = (seconds: number) => {
     if (audioRef.current) {
       audioRef.current.currentTime = Math.max(0, Math.min(audioRef.current.duration || 0, audioRef.current.currentTime + seconds));
     }
   };
 
-  // 處理收藏
+  // Handle favorites.
   const toggleFavorite = () => {
     setIsFavorited(!isFavorited);
   };
 
-  // 集數結束時處理
+  // Handle episode end.
   const handleEnded = () => {
     setIsPlaying(false);
     if (onEpisodeEnd) {
@@ -141,7 +141,7 @@ export default function PodcastPlayer({
     }
   };
 
-  // 顯示控制項並設置超時
+  // Show controls and set a hide timeout.
   const showControlsWithTimeout = () => {
     setShowControls(true);
     
@@ -154,7 +154,7 @@ export default function PodcastPlayer({
     }, 3000);
   };
 
-  // 滑動監聽
+  // Track scrub interactions.
   useEffect(() => {
     const handleMouseMove = () => showControlsWithTimeout();
     
@@ -168,7 +168,7 @@ export default function PodcastPlayer({
     };
   }, []);
 
-  // 清理
+  // Cleanup.
   useEffect(() => {
     return () => {
       if (controlsTimeoutRef.current) {
@@ -177,7 +177,7 @@ export default function PodcastPlayer({
     };
   }, []);
 
-  // 計算進度百分比
+  // Calculate progress percentage.
   const progressPercentage = (currentTime / duration) * 100 || 0;
 
   return (
@@ -186,7 +186,7 @@ export default function PodcastPlayer({
       onMouseEnter={() => setShowControls(true)} 
       onMouseLeave={() => setShowControls(false)}
     >
-      {/* 隱藏的音訊元素 */}
+      {/* Hidden audio element */}
       <audio
         ref={audioRef}
         src={episode.audioUrl}
@@ -202,7 +202,7 @@ export default function PodcastPlayer({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       >
-        {/* 標題與資訊區 */}
+        {/* Title and metadata */}
         <div className="px-6 pt-6 pb-4 md:px-8 md:pt-8 md:pb-5">
           <div className="flex items-start">
             <div className="flex-grow pr-4">
@@ -233,7 +233,7 @@ export default function PodcastPlayer({
           </div>
         </div>
         
-        {/* 進度條 */}
+        {/* Progress bar */}
         <div className="px-6 md:px-8">
           <div 
             ref={progressBarRef}
@@ -248,18 +248,18 @@ export default function PodcastPlayer({
             />
           </div>
           
-          {/* 時間指示 */}
+          {/* Time indicators */}
           <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1 px-0.5 mb-4">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
         </div>
         
-        {/* 控制按鈕 */}
+        {/* Controls */}
         <div className="px-6 pb-6 md:px-8 md:pb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              {/* 後退15秒 */}
+              {/* Back 15 seconds */}
               <motion.button
                 whileTap={{ scale: 0.85 }}
                 onClick={() => handleSeek(-15)}
@@ -272,7 +272,7 @@ export default function PodcastPlayer({
                 <span className="sr-only">快退15秒</span>
               </motion.button>
               
-              {/* 播放/暫停 */}
+              {/* Play/pause */}
               <motion.button
                 whileTap={{ scale: 0.85 }}
                 onClick={togglePlay}
@@ -282,7 +282,7 @@ export default function PodcastPlayer({
                 {isPlaying ? <FaPause /> : <FaPlay className="ml-1" />}
               </motion.button>
               
-              {/* 前進15秒 */}
+              {/* Forward 15 seconds */}
               <motion.button
                 whileTap={{ scale: 0.85 }}
                 onClick={() => handleSeek(15)}
@@ -296,9 +296,9 @@ export default function PodcastPlayer({
               </motion.button>
             </div>
             
-            {/* 音量控制和播放速度 */}
+            {/* Volume and speed */}
             <div className="flex items-center space-x-3">
-              {/* 音量控制 */}
+              {/* Volume control */}
               <div className="hidden sm:flex items-center space-x-1">
                 <button 
                   onClick={toggleMute}
@@ -317,7 +317,7 @@ export default function PodcastPlayer({
                 />
               </div>
               
-              {/* 播放速度 */}
+              {/* Playback speed */}
               <div className="relative">
                 <button 
                   className="text-xs px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-medium"
@@ -335,7 +335,7 @@ export default function PodcastPlayer({
           </div>
         </div>
         
-        {/* 下一集提示 */}
+        {/* Next episode prompt */}
         {nextEpisode && (
           <div className="px-6 pb-4 md:px-8 md:pb-5">
             <div className="border-t border-gray-100 dark:border-gray-800 pt-4">
@@ -352,7 +352,7 @@ export default function PodcastPlayer({
         )}
       </motion.div>
       
-      {/* 集數描述 */}
+      {/* Episode description */}
       <div className="mt-8">
         <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-3">{t('podcastPage.description')}</h3>
         
@@ -372,7 +372,7 @@ export default function PodcastPlayer({
         </div>
       </div>
 
-      {/* 主持人資訊 */}
+      {/* Host information */}
       {episode.hosts && episode.hosts.length > 0 && (
         <div className="mt-6">
           <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-3">主持人</h3>

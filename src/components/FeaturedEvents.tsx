@@ -8,9 +8,9 @@ import { FaCalendar, FaMapMarkerAlt, FaArrowRight, FaRegLightbulb, FaRegCompass,
 import { Event, getFeaturedEvents } from '@/utils/events';
 import { useI18n } from '@/i18n';
 
-// 保留說明：改以 Tailwind 任意值背景 + dark: 變體處理，避免自動深色時樣式不同步
+// Note: use Tailwind arbitrary values + dark variants to keep dark mode consistent.
 
-// 手繪效果 SVG 路徑
+// Hand-drawn SVG path for decorative squiggles.
 const randomSquiggle = () => {
   const start = Math.random() * 20;
   return `M${start},10 
@@ -20,10 +20,10 @@ const randomSquiggle = () => {
     T${start + 80},10`;
 };
 
-// 移除舊的 DOM 觀察法，避免與 React 重渲染衝突
+// Legacy DOM observers were removed to avoid React re-render conflicts.
 
 const FeaturedEvents: React.FC = () => {
-  // 使用國際化翻譯
+  // i18n copy.
   const { t } = useI18n();
   
   // Load featured events on client
@@ -44,19 +44,19 @@ const FeaturedEvents: React.FC = () => {
     };
   }, []);
   
-  // 如果沒有特色活動，則不顯示該部分
+  // Hide the section when no featured events are available.
   if (featuredEvents.length === 0) {
     return null;
   }
   
   return (
     <section className="py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
-      {/* 背景裝飾 */}
+      {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-100 dark:bg-indigo-900 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-100 dark:bg-purple-900 rounded-full blur-3xl"></div>
         
-        {/* 可愛的波浪和線條 */}
+        {/* Playful waves and lines */}
         <svg width="100%" height="100%" className="absolute top-0 left-0">
           <motion.path 
             d={randomSquiggle()}
@@ -81,7 +81,7 @@ const FeaturedEvents: React.FC = () => {
           />
         </svg>
         
-        {/* 手繪星星 */}
+        {/* Hand-drawn stars */}
         {[...Array(5)].map((_, i) => (
           <motion.div 
             key={i}
@@ -109,7 +109,7 @@ const FeaturedEvents: React.FC = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
-          {/* 手繪風的標籤 */}
+          {/* Hand-drawn label */}
           <motion.div
             className="inline-block mb-6"
             initial={{ opacity: 0, y: -20 }}
@@ -135,7 +135,7 @@ const FeaturedEvents: React.FC = () => {
             </div>
           </motion.div>
           
-          {/* 手繪風標題 */}
+          {/* Hand-drawn title */}
           <div className="relative inline-block">
             <motion.h2 
               className="text-4xl md:text-5xl font-bold mb-2 text-gray-800 dark:text-gray-100 relative z-10"
@@ -147,7 +147,7 @@ const FeaturedEvents: React.FC = () => {
               {t("featuredEvents.title.first")}<span className="text-indigo-600 dark:text-indigo-400">{t("featuredEvents.title.highlighted")}</span>
             </motion.h2>
             
-            {/* 手繪風格底線 */}
+            {/* Hand-drawn underline */}
             <svg className="absolute left-0 bottom-0 w-full" height="15" viewBox="0 0 300 15" preserveAspectRatio="none">
               <motion.path 
                 d="M0,10 C50,2 100,12 150,10 C200,8 250,13 300,10" 
@@ -162,7 +162,7 @@ const FeaturedEvents: React.FC = () => {
               />
             </svg>
             
-            {/* 裝飾星星 */}
+            {/* Decorative stars */}
             <svg className="absolute -right-14 -top-6 w-12 h-12" viewBox="0 0 50 50">
               <motion.path 
                 d="M25,2 L30,20 L48,25 L30,30 L25,48 L20,30 L2,25 L20,20 L25,2 Z" 
@@ -198,27 +198,27 @@ const FeaturedEvents: React.FC = () => {
               transition={{ duration: 0.8, delay: index * 0.3 }}
               viewport={{ once: true }}
             >
-              {/* 完全重新設計的卡片 - 類似剪貼簿風格 */}
+              {/* Scrapbook-style card layout */}
               <motion.div 
                 className="relative max-w-5xl mx-auto"
                 whileHover={{ rotate: index % 2 === 0 ? 1 : -1 }}
                 transition={{ duration: 0.4 }}
               >
-                {/* 底層板子 */}
+                {/* Backing plate */}
                 <div className="absolute inset-0 bg-amber-50 dark:bg-amber-900 rounded-xl shadow-lg transform rotate-1 -z-10"></div>
                 
-                {/* 主要內容卡片 - 筆記紙風格 */}
+                {/* Main card with a note-paper style */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl p-1 shadow-md overflow-hidden transform rotate-0">
                   <div className="grid md:grid-cols-2 h-full rounded-lg overflow-hidden">
-                    {/* 左側圖片區域 */}
+                    {/* Left image area */}
                     <div className="relative h-[300px] md:h-full overflow-hidden">
-                      {/* 照片角落 */}
+                      {/* Photo corners */}
                       <div className="absolute top-0 left-0 w-0 h-0 border-t-[30px] border-l-[30px] border-white dark:border-gray-800 z-10"></div>
                       <div className="absolute top-0 right-0 w-0 h-0 border-t-[30px] border-r-[30px] border-white dark:border-gray-800 z-10"></div>
                       <div className="absolute bottom-0 left-0 w-0 h-0 border-b-[30px] border-l-[30px] border-white dark:border-gray-800 z-10"></div>
                       <div className="absolute bottom-0 right-0 w-0 h-0 border-b-[30px] border-r-[30px] border-white dark:border-gray-800 z-10"></div>
                       
-                      {/* 圖片 */}
+                      {/* Image */}
                       <Image 
                         src={event.frontmatter.image} 
                         alt={event.frontmatter.title} 
@@ -227,7 +227,7 @@ const FeaturedEvents: React.FC = () => {
                         className="transition-transform duration-700"
                       />
                       
-                      {/* 圖片上的貼紙 */}
+                      {/* Sticker overlay */}
                       <motion.div
                         className="absolute top-6 right-6 z-30 bg-yellow-300 dark:bg-yellow-600 px-3 py-2 rounded-lg shadow-md transform -rotate-6 text-gray-800 dark:text-gray-100 font-bold border-2 border-yellow-400 dark:border-yellow-500"
                         whileHover={{ rotate: 0, scale: 1.05 }}
@@ -238,12 +238,12 @@ const FeaturedEvents: React.FC = () => {
                         {event.frontmatter.emoji || "🔥"} {t("featuredEvents.eventSticker")}
                       </motion.div>
                       
-                      {/* 迴紋針裝飾 */}
+                      {/* Paperclip decoration */}
                       <div className="absolute -top-2 left-8 z-30 text-blue-400 dark:text-blue-300 text-2xl transform rotate-12">
                         <FaPaperclip />
                       </div>
                       
-                      {/* 熱門標籤 */}
+                      {/* Highlight tag */}
                       <div className="absolute bottom-6 left-6 z-20">
                         <motion.div 
                           className="px-3 py-1 bg-red-100 dark:bg-red-800 text-red-800 dark:text-red-100 font-bold rounded-lg transform -rotate-2 border border-red-200 dark:border-red-700 flex items-center gap-1 text-sm shadow-sm"
@@ -259,13 +259,13 @@ const FeaturedEvents: React.FC = () => {
                       </div>
                     </div>
                     
-                    {/* 右側內容區域 - 筆記紙風格（Tailwind 任意值 + dark 變體） */}
+                    {/* Right content area (note-paper style with dark variants) */}
                     <div 
                       className="p-6 md:p-8 flex flex-col dark:text-white bg-[linear-gradient(to_bottom,_white_29px,_#f0f0f0_1px)] dark:bg-[linear-gradient(to_bottom,_#0F172A_29px,_#1E293B_1px)] bg-[length:100%_30px] dark:bg-[length:100%_30px]"
                     >
-                      {/* 標題區域 */}
+                      {/* Title area */}
                       <div className="relative mb-2">
-                        {/* 圖釘裝飾 */}
+                        {/* Thumbtack decoration */}
                         <div className="absolute -top-6 right-2 text-gray-400 dark:text-gray-500 text-xl z-10">
                           <FaThumbtack />
                         </div>
@@ -280,7 +280,7 @@ const FeaturedEvents: React.FC = () => {
                           {event.frontmatter.title}
                         </motion.h3>
                         
-                        {/* 手繪底線 */}
+                        {/* Hand-drawn underline */}
                         <svg width="100%" height="8" viewBox="0 0 200 8">
                           <motion.path 
                             d="M0,4 C40,1 80,7 120,4 C160,1 200,7 240,4" 
@@ -296,7 +296,7 @@ const FeaturedEvents: React.FC = () => {
                         </svg>
                       </div>
                       
-                      {/* 裝飾標記 */}
+                      {/* Decorative marker */}
                       <div className="absolute right-6 md:right-8 top-6 md:top-8">
                         <motion.div
                           className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-pink-100 dark:bg-pink-800 text-pink-600 dark:text-pink-200 font-mono text-xs md:text-sm font-bold border border-pink-200 dark:border-pink-700 transform rotate-6 shadow-sm"
@@ -306,7 +306,7 @@ const FeaturedEvents: React.FC = () => {
                         </motion.div>
                       </div>
                       
-                      {/* 內容描述 */}
+                      {/* Description */}
                       <motion.p 
                         className="text-gray-700 dark:text-gray-200 mb-6 font-medium relative"
                         initial={{ opacity: 0 }}
@@ -317,7 +317,7 @@ const FeaturedEvents: React.FC = () => {
                         {event.frontmatter.description}
                       </motion.p>
                       
-                      {/* 時間地點 */}
+                      {/* Time and location */}
                       <div className="space-y-3 mb-8 font-mono text-sm">
                         <motion.div 
                           className="flex items-center text-gray-700 dark:text-gray-200"
@@ -351,7 +351,7 @@ const FeaturedEvents: React.FC = () => {
                         </motion.div>
                       </div>
                       
-                      {/* 底部按鈕 */}
+                      {/* Footer actions */}
                       <div className="mt-auto">
                         <motion.div
                           whileHover={{ scale: 1.03 }}
@@ -390,7 +390,7 @@ const FeaturedEvents: React.FC = () => {
                               <span>{t("featuredEvents.noMoreInfo")}</span>
                             </button>
                           )}
-                          {/* 手繪強調線 */}
+                          {/* Hand-drawn emphasis line */}
                           <svg className="absolute -bottom-4 left-0 w-full" height="6" viewBox="0 0 100 6">
                             <motion.path
                               d="M0,3 C20,1 40,5 60,3 C80,1 100,5 120,3"
@@ -410,11 +410,11 @@ const FeaturedEvents: React.FC = () => {
                   </div>
                 </div>
                 
-                {/* 紙膠帶裝飾 */}
+                {/* Washi tape decoration */}
                 <div className={`absolute ${index % 2 === 0 ? '-top-3 -left-3' : '-top-3 -right-3'} w-20 h-6 bg-indigo-300/70 dark:bg-indigo-700/70 transform ${index % 2 === 0 ? 'rotate-12' : '-rotate-12'} z-10`}></div>
                 <div className={`absolute ${index % 2 === 0 ? '-bottom-3 -right-3' : '-bottom-3 -left-3'} w-20 h-6 bg-pink-300/70 dark:bg-pink-700/70 transform ${index % 2 === 0 ? '-rotate-12' : 'rotate-12'} z-10`}></div>
                 
-                {/* 便利貼效果 */}
+                {/* Sticky note effect */}
                 <div className={`absolute ${index % 2 === 0 ? '-bottom-10 left-10' : '-bottom-10 right-10'} transform ${index % 2 === 0 ? 'rotate-6' : '-rotate-6'} bg-yellow-200 dark:bg-yellow-700 w-24 h-24 shadow-sm z-10 flex items-center justify-center text-center p-2`}
                   style={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 75%, 75% 100%, 0% 100%)" }}
                 >
@@ -431,7 +431,7 @@ const FeaturedEvents: React.FC = () => {
           ))}
         </div>
         
-        {/* 底部裝飾動畫 */}
+        {/* Bottom decorative animation */}
         <motion.div
           className="w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-400 dark:via-indigo-600 to-transparent mt-24 relative"
           initial={{ scaleX: 0 }}

@@ -17,7 +17,7 @@ interface EventPageProps {
 export default async function EventPage({ params }: EventPageProps) {
   const event = await getEventBySlug(params.slug);
   
-  // 如果活動不存在，返回 404
+  // Return 404 if the event is missing.
   if (!event) {
     notFound();
   }
@@ -34,7 +34,7 @@ export default async function EventPage({ params }: EventPageProps) {
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
       
-      {/* 活動頭部 */}
+      {/* Event header */}
       <section className="pt-28 md:pt-32 pb-8 md:pb-12 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="mb-8">
@@ -47,7 +47,7 @@ export default async function EventPage({ params }: EventPageProps) {
           </div>
           
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* 左側圖片 */}
+            {/* Left image */}
             <div className="lg:w-1/2">
               <div className="relative rounded-xl overflow-hidden aspect-video shadow-lg">
                 <Image 
@@ -79,7 +79,7 @@ export default async function EventPage({ params }: EventPageProps) {
               </div>
             </div>
             
-            {/* 右側資訊 */}
+            {/* Right details */}
             <div className="lg:w-1/2">
               <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">
                 {frontmatter.title}
@@ -154,7 +154,7 @@ export default async function EventPage({ params }: EventPageProps) {
                 </div>
               </div>
               
-              {/* 報名按鈕 */}
+              {/* Registration button */}
               {!frontmatter.isCompleted && (
                 <button 
                   className="w-full py-3 px-6 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-colors shadow-md hover:shadow-lg"
@@ -167,7 +167,7 @@ export default async function EventPage({ params }: EventPageProps) {
         </div>
       </section>
       
-      {/* 活動內容 */}
+      {/* Event content */}
       <section className="py-12 md:py-16">
         <div className="container mx-auto px-4">
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 md:p-8 lg:p-10 prose dark:prose-invert prose-lg max-w-none">
@@ -176,7 +176,7 @@ export default async function EventPage({ params }: EventPageProps) {
         </div>
       </section>
       
-      {/* 相關活動推薦 */}
+      {/* Related events */}
       <section className="py-12 md:py-16 bg-gray-100 dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white">

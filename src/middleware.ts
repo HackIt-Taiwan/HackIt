@@ -3,15 +3,14 @@ import type { NextRequest } from 'next/server';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
 
-// 支持的語言列表
+// Supported locales.
 const locales = ['zh-TW', 'en'];
-// 預設語言
+// Default locale.
 export const defaultLocale = 'zh-TW';
 
-// 獲取客戶端偏好語言
+// Resolve the preferred locale from cookies/headers.
 function getLocale(request: NextRequest): string {
-  // 協商器需要 headers，但 NextRequest 的 headers 不是標準格式
-  // 所以我們需要轉換格式
+  // Negotiator expects plain headers, so normalize NextRequest headers first.
   const headers = new Headers(request.headers);
   const acceptLanguageHeader = headers.get('accept-language');
   if (acceptLanguageHeader) {
@@ -23,24 +22,24 @@ function getLocale(request: NextRequest): string {
     headersObject[key] = value;
   });
 
-  // 使用協商器獲取偏好語言
+  // Use negotiator to determine the best match.
   const negotiator = new Negotiator({ headers: headersObject });
   try {
-    // 如果用戶已保存語言偏好，則使用保存的語言
+    // Prefer saved locale from cookies when available.
     const savedLocale = request.cookies.get('locale')?.value;
     if (savedLocale && locales.includes(savedLocale)) {
       return savedLocale;
     }
     
-    // 否則匹配瀏覽器偏好語言
+    // Otherwise match browser preferences.
     return matchLocale(negotiator.languages(), locales, defaultLocale);
   } catch (error) {
-    // 匹配失敗使用預設語言
+    // Fallback to default on any parsing failure.
     return defaultLocale;
   }
 }
 
-// 不需要重定向的路徑
+// Paths that skip locale redirects.
 const publicRoutes = [
   '/images',
   '/fonts',
@@ -48,22 +47,22 @@ const publicRoutes = [
   '/api'
 ];
 
-// 中間件函數
+// Middleware entry point.
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   
-  // 檢查是否為公共路徑
+  // Skip public routes.
   if (publicRoutes.some(route => pathname.startsWith(route))) {
     return NextResponse.next();
   }
   
-  // 檢查當前路徑是否已有支持的語言前綴
+  // Check whether the path already includes a locale prefix.
   const pathnameLocale = locales.find(
     locale => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
   const pathnameHasLocale = Boolean(pathnameLocale);
   
-  // 如果已有語言前綴，寫入 cookie 後直接返回
+  // If a locale prefix exists, sync the cookie and continue.
   if (pathnameHasLocale) {
     const response = NextResponse.next();
     const savedLocale = request.cookies.get('locale')?.value;
@@ -77,10 +76,10 @@ export function middleware(request: NextRequest) {
     return response;
   }
   
-  // 獲取用戶偏好語言
+  // Resolve the preferred locale.
   const locale = getLocale(request);
   
-  // 重定向到帶有語言前綴的路徑，並同時寫入 cookie
+  // Redirect to the localized path and update the cookie.
   const newUrl = new URL(`/${locale}${pathname.startsWith('/') ? pathname : `/${pathname}`}`, request.url);
   const response = NextResponse.redirect(newUrl);
   const savedLocale = request.cookies.get('locale')?.value;
@@ -94,10 +93,10 @@ export function middleware(request: NextRequest) {
   return response;
 }
 
-// 符合所有路徑
+// Apply to all routes except static assets and APIs.
 export const config = {
   matcher: [
-    // 排除公共資源路徑
+    // Exclude public assets.
     '/((?!api|_next/static|_next/image|images|favicon.ico).*)',
   ],
-}; 
+};

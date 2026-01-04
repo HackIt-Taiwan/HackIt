@@ -7,7 +7,7 @@ import Link from "next/link";
 import { FaLightbulb, FaUsers, FaRocket, FaChalkboardTeacher } from "react-icons/fa";
 import { useI18n } from "@/i18n";
 
-// 定義核心價值類型
+// Core value types.
 type CoreValue = {
   icon: React.ReactNode;
   title: string;
@@ -61,7 +61,7 @@ const AboutSection: React.FC = () => {
     }
   };
 
-  // 核心價值數據 - 現在將從 i18n 獲取
+  // Core values are sourced from i18n.
   const coreValues: CoreValue[] = [
     {
       icon: <FaLightbulb className="w-8 h-8 text-primary" />,
@@ -87,7 +87,7 @@ const AboutSection: React.FC = () => {
 
   return (
     <section id="關於我們" className="py-20 md:py-28 lg:py-32 bg-gray-50 relative overflow-hidden">
-      {/* 背景裝飾 */}
+      {/* Background decoration */}
       <motion.div 
         className="absolute top-[10%] right-[5%] w-[35vw] h-[35vw] max-w-[500px] max-h-[500px] bg-primary/3 rounded-full blur-3xl"
         initial={{ opacity: 0 }}
@@ -151,7 +151,7 @@ const AboutSection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* 創始人故事 */}
+        {/* Founder story */}
         <motion.div 
           className="flex flex-col lg:flex-row items-center gap-12 md:gap-16 lg:gap-24 mb-24 md:mb-32"
           variants={containerVariants}
@@ -177,7 +177,7 @@ const AboutSection: React.FC = () => {
                 className="transition-transform duration-500"
               />
             </motion.div>
-            {/* 裝飾元素 - 增強動畫 */}
+            {/* Decorative elements with enhanced animation */}
             <motion.div 
               className="absolute -bottom-6 -left-6 w-16 h-16 md:w-24 md:h-24 bg-primary/10 rounded-xl -z-10"
               variants={decorVariants}
@@ -258,7 +258,7 @@ const AboutSection: React.FC = () => {
           </motion.div>
         </motion.div>
 
-        {/* 使命與願景 */}
+        {/* Mission and vision */}
         <motion.div 
           className="bg-white rounded-2xl shadow-lg p-6 md:p-12 mb-24 md:mb-32 relative overflow-hidden"
           variants={containerVariants}
@@ -347,7 +347,7 @@ const AboutSection: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* 核心價值 */}
+        {/* Core values */}
         <motion.div
           className="mb-16 md:mb-24"
           variants={containerVariants}

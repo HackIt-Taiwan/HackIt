@@ -8,7 +8,7 @@ import TechAnimation from '@/components/TechAnimation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
-// 定義 metadata 用於 SEO
+// SEO metadata for the localized home page.
 export const metadata = {
   title: 'HackIt - 青少年程式創意社群',
   description: 'HackIt 是台灣首個由青少年主導的創造型社群，我們自己辦活動、自己寫程式、自己改變世界。拒絕填鴨、拒絕等待，HackIt 要讓每一位青少年，親手打造屬於自己的未來。',
@@ -22,10 +22,10 @@ export default function LocaleHome() {
       {/* Hero section */}
       <HeroSection />
       
-      {/* 青少年介紹區塊 */}
+      {/* Youth intro section */}
       <YouthIntroSection />
       
-      {/* 大型精選活動 */}
+      {/* Featured events */}
       <div className="relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-full opacity-20 pointer-events-none">
           <TechAnimation />
@@ -33,12 +33,12 @@ export default function LocaleHome() {
         <FeaturedEvents />
       </div>
       
-      {/* 小型活動 (可橫向滾動) */}
+      {/* Scrollable events */}
       <ScrollableEvents />
       
       
       
-      {/* 加入我們 CTA */}
+      {/* Join CTA */}
       <CTASection />
       
       {/* Footer */}

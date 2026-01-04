@@ -9,7 +9,7 @@ import { useI18n } from '@/i18n';
 const YouthIntroSection: React.FC = () => {
   const { t } = useI18n();
   
-  // 隨機分佈的裝飾星星
+  // Randomly distributed decorative stars.
   const stars = Array.from({ length: 15 }, (_, i) => ({
     id: i,
     x: Math.random() * 100,
@@ -18,7 +18,7 @@ const YouthIntroSection: React.FC = () => {
     size: 3 + Math.random() * 10,
   }));
 
-  // 手繪風格動畫變體
+  // Hand-drawn animation variants.
   const handDrawnVariants = {
     hidden: { opacity: 0, pathLength: 0 },
     visible: { 
@@ -33,9 +33,9 @@ const YouthIntroSection: React.FC = () => {
 
   return (
     <section className="py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
-      {/* 背景裝飾 */}
+      {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* 背景繪製線條 */}
+        {/* Hand-drawn background lines */}
         <svg
           className="absolute w-full h-full opacity-10"
           viewBox="0 0 100 100"
@@ -70,7 +70,7 @@ const YouthIntroSection: React.FC = () => {
           />
         </svg>
         
-        {/* 裝飾星星 */}
+        {/* Decorative stars */}
         {stars.map((star) => (
           <motion.div
             key={star.id}
@@ -100,7 +100,7 @@ const YouthIntroSection: React.FC = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto">
-          {/* 標題區 */}
+          {/* Title area */}
           <div className="text-center relative mb-16">
             <motion.div
               className="inline-block mb-4"
@@ -115,7 +115,7 @@ const YouthIntroSection: React.FC = () => {
               </div>
             </motion.div>
             
-            {/* 修改標題樣式，使其更加突出且有手工感 */}
+            {/* Enhance the title styling with a handcrafted feel */}
             <motion.h2 
               className="text-4xl md:text-5xl font-bold mb-6"
               initial={{ opacity: 0, y: 20 }}
@@ -185,7 +185,7 @@ const YouthIntroSection: React.FC = () => {
               {t("youthIntroSection.description.last")}
             </motion.p>
 
-            {/* 手繪的裝飾 */}
+            {/* Hand-drawn decoration */}
             <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2">
               <svg width="150" height="20" viewBox="0 0 150 20" fill="none">
                 <motion.path 
@@ -202,7 +202,7 @@ const YouthIntroSection: React.FC = () => {
             </div>
           </div>
           
-          {/* 特色區塊 - 設計成手繪筆記風格 */}
+          {/* Feature blocks in a hand-drawn notebook style */}
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             {[
               {
@@ -230,13 +230,13 @@ const YouthIntroSection: React.FC = () => {
                 viewport={{ once: true }}
                 whileHover={{ y: -8 }}
               >
-                {/* 筆記紙風格背景 - 更加強調手工感 */}
+                {/* Note-paper background to emphasize a handmade feel */}
                 <div className="absolute inset-0 bg-white dark:bg-gray-700 rounded-xl shadow-md transform rotate-1 group-hover:rotate-2 transition-transform duration-300" style={{ 
                   backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 27px, #f0f0f0 28px)'
                 }}></div>
                 
                 <div className="relative p-7 bg-white dark:bg-gray-800 rounded-xl shadow-md border-t-4 border-primary z-10 h-full transform -rotate-1 group-hover:-rotate-2 transition-transform duration-300">
-                  {/* 手繪風格裝飾膠帶 */}
+                  {/* Hand-drawn tape decoration */}
                   <div className="absolute -left-2 -top-1 w-10 h-5 bg-yellow-300/60 dark:bg-yellow-500/50 transform rotate-45"></div>
                   <div className="absolute -right-3 -top-3">
                     <motion.div 
@@ -253,7 +253,7 @@ const YouthIntroSection: React.FC = () => {
                   <h3 className="text-xl font-bold mb-4 mt-2 text-gray-800 dark:text-gray-100">{feature.title}</h3>
                   <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
                   
-                  {/* 手繪裝飾 */}
+                  {/* Hand-drawn decoration */}
                   <svg className="absolute bottom-3 right-4 w-12 h-12 text-primary/10 dark:text-primary/20" viewBox="0 0 24 24">
                     <motion.path
                       d="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z"
@@ -271,7 +271,7 @@ const YouthIntroSection: React.FC = () => {
             ))}
           </div>
           
-          {/* 呼籲行動區域 */}
+          {/* Call-to-action area */}
           <motion.div 
             className="relative mt-24 text-center"
             initial={{ opacity: 0 }}
@@ -302,7 +302,7 @@ const YouthIntroSection: React.FC = () => {
               viewport={{ once: true }}
               whileHover={{ y: -5 }}
             >
-              {/* 手繪風的紙張背景 */}
+              {/* Hand-drawn paper background */}
               <div className="absolute inset-0 bg-white dark:bg-gray-800 rounded-xl overflow-hidden" style={{ 
                 backgroundImage: 'radial-gradient(circle, #f9f9f9 1px, transparent 1px)',
                 backgroundSize: '15px 15px' 
@@ -312,7 +312,7 @@ const YouthIntroSection: React.FC = () => {
                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 dark:bg-primary/10 rounded-full transform translate-x-16 -translate-y-16"></div>
                 <div className="absolute bottom-0 left-0 w-32 h-32 bg-indigo-50 dark:bg-indigo-900/20 rounded-full transform -translate-x-16 translate-y-16"></div>
                 
-                {/* 手繪風紙膠帶裝飾 */}
+                {/* Hand-drawn washi tape */}
                 <div className="absolute -top-3 left-10 w-24 h-6 bg-pink-200/40 dark:bg-pink-800/30 transform rotate-5"></div>
                 <div className="absolute -bottom-3 right-10 w-24 h-6 bg-blue-200/40 dark:bg-blue-800/30 transform -rotate-5"></div>
               </div>

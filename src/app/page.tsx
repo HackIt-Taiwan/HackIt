@@ -11,13 +11,13 @@ import TechAnimation from '@/components/TechAnimation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
-// 定義 metadata 用於 SEO
+// SEO metadata for the root route.
 export const metadata = {
   title: 'HackIt - 青少年程式創意社群',
   description: 'HackIt 是台灣首個由青少年主導的創造型社群，我們自己辦活動、自己寫程式、自己改變世界。拒絕填鴨、拒絕等待，HackIt 要讓每一位青少年，親手打造屬於自己的未來。',
 };
 
-// 根路由重定向到默認語言路徑
+// Redirect the root route to the default locale path.
 export default function Home() {
   redirect(`/${defaultLocale}`);
-} 
+}

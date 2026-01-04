@@ -18,7 +18,7 @@ const Navigation: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeItem, setActiveItem] = useState('首頁');
   
-  // 監聽滾動事件變更導航欄樣式
+  // Adjust navbar style on scroll.
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -27,7 +27,7 @@ const Navigation: React.FC = () => {
         setScrolled(false);
       }
       
-      // 檢測當前處於哪個部分
+      // Detect the current active section.
       const sections = document.querySelectorAll('section[id]');
       sections.forEach(section => {
         const sectionTop = section.getBoundingClientRect().top;
@@ -47,7 +47,7 @@ const Navigation: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Logo動畫變體
+  // Logo animation variants.
   const logoVariants = {
     normal: { scale: 1 },
     hover: { 
@@ -61,7 +61,7 @@ const Navigation: React.FC = () => {
     }
   };
   
-  // 導航項目動畫變體
+  // Nav item animation variants.
   const navItemVariants = {
     hidden: { y: -20, opacity: 0 },
     visible: (i: number) => ({
@@ -84,7 +84,7 @@ const Navigation: React.FC = () => {
     }
   };
   
-  // 移動菜單動畫變體
+  // Mobile menu animation variants.
   const mobileMenuVariants = {
     closed: { 
       opacity: 0,
@@ -113,7 +113,7 @@ const Navigation: React.FC = () => {
     <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'py-3 bg-white/90 backdrop-blur-md shadow-md' : 'py-5 bg-transparent'}`}>
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
-          {/* Logo部分 */}
+          {/* Logo */}
           <motion.div 
             className="flex items-center"
             variants={logoVariants}
@@ -128,7 +128,7 @@ const Navigation: React.FC = () => {
             </Link>
           </motion.div>
           
-          {/* 桌面菜單 */}
+          {/* Desktop menu */}
           <div className="hidden md:flex space-x-1 items-center">
             {menuItems.map((item, i) => (
               <motion.div
@@ -171,7 +171,7 @@ const Navigation: React.FC = () => {
             </motion.div>
           </div>
           
-          {/* 移動端漢堡菜單按鈕 */}
+          {/* Mobile hamburger button */}
           <div className="md:hidden">
             <button
               className="flex items-center justify-center p-2 rounded-lg text-gray-600 hover:text-primary focus:outline-none"
@@ -207,7 +207,7 @@ const Navigation: React.FC = () => {
         </div>
       </div>
       
-      {/* 移動端菜單 */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div

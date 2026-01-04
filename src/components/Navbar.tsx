@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
@@ -17,10 +17,11 @@ const LanguageSelector = dynamic(() => import('./LanguageSelector'), {
   ssr: false,
 });
 
-const Navbar: React.FC = () => {
+export default function Navbar() {
   const { t } = useI18n();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [logoClickCount, setLogoClickCount] = useState(0);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -32,28 +33,30 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Easter egg - prints a fun message when logo is clicked 3 times quickly
-  const [clickCount, setClickCount] = useState(0);
   useEffect(() => {
-    if (clickCount === 3) {
-      console.log(t("navbar.easterEgg"));
-      setClickCount(0);
+    // Easter egg: triple-click the logo within 2 seconds.
+    if (logoClickCount === 3) {
+      console.log(t('navbar.easterEgg'));
+      setLogoClickCount(0);
     }
     
-    const timer = setTimeout(() => setClickCount(0), 2000);
+    const timer = setTimeout(() => setLogoClickCount(0), 2000);
     return () => clearTimeout(timer);
-  }, [clickCount, t]);
+  }, [logoClickCount, t]);
 
-  // 導航項目定義 - 重新排序，將「最新消息」移到「首頁」旁邊
-  const navItems = [
+  const navItems = useMemo(() => ([
     { name: t('common.home'), href: '/' },
-    { name: t('common.events'), href: 'https://hackittw.notion.site/1f459188ed5280499052d8d3b813770c', isExternal: true },
+    {
+      name: t('common.events'),
+      href: 'https://hackittw.notion.site/1f459188ed5280499052d8d3b813770c',
+      isExternal: true,
+    },
     // { name: t('common.news'), href: '/news' },
     { name: t('common.podcast'), href: '/podcast' },
     // { name: t('common.financial'), href: '/financial' },
     { name: t('common.about'), href: '/about' },
-    { name: t('common.join'), href: '/join', highlight: true }
-  ];
+    { name: t('common.join'), href: '/join', highlight: true },
+  ]), [t]);
 
   return (
     <motion.header
@@ -71,7 +74,7 @@ const Navbar: React.FC = () => {
           className="flex items-center cursor-pointer"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => setClickCount(prev => prev + 1)}
+          onClick={() => setLogoClickCount((prev) => prev + 1)}
           transition={{ type: 'spring', stiffness: 300 }}
         >
           <Link href="/" className="flex items-center">
@@ -217,6 +220,4 @@ const Navbar: React.FC = () => {
       </motion.nav>
     </motion.header>
   );
-};
-
-export default Navbar; 
+}

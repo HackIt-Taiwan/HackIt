@@ -8,7 +8,7 @@ interface I18nClientProviderProps {
   locale: Locale;
 }
 
-// 客戶端 I18n 提供者
+// Client-side I18n provider.
 const I18nClientProvider: React.FC<I18nClientProviderProps> = ({ 
   children, 
   locale 

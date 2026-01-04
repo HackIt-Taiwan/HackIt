@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-// 動態載入 TechAnimation，並禁用 SSR
+// Dynamically load TechAnimation with SSR disabled.
 const TechAnimation = dynamic(() => import('@/components/TechAnimation'), {
   ssr: false,
   loading: () => <div className="w-full h-full min-h-[300px] bg-gray-200 dark:bg-gray-700 animate-pulse" />

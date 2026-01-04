@@ -12,7 +12,7 @@ export default function FinancePage() {
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
       
-      {/* 頁面內容 */}
+      {/* Page content */}
       <section className="pt-32 md:pt-36 lg:pt-40 pb-20 md:pb-28 lg:pb-36 flex items-center">
         <div className="container mx-auto px-4 text-center">
           <motion.div

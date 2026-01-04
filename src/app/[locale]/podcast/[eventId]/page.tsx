@@ -38,7 +38,7 @@ export default function PodcastEventPage() {
         }
         setPodcast(podcastData);
         
-        // 默認選中第一集
+        // Default to the first episode.
         if (podcastData.episodes.length > 0 && !selectedEpisodeId) {
           setSelectedEpisodeId(podcastData.episodes[0].id);
         }
@@ -53,7 +53,7 @@ export default function PodcastEventPage() {
     loadPodcast();
   }, [eventId, router, locale]);
   
-  // 更新當前播放的集數和下一集
+  // Update the current and next episode.
   useEffect(() => {
     const loadEpisodeData = async () => {
       if (selectedEpisodeId && podcast) {
@@ -71,12 +71,12 @@ export default function PodcastEventPage() {
     loadEpisodeData();
   }, [selectedEpisodeId, eventId, podcast]);
   
-  // 選擇集數
+  // Select an episode.
   const handleSelectEpisode = (episodeId: string) => {
     setSelectedEpisodeId(episodeId);
   };
   
-  // 處理集數結束
+  // Handle episode end.
   const handleEpisodeEnd = () => {
     if (nextEpisode) {
       setSelectedEpisodeId(nextEpisode.id);
@@ -84,7 +84,7 @@ export default function PodcastEventPage() {
     }
   };
   
-  // 切換自動播放
+  // Toggle autoplay.
   const toggleAutoplay = () => {
     setAutoplay(!autoplay);
   };
@@ -101,16 +101,16 @@ export default function PodcastEventPage() {
   }
 
   if (!podcast) {
-    return null; // 等待重定向
+    return null; // Wait for redirect.
   }
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
       
-      {/* 頂部區域 - 播客信息 */}
+      {/* Top area - podcast info */}
       <section className="relative pt-24 md:pt-32 pb-16 md:pb-20">
-        {/* 背景 */}
+        {/* Background */}
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-gray-50 dark:from-primary/10 dark:to-gray-900 z-0"></div>
         
         <div className="container mx-auto px-4 relative z-10">
@@ -123,7 +123,7 @@ export default function PodcastEventPage() {
           </Link>
           
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-            {/* 封面圖片區 */}
+            {/* Cover image */}
             <motion.div 
               className="md:col-span-5 lg:col-span-4" 
               initial={{ opacity: 0, y: 20 }}
@@ -140,13 +140,13 @@ export default function PodcastEventPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 
-                {/* 集數計數器徽章 */}
+                {/* Episode count badge */}
                 <div className="absolute top-4 right-4 bg-white/90 dark:bg-gray-800/90 text-gray-800 dark:text-white px-3 py-1 rounded-md text-sm font-medium flex items-center">
                   <FaHeadphones className="mr-1.5" size={14} />
                   <span>{podcast.episodes.length} {t('podcastPage.episodes')}</span>
                 </div>
                 
-                {/* 播客資訊 */}
+                {/* Podcast info */}
                 <div className="absolute bottom-0 left-0 p-6 text-white">
                   <div className="inline-flex items-center bg-primary/80 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium mb-2">
                     <FaMicrophone className="mr-1.5" size={12} />
@@ -156,12 +156,12 @@ export default function PodcastEventPage() {
                 </div>
               </div>
               
-              {/* 額外資訊 */}
+              {/* Extra info */}
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 mt-5">
                 <h2 className="font-bold text-gray-800 dark:text-white text-lg mb-3">關於此系列</h2>
                 <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">{podcast.description}</p>
                 
-                {/* 共享與訂閱按鈕 */}
+                {/* Share and subscribe buttons */}
                 <div className="flex flex-wrap gap-3">
                   <button className="flex-1 flex items-center justify-center bg-primary hover:bg-primary/90 text-white py-2 px-4 rounded-lg">
                     <FaPlay className="mr-2" size={12} />
@@ -176,7 +176,7 @@ export default function PodcastEventPage() {
                 </div>
               </div>
               
-              {/* 自動播放選項 */}
+              {/* Autoplay option */}
               <div className="mt-5">
                 <button
                   onClick={toggleAutoplay}
@@ -196,14 +196,14 @@ export default function PodcastEventPage() {
               </div>
             </motion.div>
             
-            {/* 右側內容區 */}
+            {/* Right content */}
             <motion.div 
               className="md:col-span-7 lg:col-span-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              {/* 當前播放提示 */}
+              {/* Now playing hint */}
               {currentEpisode && (
                 <div className="flex items-center justify-between bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md mb-5">
                   <div>
@@ -217,9 +217,9 @@ export default function PodcastEventPage() {
                 </div>
               )}
               
-              {/* 集數列表與播放器 */}
+              {/* Episode list and player */}
               <div>
-                {/* 播放器 */}
+                {/* Player */}
                 {currentEpisode && (
                   <div className="mb-8">
                     <PodcastPlayer
@@ -231,7 +231,7 @@ export default function PodcastEventPage() {
                   </div>
                 )}
                 
-                {/* 集數列表 */}
+                {/* Episode list */}
                 <div>
                   <EpisodesList
                     episodes={podcast.episodes}

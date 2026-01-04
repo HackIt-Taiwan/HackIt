@@ -5,13 +5,13 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import zhTW from './translations/zh-TW.json';
 import en from './translations/en.json';
 
-// 定義支持的語言
+// Supported locales.
 export const LANGUAGES = {
   'zh-TW': '繁體中文',
   'en': 'English',
 };
 
-// 翻譯字典
+// Translation map per locale.
 const translations = {
   'zh-TW': zhTW,
   'en': en,
@@ -32,10 +32,10 @@ const defaultContext: I18nContextType = {
   t: (key: string) => key,
 };
 
-// 創建上下文
+// Create context.
 export const I18nContext = createContext<I18nContextType>(defaultContext);
 
-// i18n Provider
+// i18n provider.
 interface I18nProviderProps {
   children: ReactNode;
   initialLocale?: Locale;
@@ -50,14 +50,14 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
   const [locale, setLocaleState] = useState<Locale>(initialLocale);
 
   useEffect(() => {
-    // 偵測 URL 中的語言設定
+    // Detect locale from the URL path.
     const pathLocale = pathname.split('/')[1] as Locale;
     if (pathLocale && Object.keys(LANGUAGES).includes(pathLocale)) {
       setLocaleState(pathLocale);
     }
   }, [pathname]);
 
-  // 設定語言時更新 URL
+  // Update URL when changing locale.
   const setLocale = (newLocale: Locale) => {
     if (newLocale === locale) return;
 
@@ -68,14 +68,14 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
 
     setLocaleState(newLocale);
 
-    // 更新 URL 中的語言路徑
+    // Update the locale segment in the URL.
     const newPathname = pathname.split('/').slice(2).join('/');
     router.push(`/${newLocale}/${newPathname}`);
   };
 
-  // 翻譯函數
+  // Translation helper.
   const t = (key: string, values?: Record<string, ReactNode | ((children: ReactNode) => ReactNode) | string | number>): ReactNode => {
-    // 解析鍵路徑，例如 'common.home'
+    // Resolve a dotted key path (e.g., 'common.home').
     const keys = key.split('.');
     let value = translations[locale] as any;
     
@@ -126,7 +126,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
       return value;
     }
     
-    // 如果值是陣列或物件，直接返回
+    // If the value is an array or object, return it directly.
     if (value !== null && typeof value === 'object') {
       return value;
     }
@@ -141,7 +141,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
   );
 };
 
-// 使用 i18n 的 Hook
+// Hook to access the i18n context.
 export function useI18n() {
   const context = useContext(I18nContext);
   if (context === undefined) {

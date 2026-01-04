@@ -9,15 +9,15 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { getAllNews, NewsItem } from '@/utils/news';
 
-// 頁面元件
+// Page component.
 export default function NewsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("全部");
   
-  // 從 utils/news.ts 獲取新聞數據
+  // Fetch news data from utils/news.ts.
   const newsData = getAllNews();
   
-  // 篩選新聞
+  // Filter news.
   const filteredNews = newsData.filter(news => {
     const matchesSearch = news.frontmatter.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           news.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -26,10 +26,10 @@ export default function NewsPage() {
     return matchesSearch && matchesCategory;
   });
   
-  // 獲取所有類別
+  // Collect categories.
   const categories = ["全部", ...Array.from(new Set(newsData.map(news => news.frontmatter.category)))];
   
-  // 獲取新聞類別對應的圖標
+  // Map categories to icons.
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case "活動公告":
@@ -44,7 +44,7 @@ export default function NewsPage() {
     }
   };
   
-  // 動畫變體
+  // Motion variants.
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -68,7 +68,7 @@ export default function NewsPage() {
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
       
-      {/* 主視覺 */}
+      {/* Hero */}
       <section className="pt-28 md:pt-32 lg:pt-36 pb-16 md:pb-20 bg-gradient-to-b from-primary/5 to-indigo-50 dark:from-primary/10 dark:to-gray-900">
         <div className="container mx-auto px-4">
           <motion.div 
@@ -84,7 +84,7 @@ export default function NewsPage() {
               了解 HackIt 的最新動態、活動資訊和媒體報導
             </p>
             
-            {/* 搜尋欄 */}
+            {/* Search bar */}
             <div className="max-w-2xl mx-auto mt-8 relative">
               <div className="relative">
                 <input
@@ -101,7 +101,7 @@ export default function NewsPage() {
         </div>
       </section>
       
-      {/* 分類標籤 */}
+      {/* Category tags */}
       <section className="py-8 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
         <div className="container mx-auto px-4">
           <div className="flex justify-center flex-wrap gap-2">
@@ -126,7 +126,7 @@ export default function NewsPage() {
         </div>
       </section>
       
-      {/* 新聞列表 */}
+      {/* News list */}
       <section className="py-16 md:py-20">
         <div className="container mx-auto px-4">
           {filteredNews.length > 0 ? (
@@ -176,7 +176,7 @@ export default function NewsPage() {
                       </h2>
                     </Link>
                     <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
-                      {/* 從 Markdown 內容中提取第一段作為摘要 */}
+                      {/* Use the first paragraph as a summary */}
                       {news.content.split('\n\n')[1]}
                     </p>
                     <div className="flex flex-wrap gap-2 mb-4">
@@ -218,7 +218,7 @@ export default function NewsPage() {
         </div>
       </section>
       
-      {/* 訂閱區塊 */}
+      {/* Subscribe section */}
       <section className="py-16 md:py-20 bg-primary/5 dark:bg-primary/10">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">

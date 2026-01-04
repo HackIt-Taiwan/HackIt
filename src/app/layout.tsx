@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
   params?: { locale?: string };
 }) {
-  // 獲取當前語言
+  // Resolve the current locale from route params.
   const locale = (params?.locale || 'zh-TW') as Locale;
   
   return (

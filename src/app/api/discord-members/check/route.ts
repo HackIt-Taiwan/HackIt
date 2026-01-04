@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { NextRequest } from 'next/server';
 
-// 緩存文件路徑
+// Cache file paths.
 const CACHE_DIR = path.join(process.cwd(), '.cache');
 const CACHE_FILE = path.join(CACHE_DIR, 'discord-members.json');
 
@@ -12,14 +12,14 @@ export async function GET(request: NextRequest) {
     const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
     const DISCORD_SERVER_ID = process.env.DISCORD_SERVER_ID;
     
-    // 檢查是否有緩存文件
+    // Check for a cache file.
     const cacheStatus = {
       cacheExists: fs.existsSync(CACHE_FILE),
       cacheData: null as any,
       cacheAge: null as null | string
     };
     
-    // 如果緩存存在，讀取緩存信息
+    // Read cache info when available.
     if (cacheStatus.cacheExists) {
       try {
         const cacheData = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8'));
@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
       }
     }
     
-    // 檢查環境變數
+    // Validate environment variables.
     const configStatus = {
       hasToken: !!DISCORD_BOT_TOKEN,
       hasServerId: !!DISCORD_SERVER_ID,
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
     
-    // 檢查Discord Bot Token是否有效
+    // Validate Discord Bot token.
     const response = await fetch('https://discord.com/api/v10/users/@me', {
       headers: {
         Authorization: `Bot ${DISCORD_BOT_TOKEN}`
@@ -88,7 +88,7 @@ export async function GET(request: NextRequest) {
     
     const botData = await response.json();
     
-    // 檢查是否可以訪問伺服器
+    // Verify access to the guild.
     const guildResponse = await fetch(`https://discord.com/api/v10/guilds/${DISCORD_SERVER_ID}`, {
       headers: {
         Authorization: `Bot ${DISCORD_BOT_TOKEN}`

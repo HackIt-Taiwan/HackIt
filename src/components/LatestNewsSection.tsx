@@ -8,7 +8,7 @@ import { FaArrowRight, FaCalendar, FaUser, FaNewspaper, FaStar, FaInbox, FaRss }
 import { getLatestNews } from '@/utils/news';
 import { useI18n } from '@/i18n';
 
-// 浮動動畫
+// Floating animation.
 const floatAnimation = {
   initial: { y: 0 },
   animate: { 
@@ -25,15 +25,15 @@ const floatAnimation = {
 export default function LatestNewsSection() {
   const { t, locale } = useI18n();
   
-  // 獲取最新的3則新聞
+  // Fetch the latest 3 news items.
   const latestNews = getLatestNews(3);
   const hasNews = latestNews.length > 0;
   
   return (
     <section className="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-gray-50 via-purple-50/30 to-indigo-50/20 dark:from-gray-900 dark:via-purple-900/5 dark:to-indigo-900/10 relative overflow-hidden">
-      {/* 背景圖案與裝飾 */}
+      {/* Background pattern and decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* 漂浮圓點 */}
+        {/* Floating dots */}
         {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
@@ -59,7 +59,7 @@ export default function LatestNewsSection() {
           />
         ))}
         
-        {/* 光暈效果 */}
+        {/* Glow effects */}
         <motion.div 
           className="absolute -top-20 -right-20 w-64 h-64 bg-primary/5 dark:bg-primary/10 rounded-full blur-3xl"
           animate={{ 
@@ -79,7 +79,7 @@ export default function LatestNewsSection() {
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
-        {/* 移除熱門消息標記區塊 */}
+        {/* Removed "featured" badge area */}
         
         <div className="text-center mb-16">
           <motion.div
@@ -106,7 +106,7 @@ export default function LatestNewsSection() {
                   />
               </h2>
               
-              {/* 手繪風格底線 */}
+              {/* Hand-drawn underline */}
               <svg className="absolute -bottom-4 left-0 w-full h-4 overflow-visible">
                 <motion.path 
                   d="M0,4 C40,15 80,-5 120,4 C160,15 200,-5 240,4 C280,15 320,-5 360,4"
@@ -135,7 +135,7 @@ export default function LatestNewsSection() {
         </div>
         
         {hasNews ? (
-          // 有新聞時顯示新聞列表
+          // Show the news list when available.
         <div className="grid md:grid-cols-3 gap-8 lg:gap-10">
           {latestNews.map((news, index) => (
             <motion.div
@@ -150,7 +150,7 @@ export default function LatestNewsSection() {
                 transition: { duration: 0.3, ease: "easeOut" } 
               }}
             >
-              {/* 顏色疊加層 */}
+              {/* Color overlay */}
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-br from-primary/5 to-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 initial={{ opacity: 0 }}
@@ -160,7 +160,7 @@ export default function LatestNewsSection() {
               
                 <Link href={`/${locale}/news/${news.slug}`} className="block">
                 <div className="relative h-52 overflow-hidden">
-                  {/* 輝光效果 */}
+                  {/* Glow effect */}
                   <motion.div 
                     className="absolute inset-0 bg-gradient-to-tr from-primary/30 to-transparent opacity-0 z-10"
                     initial={{ opacity: 0 }}
@@ -199,7 +199,7 @@ export default function LatestNewsSection() {
               </Link>
               
               <div className="p-6 relative">
-                {/* 右上角裝飾 */}
+                {/* Top-right decoration */}
                 <div className="absolute -top-3 right-4">
                   <motion.div
                     initial={{ rotate: 15, scale: 0 }}
@@ -299,7 +299,7 @@ export default function LatestNewsSection() {
           ))}
         </div>
         ) : (
-          // 沒有新聞時顯示的"暫無最新消息"提示
+          // Show the empty-state message when no news is available.
           <motion.div 
             className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 md:p-12 max-w-3xl mx-auto overflow-hidden relative"
             initial={{ opacity: 0, y: 20 }}
@@ -307,7 +307,7 @@ export default function LatestNewsSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            {/* 波浪背景裝飾 */}
+            {/* Wave background decoration */}
             <div className="absolute top-0 left-0 right-0 h-2 bg-primary/60 overflow-hidden">
               <motion.div 
                 className="absolute inset-0 opacity-30"

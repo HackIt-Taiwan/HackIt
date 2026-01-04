@@ -32,7 +32,7 @@ const EventsSection: React.FC = () => {
     return () => { isMounted = false; };
   }, []);
 
-  // 拖動滑動相關狀態
+  // Drag scroll state.
   const [isDragging, setIsDragging] = useState(false);
   const startX = useRef(0);
   const scrollLeft = useRef(0);
@@ -41,7 +41,7 @@ const EventsSection: React.FC = () => {
   const velocity = useRef(0);
   const rafId = useRef<number | null>(null);
 
-  // 定義動畫變體
+  // Motion variants.
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -84,24 +84,24 @@ const EventsSection: React.FC = () => {
     }
   };
 
-  // 計算剩餘名額比例
+  // Calculate remaining seats percentage.
   const calculateSpotsPercentage = (total: number, left: number) => {
     const taken = total - left;
     return (taken / total) * 100;
   };
 
-  // 滑動動畫（帶慣性）
+  // Inertia scroll animation.
   const animateScroll = useCallback(() => {
     if (!scrollContainerRef.current) return;
     
     if (Math.abs(velocity.current) > 0.1) {
-      // 提供漸進減速的感覺（慣性）
+      // Apply gradual deceleration for inertia.
       velocity.current *= 0.95;
       
-      // 應用位移
+      // Apply scroll delta.
       scrollContainerRef.current.scrollLeft += velocity.current;
       
-      // 繼續動畫循環
+      // Continue the animation loop.
       rafId.current = requestAnimationFrame(animateScroll);
     } else {
       velocity.current = 0;
@@ -109,17 +109,17 @@ const EventsSection: React.FC = () => {
     }
   }, []);
 
-  // 鼠標事件處理
+  // Mouse event handlers.
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (!scrollContainerRef.current) return;
     
-    // 重設任何進行中的動畫
+    // Reset any active animation.
     if (rafId.current) {
       cancelAnimationFrame(rafId.current);
       rafId.current = null;
     }
     
-    // 確保之前的任何拖動狀態已被清除
+    // Ensure previous drag state is cleared.
     if (isDragging) {
       setIsDragging(false);
     }
@@ -131,7 +131,7 @@ const EventsSection: React.FC = () => {
     lastMoveTime.current = Date.now();
     velocity.current = 0;
     
-    // 防止拖動過程中選中文本
+    // Prevent text selection while dragging.
     document.body.style.userSelect = 'none';
   }, [isDragging]);
 
@@ -142,18 +142,18 @@ const EventsSection: React.FC = () => {
     const dx = x - startX.current;
     scrollContainerRef.current.scrollLeft = scrollLeft.current - dx;
     
-    // 計算速度（用於慣性滾動）
+    // Compute velocity for inertia.
     const now = Date.now();
     const dt = now - lastMoveTime.current;
     
     if (dt > 0) {
-      velocity.current = (lastX.current - x) / dt * 15; // 調整慣性強度
+      velocity.current = (lastX.current - x) / dt * 15; // Tune inertia strength.
     }
     
     lastX.current = x;
     lastMoveTime.current = now;
     
-    // 允許 y 軸正常滾動但防止頁面左右滾動
+    // Allow vertical scroll while preventing horizontal page scroll.
     e.preventDefault();
   }, [isDragging]);
 
@@ -163,7 +163,7 @@ const EventsSection: React.FC = () => {
     setIsDragging(false);
     document.body.style.userSelect = '';
     
-    // 如果有速度，啟動慣性滾動
+    // Start inertial scrolling if velocity remains.
     if (Math.abs(velocity.current) > 0.1) {
       rafId.current = requestAnimationFrame(animateScroll);
     }
@@ -175,17 +175,17 @@ const EventsSection: React.FC = () => {
     }
   }, [isDragging, handleMouseUp]);
 
-  // 觸控事件處理
+  // Touch event handlers.
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (!scrollContainerRef.current || e.touches.length !== 1) return;
     
-    // 重設任何進行中的動畫
+    // Reset any active animation.
     if (rafId.current) {
       cancelAnimationFrame(rafId.current);
       rafId.current = null;
     }
     
-    // 確保之前的任何拖動狀態已被清除
+    // Ensure previous drag state is cleared.
     if (isDragging) {
       setIsDragging(false);
     }
@@ -205,18 +205,18 @@ const EventsSection: React.FC = () => {
     const dx = x - startX.current;
     scrollContainerRef.current.scrollLeft = scrollLeft.current - dx;
     
-    // 計算速度（用於慣性滾動）
+    // Compute velocity for inertia.
     const now = Date.now();
     const dt = now - lastMoveTime.current;
     
     if (dt > 0) {
-      velocity.current = (lastX.current - x) / dt * 15; // 調整慣性強度
+      velocity.current = (lastX.current - x) / dt * 15; // Tune inertia strength.
     }
     
     lastX.current = x;
     lastMoveTime.current = now;
     
-    // 防止頁面在移動時滾動（iOS需要）
+    // Prevent page scroll while swiping (iOS).
     e.preventDefault();
   }, [isDragging]);
 
@@ -225,20 +225,20 @@ const EventsSection: React.FC = () => {
     
     setIsDragging(false);
     
-    // 如果有速度，啟動慣性滾動
+    // Start inertial scrolling if velocity remains.
     if (Math.abs(velocity.current) > 0.1) {
       rafId.current = requestAnimationFrame(animateScroll);
     }
   }, [isDragging, animateScroll]);
 
-  // 箭頭點擊滾動
+  // Arrow click scrolling.
   const scrollToLeft = useCallback(() => {
     if (!scrollContainerRef.current) return;
     
-    // 使用平滑滾動效果
+    // Use smooth scrolling.
     const currentScroll = scrollContainerRef.current.scrollLeft;
-    const cardWidth = 300; // 假設卡片寬度
-    const scrollAmount = cardWidth * 2; // 一次滾動兩個卡片的寬度
+    const cardWidth = 300; // Assume card width.
+    const scrollAmount = cardWidth * 2; // Scroll by two cards at a time.
     
     scrollContainerRef.current.scrollTo({
       left: currentScroll - scrollAmount,
@@ -249,10 +249,10 @@ const EventsSection: React.FC = () => {
   const scrollToRight = useCallback(() => {
     if (!scrollContainerRef.current) return;
     
-    // 使用平滑滾動效果
+    // Use smooth scrolling.
     const currentScroll = scrollContainerRef.current.scrollLeft;
-    const cardWidth = 300; // 假設卡片寬度
-    const scrollAmount = cardWidth * 2; // 一次滾動兩個卡片的寬度
+    const cardWidth = 300; // Assume card width.
+    const scrollAmount = cardWidth * 2; // Scroll by two cards at a time.
     
     scrollContainerRef.current.scrollTo({
       left: currentScroll + scrollAmount,
@@ -260,15 +260,15 @@ const EventsSection: React.FC = () => {
     });
   }, []);
 
-  // 清理
+  // Cleanup.
   useEffect(() => {
-    // 添加全局事件監聽器以捕獲容器外的放開事件
+    // Add global listeners to capture release outside the container.
     const handleGlobalMouseUp = () => {
       if (isDragging) {
         setIsDragging(false);
         document.body.style.userSelect = '';
         
-        // 如果有速度，啟動慣性滾動
+        // Start inertial scrolling if velocity remains.
         if (Math.abs(velocity.current) > 0.1) {
           rafId.current = requestAnimationFrame(animateScroll);
         }
@@ -279,63 +279,63 @@ const EventsSection: React.FC = () => {
       if (isDragging) {
         setIsDragging(false);
         
-        // 如果有速度，啟動慣性滾動
+        // Start inertial scrolling if velocity remains.
         if (Math.abs(velocity.current) > 0.1) {
           rafId.current = requestAnimationFrame(animateScroll);
         }
       }
     };
     
-    // 添加防止卡在拖動狀態的安全計時器
+    // Safety timer to avoid a stuck drag state.
     let dragTimeoutId: NodeJS.Timeout | null = null;
     
     const clearDragState = () => {
       if (isDragging) {
-        console.log('安全機制：清除卡住的拖動狀態');
+        console.log('Safety: clearing stuck drag state.');
         setIsDragging(false);
         document.body.style.userSelect = '';
       }
     };
     
-    // 當拖動狀態改變時，設置或清除安全計時器
+    // Start or clear the safety timer when the drag state changes.
     if (isDragging) {
-      dragTimeoutId = setTimeout(clearDragState, 3000); // 3秒安全計時器
+      dragTimeoutId = setTimeout(clearDragState, 3000); // 3-second safety timer.
     } else if (dragTimeoutId) {
       clearTimeout(dragTimeoutId);
       dragTimeoutId = null;
     }
     
-    // 註冊全局事件
+    // Register global events.
     document.addEventListener('mouseup', handleGlobalMouseUp);
     document.addEventListener('touchend', handleGlobalTouchEnd);
     
     return () => {
-      // 清理
+      // Cleanup.
       if (rafId.current) {
         cancelAnimationFrame(rafId.current);
       }
       
-      // 移除全局事件監聽器
+      // Remove global event listeners.
       document.removeEventListener('mouseup', handleGlobalMouseUp);
       document.removeEventListener('touchend', handleGlobalTouchEnd);
       
-      // 清除計時器
+      // Clear timers.
       if (dragTimeoutId) {
         clearTimeout(dragTimeoutId);
       }
     };
   }, [isDragging, animateScroll]);
 
-  // 當組件進入視圖時觸發動畫
+  // Trigger animation when the section enters view.
   useEffect(() => {
     if (isInView) {
-      controls.start("visible");
+      controls.start('visible');
     }
   }, [isInView, controls]);
 
   return (
     <section ref={ref} className="py-20 md:py-28 bg-gradient-to-br from-indigo-50 to-white dark:from-gray-800 dark:to-gray-900 relative overflow-hidden">
-      {/* 背景圖案 */}
+      {/* Background pattern */}
       <div 
         className="absolute inset-0 bg-repeat opacity-[0.03] dark:opacity-[0.02]"
         style={{
@@ -343,7 +343,7 @@ const EventsSection: React.FC = () => {
         }}
       />
       
-      {/* 光暈效果 */}
+      {/* Glow accents */}
       <motion.div
         className="absolute -top-1/4 left-1/4 w-1/2 h-1/2 bg-primary/10 dark:bg-primary/20 rounded-full blur-3xl -z-10"
         initial={{ opacity: 0, scale: 0.5 }}
@@ -372,14 +372,14 @@ const EventsSection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* 活動卡片滾動容器 */}
+        {/* Event card scroll container */}
         <div className="relative">
           <motion.div
             ref={scrollContainerRef}
             className={`flex overflow-x-auto pb-8 space-x-6 md:space-x-8 cursor-grab ${
               isDragging ? 'cursor-grabbing' : ''
             }`}
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }} /* 隱藏滾動條 */
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} /* Hide scrollbars */
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
@@ -398,7 +398,7 @@ const EventsSection: React.FC = () => {
                 className="flex-none w-[280px] md:w-[320px] lg:w-[360px]"
                 initial="rest"
                 whileHover="hover"
-                animate={controls} // 用於卡片進入/離開視圖的動畫
+                animate={controls} // Animate cards entering/leaving view.
               >
                 <motion.div 
                   className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300"
@@ -465,7 +465,7 @@ const EventsSection: React.FC = () => {
             ))}
           </motion.div>
           
-          {/* 左右滾動箭頭 - 增強樣式和交互性 */}
+          {/* Left/right scroll arrows */}
           <button 
             onClick={scrollToLeft}
             className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-110 -ml-4 md:-ml-6 focus:outline-none"
@@ -482,12 +482,12 @@ const EventsSection: React.FC = () => {
           </button>
         </div>
         
-        {/* 拖動提示 */}
+        {/* Drag hint */}
         <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
           {t("eventsSection.dragHint")}
         </p>
 
-        {/* 查看所有活動按鈕 */}
+        {/* View all events button */}
         <motion.div 
           className="text-center mt-12 md:mt-16"
           initial={{ opacity: 0, y: 20 }}

@@ -1,97 +1,77 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import Link from "next/link";
-import Image from "next/image";
-import { FaArrowRight, FaCalendarAlt, FaDiscord } from "react-icons/fa";
-import { useI18n } from "@/i18n";
+import { useEffect, useRef, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
+import Link from 'next/link';
+import { FaArrowRight, FaCalendarAlt } from 'react-icons/fa';
+import { useI18n } from '@/i18n';
+import { useTypingEffect } from '@/hooks/useTypingEffect';
+import { useWindowSize } from '@/hooks/useWindowSize';
 
-// 添加接口定義
-interface DiscordMemberResponse {
+type DiscordMemberResponse = {
   memberCount: number;
   guildName?: string;
   error?: string;
   fromCache?: boolean;
-}
+};
 
-const HeroSection: React.FC = () => {
+export default function HeroSection() {
   const { t } = useI18n();
-  const [windowHeight, setWindowHeight] = useState<number>(0);
-  const [windowWidth, setWindowWidth] = useState<number>(0);
-  const [typedText, setTypedText] = useState("");
+  const { height: windowHeight, width: windowWidth } = useWindowSize();
   const [memberCount, setMemberCount] = useState<number>(1337);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const fullText = t("heroSection.consoleText") as string;
-  const [typingIndex, setTypingIndex] = useState(0);
-  const sectionRef = useRef(null);
+  const fullText = t('heroSection.consoleText') as string;
+  const sectionRef = useRef<HTMLElement | null>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+  const typedText = useTypingEffect(fullText, isInView, { minDelayMs: 50, maxDelayMs: 150 });
 
   useEffect(() => {
-    // 獲取Discord成員數量
+    let isActive = true;
+    const refreshIntervalMs = 30 * 60 * 1000;
+
     const fetchMemberCount = async () => {
+      if (!isActive) return;
       setIsLoading(true);
+
       try {
-        // 使用普通請求，不添加随機参数或时间戳来允许缓存工作
+        // Allow CDN/browser caching by avoiding cache-busting params.
         const response = await fetch('/api/discord-members');
-        
+        if (!isActive) return;
+
         if (response.ok) {
           const data: DiscordMemberResponse = await response.json();
           if (data.memberCount && data.memberCount > 0) {
-            const source = data.fromCache ? '緩存' : 'API';
-            console.log(t("heroSection.logs.fetchSuccess", { 0: source }), data.memberCount, t("heroSection.logs.server"), data.guildName);
+            const source = data.fromCache ? 'cache' : 'API';
+            console.log(
+              t('heroSection.logs.fetchSuccess', { 0: source }),
+              data.memberCount,
+              t('heroSection.logs.server'),
+              data.guildName
+            );
             setMemberCount(data.memberCount);
           } else {
-            console.error(t("heroSection.logs.dataError"), data);
+            console.error(t('heroSection.logs.dataError'), data);
           }
         } else {
-          console.error(t("heroSection.logs.requestError"), response.status);
+          console.error(t('heroSection.logs.requestError'), response.status);
         }
       } catch (error) {
-        console.error(t("heroSection.logs.fetchError"), error);
+        console.error(t('heroSection.logs.fetchError'), error);
       } finally {
-        setIsLoading(false);
+        if (isActive) {
+          setIsLoading(false);
+        }
       }
     };
 
-    // 立即獲取一次
-    fetchMemberCount();
-    
-    // 每30分鐘刷新一次數據 (1800000ms)
-    // 這樣可以減少API請求頻率，但保持數據的相對新鮮度
-    const intervalId = setInterval(fetchMemberCount, 1800000);
-    
-    // 清理定時器
-    return () => clearInterval(intervalId);
-  }, [t]);
+    void fetchMemberCount();
+    const intervalId = window.setInterval(fetchMemberCount, refreshIntervalMs);
 
-  useEffect(() => {
-    // 初始化窗口尺寸
-    setWindowHeight(window.innerHeight);
-    setWindowWidth(window.innerWidth);
-    
-    const handleResize = () => {
-      setWindowHeight(window.innerHeight);
-      setWindowWidth(window.innerWidth);
+    return () => {
+      isActive = false;
+      window.clearInterval(intervalId);
     };
-    
-    window.addEventListener("resize", handleResize);
-    
-    // Typing animation - only when section is in view
-    if (isInView && typingIndex < fullText.length) {
-      const timeout = setTimeout(() => {
-        setTypedText(prevText => prevText + fullText[typingIndex]);
-        setTypingIndex(prevIndex => prevIndex + 1);
-      }, Math.random() * 100 + 50);
-      
-      return () => {
-        clearTimeout(timeout);
-        window.removeEventListener("resize", handleResize);
-      };
-    }
-    
-    return () => window.removeEventListener("resize", handleResize);
-  }, [typingIndex, fullText, isInView]);
+  }, [t]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -113,7 +93,7 @@ const HeroSection: React.FC = () => {
     },
   };
 
-  // 確定是否為移動設備以調整佈局
+  // Adjust layout based on viewport size.
   const isMobile = windowWidth > 0 && windowWidth < 768;
   const isTablet = windowWidth >= 768 && windowWidth < 1024;
 
@@ -124,22 +104,22 @@ const HeroSection: React.FC = () => {
       className="relative bg-light dark:bg-dark overflow-hidden"
       style={{
         minHeight: windowHeight ? `${windowHeight}px` : '100vh',
-        paddingTop: isMobile ? '100px' : '120px', // 移動設備上減少頂部間距
+        paddingTop: isMobile ? '100px' : '120px', // Reduce top padding on mobile.
       }}
     >
-      {/* 背景元素 - 更有駭客風格 */}
+      {/* Background elements with a hacker vibe */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {/* 背景網格 */}
+        {/* Background grid */}
         <div className="absolute inset-0 opacity-5 dark:opacity-10">
           <div className="h-full w-full" 
             style={{
               backgroundImage: 'radial-gradient(circle, #252429 1px, transparent 1px)',
-              backgroundSize: isMobile ? '25px 25px' : '40px 40px' // 在移動設備上縮小網格尺寸
+              backgroundSize: isMobile ? '25px 25px' : '40px 40px' // Smaller grid on mobile.
             }}
           />
         </div>
         
-        {/* 模擬程式碼行 - 在移動設備上隱藏部分程式碼 */}
+        {/* Faux code lines (reduced on mobile) */}
         <div className="absolute -left-4 top-1/4 transform -rotate-6 opacity-10 dark:opacity-15 hidden sm:block">
           {[...Array(isMobile ? 5 : 10)].map((_, i) => (
             <div key={i} className="flex gap-2 text-xs font-mono my-1.5">
@@ -160,7 +140,7 @@ const HeroSection: React.FC = () => {
           ))}
         </div>
         
-        {/* 裝飾元素 - 調整大小以適應不同設備 */}
+        {/* Decorative glows that scale by device size */}
         <motion.div
           className={`absolute top-1/5 right-1/4 rounded-full bg-secondary/20 dark:bg-secondary/30 blur-3xl ${
             isMobile ? 'w-40 h-40' : isTablet ? 'w-60 h-60' : 'w-80 h-80'
@@ -180,7 +160,7 @@ const HeroSection: React.FC = () => {
 
       <div className="container mx-auto px-4 sm:px-6 md:px-8 relative z-10 h-full flex flex-col justify-center py-12 md:py-16 lg:py-24">
         <div className="flex flex-col md:flex-row items-center gap-8 sm:gap-12 md:gap-16 lg:gap-24">
-          {/* 左側文字內容 */}
+          {/* Left content */}
           <motion.div
             className="w-full md:w-1/2 md:pr-4 lg:pr-8"
             variants={containerVariants}
@@ -259,7 +239,7 @@ const HeroSection: React.FC = () => {
             </motion.div>
           </motion.div>
 
-          {/* 右側圖像/動畫 */}
+          {/* Right-side visuals */}
           <motion.div 
             className="w-full md:w-1/2 mt-10 sm:mt-12 md:mt-0"
             initial={{ opacity: 0, scale: 0.9 }}
@@ -323,7 +303,7 @@ const HeroSection: React.FC = () => {
         </div>
       </div>
       
-      {/* 向下滾動指示器 - 在小屏幕上調整尺寸和位置 */}
+      {/* Scroll indicator (scaled for smaller screens) */}
       <motion.div 
         className="absolute bottom-6 sm:bottom-8 md:bottom-12 left-0 right-0 flex flex-col items-center z-10 hidden sm:flex"
         initial={{ opacity: 0, y: 15 }}
@@ -381,6 +361,4 @@ const HeroSection: React.FC = () => {
       </motion.div>
     </section>
   );
-};
-
-export default HeroSection; 
+}
