@@ -7,13 +7,7 @@ import { FaArrowRight, FaCalendarAlt } from 'react-icons/fa';
 import { useI18n } from '@/i18n';
 import { useTypingEffect } from '@/hooks/useTypingEffect';
 import { useWindowSize } from '@/hooks/useWindowSize';
-
-type DiscordMemberResponse = {
-  memberCount: number;
-  guildName?: string;
-  error?: string;
-  fromCache?: boolean;
-};
+import { fetchDiscordMemberCount } from '@/utils/discord';
 
 export default function HeroSection() {
   const { t } = useI18n();
@@ -34,26 +28,22 @@ export default function HeroSection() {
       setIsLoading(true);
 
       try {
-        // Allow CDN/browser caching by avoiding cache-busting params.
-        const response = await fetch('/api/discord-members');
+        const data = await fetchDiscordMemberCount();
         if (!isActive) return;
 
-        if (response.ok) {
-          const data: DiscordMemberResponse = await response.json();
-          if (data.memberCount && data.memberCount > 0) {
-            const source = data.fromCache ? 'cache' : 'API';
-            console.log(
-              t('heroSection.logs.fetchSuccess', { 0: source }),
-              data.memberCount,
-              t('heroSection.logs.server'),
-              data.guildName
-            );
-            setMemberCount(data.memberCount);
-          } else {
-            console.error(t('heroSection.logs.dataError'), data);
-          }
+        if (data.memberCount && data.memberCount > 0) {
+          const source = data.fromCache ? 'cache' : 'invite';
+          console.log(
+            t('heroSection.logs.fetchSuccess', { 0: source }),
+            data.memberCount,
+            t('heroSection.logs.server'),
+            data.guildName
+          );
+          setMemberCount(data.memberCount);
+        } else if (data.error) {
+          console.error(t('heroSection.logs.fetchError'), data.error);
         } else {
-          console.error(t('heroSection.logs.requestError'), response.status);
+          console.error(t('heroSection.logs.dataError'), data);
         }
       } catch (error) {
         console.error(t('heroSection.logs.fetchError'), error);

@@ -11,8 +11,9 @@ This repository is configured to run on Coolify by cloning the GitHub repo direc
 ### Environment Variables
 Set these in Coolify → Application → Environment variables:
 
-- `DISCORD_BOT_TOKEN`: Discord Bot token for `/api/discord-members`
-- `DISCORD_SERVER_ID`: Discord Guild ID
+- `NEXT_PUBLIC_DISCORD_INVITE_URL` (optional): Public invite URL for client-side member counts
+- `DISCORD_BOT_TOKEN` (optional): Discord Bot token for `/api/discord-members`
+- `DISCORD_SERVER_ID` (optional): Discord Guild ID for `/api/discord-members`
 - `PORT` (optional): defaults to `3000`
 
 ### Build & Run
@@ -39,4 +40,3 @@ npm run dev
 - `dev`: Start Next.js dev server
 - `build`: Build production bundle
 - `start`: Start production server
-

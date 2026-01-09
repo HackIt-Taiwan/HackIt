@@ -1,10 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* Import themes */
 @import './themes/light-theme.css';
 @import './themes/dark-theme.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --foreground-rgb: 0, 0, 0;

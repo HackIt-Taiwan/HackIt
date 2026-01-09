@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
 import { useI18n } from '@/i18n';
 import { getAllEvents } from '@/utils/events';
+import { fetchDiscordMemberCount } from '@/utils/discord';
 
 // Team member type.
 interface TeamMember {
@@ -75,14 +76,6 @@ const teamMembers: TeamMember[] = [
   }
   // Add more team members as needed.
 ]; 
-
-// Discord member count response.
-interface DiscordMemberResponse {
-  memberCount: number;
-  guildName?: string;
-  error?: string;
-  fromCache?: boolean;
-}
 
 export default function AboutPage() {
   const { t, locale } = useI18n();
@@ -158,12 +151,14 @@ export default function AboutPage() {
     // 1) Fetch Discord member count.
     const fetchMemberCount = async () => {
       try {
-        const response = await fetch('/api/discord-members');
-        if (response.ok) {
-          const data: DiscordMemberResponse = await response.json();
-          if (data.memberCount && data.memberCount > 0) {
-            setMemberCount(data.memberCount);
+        const data = await fetchDiscordMemberCount();
+        if (data.memberCount && data.memberCount > 0) {
+          setMemberCount(data.memberCount);
+        } else {
+          if (data.error) {
+            console.error('Failed to fetch Discord members:', data.error);
           }
+          setMemberCount('0'); // Fall back to a safe default.
         }
       } catch (error) {
         console.error('Failed to fetch Discord members:', error);

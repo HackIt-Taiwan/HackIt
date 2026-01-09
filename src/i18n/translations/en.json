@@ -14,7 +14,7 @@
     },
     "socialLinks": {
       "facebook": "https://www.facebook.com/people/Hackit/61567019608090/?_rdr",
-      "discord": "https://discord.gg/fvasrGKNjP",
+      "discord": "https://discord.gg/hackit",
       "instagram": "https://www.instagram.com/hackit.tw/",
       "github": "https://github.com/HackIt-Taiwan"
     },
@@ -31,7 +31,7 @@
     ],
     "contactInfo": {
       "email": "contact@hackit.tw",
-      "discord": "https://discord.gg/fvasrGKNjP"
+      "discord": "https://discord.gg/hackit"
     }
   },
   "aboutSection": {
@@ -91,9 +91,9 @@
     "readyTitle": "Ready to Change the Game?",
     "description": "Join a youth-driven tech community where dreaming big and building even bigger go hand in hand. Whether you're just starting out or already creating amazing things, there's a place for you here.",
     "joinButton": "Join Now",
-    "joinButtonUrl": "https://discord.gg/fvasrGKNjP",
+    "joinButtonUrl": "https://discord.gg/hackit",
     "contactButton": "Talk to Us About Your Dreams",
-    "contactButtonUrl": "https://discord.gg/fvasrGKNjP",
+    "contactButtonUrl": "https://discord.gg/hackit",
     "noCommitment": "No commitment needed — jump in and start exploring with us today!",
     "bgText1": "<HackIntoIt className=\"future\" />",
     "bgText2": "function createFuture() { return innovation; }",
@@ -138,7 +138,7 @@
     "description": "Here, it's not just about writing code — it's about building the future together. At HackIt, we believe every idea deserves a chance, and every young person has the power to create real change.",
     "buttons": {
       "joinCommunity": "Join Community",
-      "joinCommunityUrl": "https://discord.gg/fvasrGKNjP",
+      "joinCommunityUrl": "https://discord.gg/hackit",
       "viewProjects": "View Events",
       "viewProjectsUrl": "https://hackittw.notion.site/1f459188ed5280499052d8d3b813770c"
     },
@@ -228,7 +228,7 @@
       "learnMoreButton": "Learn More",
       "learnMoreButtonUrl": "/about",
       "joinButton": "Join Now",
-      "joinButtonUrl": "https://discord.gg/fvasrGKNjP"
+      "joinButtonUrl": "https://discord.gg/hackit"
     }
   },
   "scrollableEvents": {

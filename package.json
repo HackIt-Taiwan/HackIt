@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "HackIt - 青少年黑客松組織網站",
   "scripts": {
-    "dev": "next dev",
-    "dev:80": "next dev --port 80",
+    "dev": "next dev --turbo",
+    "dev:80": "next dev --turbo --port 80",
+    "dev:webpack": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

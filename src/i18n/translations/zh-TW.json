@@ -14,7 +14,7 @@
     },
     "socialLinks": {
       "facebook": "https://www.facebook.com/people/Hackit/61567019608090/?_rdr",
-      "discord": "https://discord.gg/fvasrGKNjP",
+      "discord": "https://discord.gg/hackit",
       "instagram": "https://www.instagram.com/hackit.tw/",
       "github": "https://github.com/HackIt-Taiwan"
     },
@@ -31,7 +31,7 @@
     ],
     "contactInfo": {
       "email": "contact@hackit.tw",
-      "discord": "https://discord.gg/fvasrGKNjP"
+      "discord": "https://discord.gg/hackit"
     }
   },
   "aboutSection": {
@@ -91,9 +91,9 @@
     "readyTitle": "準備好一起改變了嗎？",
     "description": "加入一個敢做夢、也敢實現夢的青少年科技社群。無論你是剛起步的新手，還是已經在探索中的創造者，這裡，都有你的位置。",
     "joinButton": "立刻加入",
-    "joinButtonUrl": "https://discord.gg/fvasrGKNjP",
+    "joinButtonUrl": "https://discord.gg/hackit",
     "contactButton": "與我們聊聊夢想",
-    "contactButtonUrl": "https://discord.gg/fvasrGKNjP",
+    "contactButtonUrl": "https://discord.gg/hackit",
     "noCommitment": "不需要任何承諾！今天就加入我們的社群吧！",
     "bgText1": "<HackIntoIt className=\"future\" />",
     "bgText2": "function createFuture() { return innovation; }",
@@ -138,7 +138,7 @@
     "description": "在這裡不只是寫程式，更是一起創造未來的起點。在 HackIt，我們相信每個想法都值得被實現，每個青少年都能成為改變世界的創作者。",
     "buttons": {
       "joinCommunity": "加入社群",
-      "joinCommunityUrl": "https://discord.gg/fvasrGKNjP",
+      "joinCommunityUrl": "https://discord.gg/hackit",
       "viewProjects": "查看活動",
       "viewProjectsUrl": "https://hackittw.notion.site/1f459188ed5280499052d8d3b813770c"
     },
@@ -228,7 +228,7 @@
       "learnMoreButton": "了解更多",
       "learnMoreButtonUrl": "/about",
       "joinButton": "馬上加入",
-      "joinButtonUrl": "https://discord.gg/fvasrGKNjP"
+      "joinButtonUrl": "https://discord.gg/hackit"
     }
   },
   "scrollableEvents": {
