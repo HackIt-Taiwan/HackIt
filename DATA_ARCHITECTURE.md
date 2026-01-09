@@ -15,9 +15,6 @@ public/
       *.json          # 各活動的 JSON 檔案
     news/
       *.json          # 各新聞的 JSON 檔案
-    podcasts/
-      events/
-        *.json        # 各播客活動的 JSON 檔案
 ```
 
 ### API 端點
@@ -26,7 +23,6 @@ public/
 
 - `/api/data/events` - 掃描並返回所有活動資料
 - `/api/data/news` - 掃描並返回所有新聞資料
-- `/api/data/podcasts` - 掃描並返回所有播客資料
 
 ### Utils 函數更新
 
@@ -43,7 +39,6 @@ public/
 
 1. **新增活動**：在 `public/data/events/` 創建新的 JSON 文件
 2. **新增新聞**：在 `public/data/news/` 創建新的 JSON 文件
-3. **新增播客**：在 `public/data/podcasts/events/` 創建新的 JSON 文件
 
 系統會自動發現新文件，無需修改程式碼。
 
@@ -94,26 +89,6 @@ public/
 }
 ```
 
-#### 播客 (Podcasts)
-```json
-{
-  "eventId": "event-id",
-  "eventName": "活動名稱",
-  "coverImage": "/images/cover.jpg",
-  "description": "活動描述",
-  "episodes": [
-    {
-      "id": "episode-id",
-      "title": "集數標題",
-      "description": "集數描述",
-      "audioUrl": "/audio/episode.mp3",
-      "duration": 3600,
-      "releaseDate": "2025-01-01T10:00:00.000Z",
-      "hosts": ["主持人1", "主持人2"]
-    }
-  ]
-}
-```
 
 ## 優勢
 

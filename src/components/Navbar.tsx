@@ -52,7 +52,6 @@ export default function Navbar() {
       isExternal: true,
     },
     // { name: t('common.news'), href: '/news' },
-    { name: t('common.podcast'), href: '/podcast' },
     // { name: t('common.financial'), href: '/financial' },
     { name: t('common.about'), href: '/about' },
     { name: t('common.join'), href: '/join', highlight: true },
