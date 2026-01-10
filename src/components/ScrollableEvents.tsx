@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { FaCalendar, FaMapMarkerAlt, FaArrowRight, FaChevronLeft, FaChevronRight, FaCheckCircle } from 'react-icons/fa';
 import { getUpcomingEvents, getPastEvents, Event } from '@/utils/events';
 import { useI18n } from '@/i18n';
+import EventsLoading from '@/components/EventsLoading';
 
 const ScrollableEvents: React.FC = () => {
   const { t, locale } = useI18n();
@@ -14,6 +15,7 @@ const ScrollableEvents: React.FC = () => {
   // Load events asynchronously on client
   const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
   const [pastEvents, setPastEvents] = useState<Event[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     let isMounted = true;
     (async () => {
@@ -30,6 +32,8 @@ const ScrollableEvents: React.FC = () => {
         if (!isMounted) return;
         setUpcomingEvents([]);
         setPastEvents([]);
+      } finally {
+        if (isMounted) setIsLoading(false);
       }
     })();
     return () => { isMounted = false; };
@@ -448,116 +452,120 @@ const ScrollableEvents: React.FC = () => {
         </div>
         
         <div className="relative">
-          {/* Scroll buttons */}
-          <button 
-            onClick={scrollToLeft}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-3 rounded-full shadow-md hover:shadow-lg transition-shadow transform -translate-x-1/2 focus:outline-none"
-            aria-label="滾動向左"
-          >
-            <FaChevronLeft className="text-gray-700 dark:text-gray-300" />
-          </button>
-          
-          <button 
-            onClick={scrollToRight}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-3 rounded-full shadow-md hover:shadow-lg transition-shadow transform translate-x-1/2 focus:outline-none"
-            aria-label="滾動向右"
-          >
-            <FaChevronRight className="text-gray-700 dark:text-gray-300" />
-          </button>
-          
-          {/* Drag hint */}
-          <div className="text-center mb-4 text-gray-500 dark:text-gray-400 text-sm">
-            <span className="inline-flex items-center">
-              <motion.div 
-                animate={isInView ? { x: [-5, 5, -5] } : {}}
-                transition={{ repeat: Infinity, duration: 1.5 }}
-                className="mr-2"
+          {isLoading ? (
+            <EventsLoading className="py-16" />
+          ) : (
+            <>
+              {/* Scroll buttons */}
+              <button 
+                onClick={scrollToLeft}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-3 rounded-full shadow-md hover:shadow-lg transition-shadow transform -translate-x-1/2 focus:outline-none"
+                aria-label="滾動向左"
               >
-                {t("scrollableEvents.dragHint")}
-              </motion.div>
-            </span>
-          </div>
-          
-          {/* Scrollable container */}
-          <div 
-            ref={scrollContainerRef}
-            className={`flex space-x-6 overflow-x-auto py-4 px-2 scrollbar-hide select-none ${
-              isDragging ? 'cursor-grabbing' : 'cursor-grab'
-            } will-change-scroll`}
-            style={{ 
-              scrollbarWidth: 'none', 
-              msOverflowStyle: 'none',
-              WebkitOverflowScrolling: 'touch',
-              scrollBehavior: 'auto',
-              scrollSnapType: 'none', // Disable snapping for smoother scrolling.
-              touchAction: 'pan-x',
-            }}
-          >
-            {repeatedEvents.map((event, index) => (
-              <motion.div
-                key={`${event.slug}-${index}`}
-                className="flex-shrink-0 w-[300px] bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden"
-                data-event-card
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ 
-                  opacity: 1, 
-                  x: 0,
-                  transition: { 
-                    duration: 0.3, 
-                    delay: Math.min((index % events.length) * 0.05, 0.3) 
-                  }
+                <FaChevronLeft className="text-gray-700 dark:text-gray-300" />
+              </button>
+              
+              <button 
+                onClick={scrollToRight}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-3 rounded-full shadow-md hover:shadow-lg transition-shadow transform translate-x-1/2 focus:outline-none"
+                aria-label="滾動向右"
+              >
+                <FaChevronRight className="text-gray-700 dark:text-gray-300" />
+              </button>
+              
+              {/* Drag hint */}
+              <div className="text-center mb-4 text-gray-500 dark:text-gray-400 text-sm">
+                <span className="inline-flex items-center">
+                  <motion.div 
+                    animate={isInView ? { x: [-5, 5, -5] } : {}}
+                    transition={{ repeat: Infinity, duration: 1.5 }}
+                    className="mr-2"
+                  >
+                    {t("scrollableEvents.dragHint")}
+                  </motion.div>
+                </span>
+              </div>
+              
+              {/* Scrollable container */}
+              <div 
+                ref={scrollContainerRef}
+                className={`flex space-x-6 overflow-x-auto py-4 px-2 scrollbar-hide select-none ${
+                  isDragging ? 'cursor-grabbing' : 'cursor-grab'
+                } will-change-scroll`}
+                style={{ 
+                  scrollbarWidth: 'none', 
+                  msOverflowStyle: 'none',
+                  WebkitOverflowScrolling: 'touch',
+                  scrollBehavior: 'auto',
+                  scrollSnapType: 'none', // Disable snapping for smoother scrolling.
+                  touchAction: 'pan-x',
                 }}
-                viewport={{ once: true, margin: "100px" }}
-                whileHover={{ y: -5, transition: { duration: 0.2 } }}
               >
-                <div className="h-40 relative will-change-transform">
-                  <Image 
-                    src={event.frontmatter.image} 
-                    alt={event.frontmatter.title} 
-                    fill 
-                    style={{ objectFit: 'cover' }}
-                    sizes="300px"
-                    loading={index < 12 ? "eager" : "lazy"}
-                    draggable="false"
-                  />
-                  
-                  {/* Transparent hit shield to prevent direct image clicks */}
-                  <div 
-                    className="absolute inset-0 z-10 cursor-grab" 
-                    aria-hidden="true"
-                    style={{ touchAction: 'pan-x' }}
-                  ></div>
-                  
-                  
-                  
-                  
-                </div>
-                
-                <div className="p-5">
-                  <h3 className="font-bold text-lg mb-2 line-clamp-1 dark:text-white">{event.frontmatter.title}</h3>
-                  
-                  <div className="space-y-2 mb-4 text-sm">
-                    <div className="flex items-center text-gray-500 dark:text-gray-300">
-                      <FaCalendar className="mr-2 text-primary text-xs" />
-                      <span>
-                        {new Date(event.frontmatter.date).toLocaleDateString(locale === 'en' ? 'en-US' : 'zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })}
-                        {' '}{event.frontmatter.time}
-                      </span>
+                {repeatedEvents.map((event, index) => (
+                  <motion.div
+                    key={`${event.slug}-${index}`}
+                    className="flex-shrink-0 w-[300px] bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden"
+                    data-event-card
+                    initial={{ opacity: 0, x: 50 }}
+                    whileInView={{ 
+                      opacity: 1, 
+                      x: 0,
+                      transition: { 
+                        duration: 0.3, 
+                        delay: events.length > 0 ? Math.min((index % events.length) * 0.05, 0.3) : 0 
+                      }
+                    }}
+                    viewport={{ once: true, margin: "100px" }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  >
+                    <div className="h-40 relative will-change-transform">
+                      <Image 
+                        src={event.frontmatter.image} 
+                        alt={event.frontmatter.title} 
+                        fill 
+                        style={{ objectFit: 'cover' }}
+                        sizes="300px"
+                        loading={index < 12 ? "eager" : "lazy"}
+                        draggable="false"
+                      />
+                      
+                      {/* Transparent hit shield to prevent direct image clicks */}
+                      <div 
+                        className="absolute inset-0 z-10 cursor-grab" 
+                        aria-hidden="true"
+                        style={{ touchAction: 'pan-x' }}
+                      ></div>
+                      
+                      
+                      
+                      
                     </div>
-                    <div className="flex items-center text-gray-500 dark:text-gray-300">
-                      <FaMapMarkerAlt className="mr-2 text-primary text-xs" />
-                      <span className="line-clamp-1">{event.frontmatter.location}</span>
-                    </div>
-                  </div>
-                  
-                  {/* Event details / external link button */}
-                  {event.frontmatter.url ? (
-                    <a 
-                      href={event.frontmatter.url} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className={`inline-block w-full text-center py-2 rounded-lg transition-colors ${
-                        event.frontmatter.isCompleted 
+                    
+                    <div className="p-5">
+                      <h3 className="font-bold text-lg mb-2 line-clamp-1 dark:text-white">{event.frontmatter.title}</h3>
+                      
+                      <div className="space-y-2 mb-4 text-sm">
+                        <div className="flex items-center text-gray-500 dark:text-gray-300">
+                          <FaCalendar className="mr-2 text-primary text-xs" />
+                          <span>
+                            {new Date(event.frontmatter.date).toLocaleDateString(locale === 'en' ? 'en-US' : 'zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })}
+                            {' '}{event.frontmatter.time}
+                          </span>
+                        </div>
+                        <div className="flex items-center text-gray-500 dark:text-gray-300">
+                          <FaMapMarkerAlt className="mr-2 text-primary text-xs" />
+                          <span className="line-clamp-1">{event.frontmatter.location}</span>
+                        </div>
+                      </div>
+                      
+                      {/* Event details / external link button */}
+                      {event.frontmatter.url ? (
+                        <a 
+                          href={event.frontmatter.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className={`inline-block w-full text-center py-2 rounded-lg transition-colors ${
+                            event.frontmatter.isCompleted 
                           ? 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600' 
                           : 'bg-primary/10 dark:bg-primary/20 text-primary hover:bg-primary/20 dark:hover:bg-primary/30'
                       }`}
@@ -576,6 +584,8 @@ const ScrollableEvents: React.FC = () => {
               </motion.div>
             ))}
           </div>
+            </>
+          )}
         </div>
       </div>
     </section>

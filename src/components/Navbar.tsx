@@ -48,8 +48,7 @@ export default function Navbar() {
     { name: t('common.home'), href: '/' },
     {
       name: t('common.events'),
-      href: 'https://hackittw.notion.site/1f459188ed5280499052d8d3b813770c',
-      isExternal: true,
+      href: '/events',
     },
     // { name: t('common.news'), href: '/news' },
     // { name: t('common.financial'), href: '/financial' },

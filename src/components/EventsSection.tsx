@@ -7,11 +7,13 @@ import Link from "next/link";
 import { FaCalendar, FaMapMarkerAlt, FaUsers, FaArrowRight, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { getUpcomingEvents, type Event } from '@/utils/events';
 import { useI18n } from "@/i18n";
+import EventsLoading from '@/components/EventsLoading';
 
 // Load upcoming events asynchronously on client
 
 const EventsSection: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const ref = useRef(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
@@ -27,6 +29,8 @@ const EventsSection: React.FC = () => {
       } catch (err) {
         console.error('Failed to load upcoming events:', err);
         if (isMounted) setEvents([]);
+      } finally {
+        if (isMounted) setIsLoading(false);
       }
     })();
     return () => { isMounted = false; };
@@ -374,118 +378,130 @@ const EventsSection: React.FC = () => {
 
         {/* Event card scroll container */}
         <div className="relative">
-          <motion.div
-            ref={scrollContainerRef}
-            className={`flex overflow-x-auto pb-8 space-x-6 md:space-x-8 cursor-grab ${
-              isDragging ? 'cursor-grabbing' : ''
-            }`}
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} /* Hide scrollbars */
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseLeave}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            variants={containerVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-          >
-            {events.map((event, index) => (
-              <motion.div 
-                key={event.slug}
-                variants={itemVariants} 
-                className="flex-none w-[280px] md:w-[320px] lg:w-[360px]"
-                initial="rest"
-                whileHover="hover"
-                animate={controls} // Animate cards entering/leaving view.
+          {isLoading ? (
+            <EventsLoading className="py-16" />
+          ) : (
+            <>
+              <motion.div
+                ref={scrollContainerRef}
+                className={`flex overflow-x-auto pb-8 space-x-6 md:space-x-8 cursor-grab ${
+                  isDragging ? 'cursor-grabbing' : ''
+                }`}
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} /* Hide scrollbars */
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseLeave}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                variants={containerVariants}
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
               >
-                <motion.div 
-                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300"
-                  variants={cardHoverVariants}
-                >
-                  <motion.div className="relative h-48 md:h-56 overflow-hidden" variants={bgVariants}>
-                    <Image
-                      src={event.frontmatter.image}
-                      alt={event.frontmatter.title}
-                      fill
-                      style={{ objectFit: 'cover' }}
-                      className="transition-transform duration-500"
-                    />
-                  </motion.div>
-                  
-                  <div className="p-5 md:p-6 flex-grow flex flex-col">
-                    <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-3">
-                      <FaCalendar className="mr-1.5" />
-                      {new Date(event.frontmatter.date).toLocaleDateString(t('common.language') === 'English' ? 'en-US' : 'zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })}
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white mb-2 line-clamp-2 min-h-[3em]">
-                      {event.frontmatter.title}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3 flex-grow">
-                      {event.frontmatter.description}
-                    </p>
-                    
-                    <div className="mb-4">
-                      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
-                        <span>{event.frontmatter.spotsLeft > 0 ? t("eventsSection.spotsLeft", { spotsLeft: event.frontmatter.spotsLeft, spots: event.frontmatter.spots }) : t("eventsSection.spotsFull")}</span>
-                        <span>{((event.frontmatter.spots - event.frontmatter.spotsLeft) / event.frontmatter.spots * 100).toFixed(0)}%</span>
-                      </div>
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                        <motion.div 
-                          className={`h-2.5 rounded-full ${
-                            event.frontmatter.spotsLeft > 0 ? 'bg-primary' : 'bg-red-500'
-                          }`}
-                          style={{ width: `${calculateSpotsPercentage(event.frontmatter.spots, event.frontmatter.spotsLeft)}%` }}
-                          initial={{ width: 0 }}
-                          animate={isInView ? { width: `${calculateSpotsPercentage(event.frontmatter.spots, event.frontmatter.spotsLeft)}%` } : { width: 0 }}
-                          transition={{ duration: 0.8, delay: 0.2 + index * 0.1, ease: "easeOut" }}
+                {events.map((event, index) => (
+                  <motion.div 
+                    key={event.slug}
+                    variants={itemVariants} 
+                    className="flex-none w-[280px] md:w-[320px] lg:w-[360px]"
+                    initial="rest"
+                    whileHover="hover"
+                    animate={controls} // Animate cards entering/leaving view.
+                  >
+                    <motion.div 
+                      className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300"
+                      variants={cardHoverVariants}
+                    >
+                      <motion.div className="relative h-48 md:h-56 overflow-hidden" variants={bgVariants}>
+                        <Image
+                          src={event.frontmatter.image}
+                          alt={event.frontmatter.title}
+                          fill
+                          style={{ objectFit: 'cover' }}
+                          className="transition-transform duration-500"
                         />
+                      </motion.div>
+                      
+                      <div className="p-5 md:p-6 flex-grow flex flex-col">
+                        <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-3">
+                          <FaCalendar className="mr-1.5" />
+                          {new Date(event.frontmatter.date).toLocaleDateString(t('common.language') === 'English' ? 'en-US' : 'zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        </div>
+                        <h3 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white mb-2 line-clamp-2 min-h-[3em]">
+                          {event.frontmatter.title}
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3 flex-grow">
+                          {event.frontmatter.description}
+                        </p>
+                        
+                        <div className="mb-4">
+                          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                            <span>{event.frontmatter.spotsLeft > 0 ? t("eventsSection.spotsLeft", { spotsLeft: event.frontmatter.spotsLeft, spots: event.frontmatter.spots }) : t("eventsSection.spotsFull")}</span>
+                            <span>{((event.frontmatter.spots - event.frontmatter.spotsLeft) / event.frontmatter.spots * 100).toFixed(0)}%</span>
+                          </div>
+                          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                            <motion.div 
+                              className={`h-2.5 rounded-full ${
+                                event.frontmatter.spotsLeft > 0 ? 'bg-primary' : 'bg-red-500'
+                              }`}
+                              style={{ width: `${calculateSpotsPercentage(event.frontmatter.spots, event.frontmatter.spotsLeft)}%` }}
+                              initial={{ width: 0 }}
+                              animate={isInView ? { width: `${calculateSpotsPercentage(event.frontmatter.spots, event.frontmatter.spotsLeft)}%` } : { width: 0 }}
+                              transition={{ duration: 0.8, delay: 0.2 + index * 0.1, ease: "easeOut" }}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-4">
+                          <FaMapMarkerAlt className="mr-1.5 flex-shrink-0" /> 
+                          <span className="truncate">{event.frontmatter.location}</span>
+                        </div>
+
+                        <Link href={`/events/${event.slug}`} className="mt-auto">
+                          <motion.button 
+                            className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-5 rounded-lg transition-colors duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
+                            whileHover={{ scale: 1.03 }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            {t("eventsSection.learnMore")}
+                            <FaArrowRight className="ml-1 transition-transform duration-300 group-hover:translate-x-1" />
+                          </motion.button>
+                        </Link>
                       </div>
-                    </div>
-
-                    <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-4">
-                      <FaMapMarkerAlt className="mr-1.5 flex-shrink-0" /> 
-                      <span className="truncate">{event.frontmatter.location}</span>
-                    </div>
-
-                    <Link href={`/events/${event.slug}`} className="mt-auto">
-                      <motion.button 
-                        className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-5 rounded-lg transition-colors duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        {t("eventsSection.learnMore")}
-                        <FaArrowRight className="ml-1 transition-transform duration-300 group-hover:translate-x-1" />
-                      </motion.button>
-                    </Link>
-                  </div>
-                </motion.div>
+                    </motion.div>
+                  </motion.div>
+                ))}
               </motion.div>
-            ))}
-          </motion.div>
-          
-          {/* Left/right scroll arrows */}
-          <button 
-            onClick={scrollToLeft}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-110 -ml-4 md:-ml-6 focus:outline-none"
-            aria-label="Scroll Left"
-          >
-            <FaChevronLeft className="text-gray-700 dark:text-white text-xl" />
-          </button>
-          <button 
-            onClick={scrollToRight}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-110 -mr-4 md:-mr-6 focus:outline-none"
-            aria-label="Scroll Right"
-          >
-            <FaChevronRight className="text-gray-700 dark:text-white text-xl" />
-          </button>
+              
+              {events.length > 0 && (
+                <>
+                  {/* Left/right scroll arrows */}
+                  <button 
+                    onClick={scrollToLeft}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-110 -ml-4 md:-ml-6 focus:outline-none"
+                    aria-label="Scroll Left"
+                  >
+                    <FaChevronLeft className="text-gray-700 dark:text-white text-xl" />
+                  </button>
+                  <button 
+                    onClick={scrollToRight}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-110 -mr-4 md:-mr-6 focus:outline-none"
+                    aria-label="Scroll Right"
+                  >
+                    <FaChevronRight className="text-gray-700 dark:text-white text-xl" />
+                  </button>
+                </>
+              )}
+            </>
+          )}
         </div>
         
         {/* Drag hint */}
-        <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
-          {t("eventsSection.dragHint")}
-        </p>
+        {!isLoading && events.length > 0 && (
+          <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
+            {t("eventsSection.dragHint")}
+          </p>
+        )}
 
         {/* View all events button */}
         <motion.div 

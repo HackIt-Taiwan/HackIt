@@ -2,105 +2,59 @@
 
 ## 概述
 
-本次重構將原本硬編碼在 utils 文件中的資料遷移到 `public/data/` 資料夾，採用 JSON 文件分離的方式管理。
+活動資料已改為從 NocoDB 公開分享表讀取，新聞資料維持 JSON 檔案管理。前端仍透過統一的 `/api/data/events` 取得資料，API 端點會把 NocoDB 欄位轉成前端需要的 Event 結構。
 
 ## 新架構
 
-### 資料夾結構
+### 資料來源
 
-```
-public/
-  data/
-    events/
-      *.json          # 各活動的 JSON 檔案
-    news/
-      *.json          # 各新聞的 JSON 檔案
-```
+- Events：NocoDB 公開分享 View（無 token）
+- News：`public/data/news/*.json`
 
 ### API 端點
 
-每個資料類型都有對應的 API 端點來動態掃描和加載檔案：
-
-- `/api/data/events` - 掃描並返回所有活動資料
+- `/api/data/events` - 代理 NocoDB share view，轉換為 `Event` 格式
 - `/api/data/news` - 掃描並返回所有新聞資料
 
-### Utils 函數更新
+### 環境設定
 
-所有 utils 函數都已更新為 async 函數，支援：
+在 `.env.local` 內設定：
 
-1. **動態文件發現** - 自動掃描資料夾中的新文件
-2. **緩存機制** - 避免重複加載相同資料
-3. **錯誤處理** - 優雅處理文件讀取失敗
-4. **清除緩存** - 開發和測試時可清除緩存
+- `NOCODB_EVENTS_SHARE_URL`：NocoDB 公開分享連結（例如 `https://xxx/#/nc/share/<shareId>`，或 `https://xxx/#/nc/view/<viewId>?shared=<shareId>`）
+- `NOCODB_EVENTS_API_URL`（可選）：直接填 `https://xxx/api/v2/shared/<shareId>/records`
 
-## 使用方式
+> 若你的 NocoDB 是 v1 且只拿得到 `#/nc/view/<viewId>` 的公開 view 連結，後端會自動改走 `https://<host>/api/v1/db/public/shared-view/<viewId>/rows`。
 
-### 添加新資料
+### NocoDB Events 表欄位（建議命名）
 
-1. **新增活動**：在 `public/data/events/` 創建新的 JSON 文件
-2. **新增新聞**：在 `public/data/news/` 創建新的 JSON 文件
+| 欄位 | 型別 | 必填 | 說明 |
+| --- | --- | --- | --- |
+| slug | Single line text | ✅ | `/events/[slug]` 的 URL 片段，需唯一 |
+| title | Single line text | ✅ | 活動標題 |
+| date | Date | ✅ | 活動開始日期 |
+| endDate | Date | ⛔ | 活動結束日期（多日活動用） |
+| time | Single line text | ⛔ | 活動時間（顯示用字串） |
+| location | Single line text | ⛔ | 活動地點 |
+| image | Attachment | ✅ | 圖片附件（後端會取第一張附件的 URL 顯示） |
+| url | URL | ⛔ | 報名或活動頁面連結 |
+| category | Single select | ✅ | 活動分類 |
+| tags | Multi select | ⛔ | 標籤（多選或逗號分隔） |
+| spots | Number | ✅ | 名額總數 |
+| spotsLeft | Number | ✅ | 剩餘名額 |
+| isFeatured | Checkbox | ⛔ | 是否為精選活動 |
+| color | Single line text | ⛔ | 視覺主題色（可選） |
+| emoji | Single line text | ⛔ | 活動表情符號 |
+| description | Long text | ✅ | 短描述 |
+| content | Long text | ⛔ | 詳細內容（支援 Markdown/MDX） |
+| id | Number | ⛔ | 需要自訂排序或外部對接時再建立 |
 
-系統會自動發現新文件，無需修改程式碼。
+> `image` 為附件時，請在 `next.config.js` 的 `images.domains` 加入 NocoDB 網域，確保 Next/Image 能載入圖片。
+> `isCompleted` 由後端自動計算，不需要建立欄位。規則：當今天日期 >= `endDate + 1 天`（含當天）視為已完成；若沒有 `endDate`，則以 `date` 計算。
 
-### JSON 文件格式
+### 使用方式
 
-#### 活動 (Events)
-```json
-{
-  "slug": "event-slug",
-  "frontmatter": {
-    "id": 1,
-    "title": "活動標題",
-    "date": "2025-01-01",
-    "endDate": "2025-01-02",
-    "time": "10:00",
-    "location": "活動地點",
-    "image": "/images/event.jpg",
-    "url": "https://example.com",
-    "category": "分類",
-    "tags": ["標籤1", "標籤2"],
-    "spots": 100,
-    "spotsLeft": 50,
-    "isCompleted": false,
-    "isFeatured": true,
-    "color": "blue",
-    "emoji": "🎉",
-    "description": "活動描述"
-  },
-  "content": "活動詳細內容"
-}
-```
+#### 新增/更新活動
 
-#### 新聞 (News)
-```json
-{
-  "slug": "news-slug",
-  "frontmatter": {
-    "id": 1,
-    "title": "新聞標題",
-    "date": "2025-01-01",
-    "author": "作者名稱",
-    "category": "分類",
-    "image": "https://example.com/image.jpg",
-    "isFeatured": true,
-    "tags": ["標籤1", "標籤2"]
-  },
-  "content": "新聞詳細內容"
-}
-```
-
-
-## 優勢
-
-1. **模組化管理** - 每個項目獨立文件，便於維護
-2. **動態加載** - 自動發現新文件，無需修改程式碼
-3. **緩存優化** - 提升效能，避免重複讀取
-4. **錯誤隔離** - 單個文件錯誤不影響其他資料
-5. **易於擴展** - 添加新資料類型只需創建對應的 API 端點
-
-## 開發建議
-
-1. 使用 JSON 格式確保資料一致性
-2. 為每個文件使用描述性的文件名
-3. 定期檢查文件格式的正確性
-4. 開發時可使用 `clearXxxCache()` 函數清除緩存
+1. 在 NocoDB Events 表新增或更新一筆資料
+2. 確保 `slug`、`title`、`date` 等必填欄位完整
+3. 前端會自動透過 `/api/data/events` 取得最新資料

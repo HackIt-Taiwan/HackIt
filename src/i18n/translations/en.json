@@ -107,8 +107,26 @@
     "pastTab": "Past Events",
     "spotsLabel": "Spots",
     "detailsButton": "View Details",
+    "loading": "Loading",
     "noEventsFound": "No events found matching your criteria.",
     "endedBadge": "Ended"
+  },
+  "eventsPage": {
+    "badge": "Events",
+    "title": "HackIt Events",
+    "subtitle": "Everything from upcoming to past events, all in one place.",
+    "stats": {
+      "total": "Total Events",
+      "upcoming": "Upcoming",
+      "past": "Past",
+      "featured": "Featured"
+    },
+    "nextTitle": "Next Event",
+    "nextEmpty": "No upcoming events yet. Check back soon!",
+    "featuredTitle": "Featured Events",
+    "featuredSubtitle": "Highlights handpicked from the database.",
+    "browseTitle": "Browse All Events",
+    "browseSubtitle": "Search and filter to find the right event."
   },
   "featuredEvents": {
     "tagline": "Must-Attend Events",
@@ -140,7 +158,7 @@
       "joinCommunity": "Join Community",
       "joinCommunityUrl": "https://discord.gg/hackit",
       "viewProjects": "View Events",
-      "viewProjectsUrl": "https://hackittw.notion.site/1f459188ed5280499052d8d3b813770c"
+      "viewProjectsUrl": "/events"
     },
     "stats": {
       "prefix": "We have",

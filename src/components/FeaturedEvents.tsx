@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { FaCalendar, FaMapMarkerAlt, FaArrowRight, FaRegLightbulb, FaRegCompass, FaStar, FaPaperclip, FaThumbtack } from 'react-icons/fa';
 import { Event, getFeaturedEvents } from '@/utils/events';
 import { useI18n } from '@/i18n';
+import EventsLoading from '@/components/EventsLoading';
 
 // Note: use Tailwind arbitrary values + dark variants to keep dark mode consistent.
 
@@ -28,6 +29,7 @@ const FeaturedEvents: React.FC = () => {
   
   // Load featured events on client
   const [featuredEvents, setFeaturedEvents] = React.useState<Event[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
   React.useEffect(() => {
     let isMounted = true;
     (async () => {
@@ -37,6 +39,8 @@ const FeaturedEvents: React.FC = () => {
       } catch (err) {
         console.error('Failed to load featured events:', err);
         if (isMounted) setFeaturedEvents([]);
+      } finally {
+        if (isMounted) setIsLoading(false);
       }
     })();
     return () => {
@@ -44,6 +48,16 @@ const FeaturedEvents: React.FC = () => {
     };
   }, []);
   
+  if (isLoading) {
+    return (
+      <section className="py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <EventsLoading />
+        </div>
+      </section>
+    );
+  }
+
   // Hide the section when no featured events are available.
   if (featuredEvents.length === 0) {
     return null;

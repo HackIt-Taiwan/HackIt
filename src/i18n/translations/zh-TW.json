@@ -107,8 +107,26 @@
     "pastTab": "過往活動",
     "spotsLabel": "名額",
     "detailsButton": "了解詳情",
+    "loading": "載入中",
     "noEventsFound": "沒有找到符合條件的活動",
     "endedBadge": "已結束"
+  },
+  "eventsPage": {
+    "badge": "活動總覽",
+    "title": "HackIt 活動",
+    "subtitle": "從即將舉行到過往活動，所有活動都在這裡。",
+    "stats": {
+      "total": "活動總數",
+      "upcoming": "即將舉行",
+      "past": "過往活動",
+      "featured": "精選活動"
+    },
+    "nextTitle": "下一場活動",
+    "nextEmpty": "目前沒有即將舉行的活動，敬請期待！",
+    "featuredTitle": "精選活動",
+    "featuredSubtitle": "從資料庫挑出的精彩亮點。",
+    "browseTitle": "瀏覽所有活動",
+    "browseSubtitle": "使用搜尋與篩選快速找到想參加的活動。"
   },
   "featuredEvents": {
     "tagline": "不能錯過的活動",
@@ -140,7 +158,7 @@
       "joinCommunity": "加入社群",
       "joinCommunityUrl": "https://discord.gg/hackit",
       "viewProjects": "查看活動",
-      "viewProjectsUrl": "https://hackittw.notion.site/1f459188ed5280499052d8d3b813770c"
+      "viewProjectsUrl": "/events"
     },
     "stats": {
       "prefix": "我們有",

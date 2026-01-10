@@ -24,12 +24,41 @@ export type Event = {
   content: string;
 };
 
+function parseDateOnly(value: string | undefined): Date | null {
+  if (!value) return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+
+  const datePart = trimmed.split('T')[0];
+  const match = datePart.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (match) {
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    const day = Number(match[3]);
+    const date = new Date(year, month - 1, day);
+    if (Number.isNaN(date.getTime())) return null;
+    date.setHours(0, 0, 0, 0);
+    return date;
+  }
+
+  const fallback = new Date(trimmed);
+  if (Number.isNaN(fallback.getTime())) return null;
+  fallback.setHours(0, 0, 0, 0);
+  return fallback;
+}
+
+function getEventEndDate(event: Event): Date | null {
+  return parseDateOnly(event.frontmatter.endDate || event.frontmatter.date);
+}
+
 // In-memory cache for events data.
 let eventsCache: Event[] | null = null;
+let eventsPromise: Promise<Event[]> | null = null;
 
 // Clear cache (useful for development/testing).
 export function clearEventsCache(): void {
   eventsCache = null;
+  eventsPromise = null;
 }
 
 // Load events from the API.
@@ -38,27 +67,39 @@ async function loadEventsData(): Promise<Event[]> {
     return eventsCache;
   }
 
-  try {
-    // Use absolute URLs on the server and relative URLs on the client.
-    if (typeof window === 'undefined') {
-      const response = await fetch(`http://localhost:3000/api/data/events`);
-      if (response.ok) {
-        eventsCache = await response.json();
-        return eventsCache || [];
-      }
-    } else {
-      const response = await fetch(`/api/data/events`);
-      if (response.ok) {
-        eventsCache = await response.json();
-        return eventsCache || [];
-      }
-    }
-  } catch (error) {
-    console.error('Failed to load events data:', error);
+  if (eventsPromise) {
+    return eventsPromise;
   }
 
-  eventsCache = [];
-  return [];
+  eventsPromise = (async () => {
+    try {
+      // Use absolute URLs on the server and relative URLs on the client.
+      if (typeof window === 'undefined') {
+        const response = await fetch(`http://localhost:3000/api/data/events`);
+        if (response.ok) {
+          eventsCache = await response.json();
+          return eventsCache || [];
+        }
+      } else {
+        const response = await fetch(`/api/data/events`);
+        if (response.ok) {
+          eventsCache = await response.json();
+          return eventsCache || [];
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load events data:', error);
+    }
+
+    eventsCache = [];
+    return [];
+  })();
+
+  try {
+    return await eventsPromise;
+  } finally {
+    eventsPromise = null;
+  }
 }
 
 // Get available event slugs.
@@ -96,13 +137,12 @@ export async function getUpcomingEvents(): Promise<Event[]> {
   today.setHours(0, 0, 0, 0); // Start of today.
   
   return events.filter(event => {
-    if (event.frontmatter.isCompleted) return false;
-    
-    const eventDate = new Date(event.frontmatter.date);
-    return eventDate >= today;
+    const eventEndDate = getEventEndDate(event);
+    if (!eventEndDate) return false;
+    return eventEndDate >= today;
   }).sort((a, b) => {
-    const dateA = new Date(a.frontmatter.date).getTime();
-    const dateB = new Date(b.frontmatter.date).getTime();
+    const dateA = parseDateOnly(a.frontmatter.date)?.getTime() ?? 0;
+    const dateB = parseDateOnly(b.frontmatter.date)?.getTime() ?? 0;
     return dateA - dateB;
   });
 }
@@ -114,13 +154,12 @@ export async function getPastEvents(): Promise<Event[]> {
   today.setHours(0, 0, 0, 0);
   
   return events.filter(event => {
-    if (event.frontmatter.isCompleted) return true;
-    
-    const eventDate = new Date(event.frontmatter.date);
-    return eventDate < today;
+    const eventEndDate = getEventEndDate(event);
+    if (!eventEndDate) return false;
+    return eventEndDate < today;
   }).sort((a, b) => {
-    const dateA = new Date(a.frontmatter.date).getTime();
-    const dateB = new Date(b.frontmatter.date).getTime();
+    const dateA = parseDateOnly(a.frontmatter.date)?.getTime() ?? 0;
+    const dateB = parseDateOnly(b.frontmatter.date)?.getTime() ?? 0;
     return dateB - dateA;
   });
 }

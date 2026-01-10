@@ -16,23 +16,31 @@ interface EventsListProps {
 
 const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, categories }) => {
   const { t } = useI18n();
+  const allLabel = t("common.all") as string;
   const [activeTab, setActiveTab] = useState("upcoming"); // 'upcoming' or 'past'
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(t("common.all"));
+  const [selectedCategory, setSelectedCategory] = useState(allLabel);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const normalizedCategories = React.useMemo(() => {
+    const unique = Array.from(new Set(categories.filter(Boolean)));
+    if (!unique.includes(allLabel)) {
+      unique.unshift(allLabel);
+    }
+    return unique;
+  }, [categories, allLabel]);
 
   // Handle search and filters.
   const filteredUpcomingEvents = upcomingEvents.filter(event => {
     const matchesSearch = event.frontmatter.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          event.frontmatter.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === t("common.all") || event.frontmatter.category === selectedCategory;
+    const matchesCategory = selectedCategory === allLabel || event.frontmatter.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
   const filteredPastEvents = pastEvents.filter(event => {
     const matchesSearch = event.frontmatter.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                         event.frontmatter.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === t("common.all") || event.frontmatter.category === selectedCategory;
+    const matchesCategory = selectedCategory === allLabel || event.frontmatter.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -93,7 +101,7 @@ const EventsList: React.FC<EventsListProps> = ({ upcomingEvents, pastEvents, cat
               >
                 <h3 className="font-medium text-gray-800 dark:text-white mb-2">{t("eventsList.categoryTitle")}</h3>
                 <div className="flex flex-wrap gap-2">
-                  {categories.map((category) => (
+                  {normalizedCategories.map((category) => (
                     <button
                       key={category}
                       className={`px-3 py-1 rounded-full text-sm ${

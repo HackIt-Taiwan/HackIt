@@ -1,5 +1,5 @@
 import { getFeaturedEvents, getPastEvents, getUpcomingEvents } from '@/utils/events';
-import EventsPageClient from './EventsPageClient';
+import EventsPageClient from '@/app/events/EventsPageClient';
 
 export default async function EventsPage() {
   const [upcomingEvents, pastEvents, featuredEvents] = await Promise.all([
