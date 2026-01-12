@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
@@ -44,7 +44,14 @@ export default function Navbar() {
     return () => clearTimeout(timer);
   }, [logoClickCount, t]);
 
-  const navItems = useMemo(() => ([
+  type NavItem = {
+    name: ReactNode;
+    href: string;
+    highlight?: boolean;
+    isExternal?: boolean;
+  };
+
+  const navItems = useMemo<NavItem[]>(() => ([
     { name: t('common.home'), href: '/' },
     {
       name: t('common.events'),
