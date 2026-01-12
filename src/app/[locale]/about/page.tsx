@@ -957,7 +957,7 @@ export default function AboutPage() {
               viewport={{ once: true }}
             >
               <a 
-                href="https://hackittw.notion.site/wi-ki-about?pvs=4" 
+                href="https://docs.hackit.one/s/library" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center px-8 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg shadow-md hover:shadow-lg transition-all font-medium gap-2"
