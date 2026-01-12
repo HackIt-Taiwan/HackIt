@@ -1,6 +1,8 @@
 import { getFeaturedEvents, getPastEvents, getUpcomingEvents } from '@/utils/events';
 import EventsPageClient from '@/app/events/EventsPageClient';
 
+export const dynamic = 'force-dynamic';
+
 export default async function EventsPage() {
   const [upcomingEvents, pastEvents, featuredEvents] = await Promise.all([
     getUpcomingEvents(),
