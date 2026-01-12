@@ -23,12 +23,8 @@
       "resources": "Resources",
       "contactUs": "Contact Us"
     },
-    "eventsLinks": [
-      {"name": "Hack History", "href": "https://hackittw.notion.site/1a459188ed528024aa0be368754f6adf"}
-    ],
-    "resourcesLinks": [
-      {"name": "Wikipedia", "href": "https://hackittw.notion.site/wi-ki"}
-    ],
+    "eventsLinks": [],
+    "resourcesLinks": [],
     "contactInfo": {
       "email": "contact@hackit.tw",
       "discord": "https://discord.gg/hackit"
@@ -36,8 +32,8 @@
   },
   "aboutSection": {
     "aboutUs": "About Us",
-    "tagline": "Inspiring future tech leaders with <highlight>innovative thinking</highlight>",
-    "introduction": "HackIt is Taiwan's first teen-led creative community. We organize our own events, write our own code, and make our own impact. Rejecting rote learning and passive waiting, HackIt empowers every teenager to build their own future.",
+    "tagline": "Incubating future designers through <highlight>adventure-based creation</highlight>",
+    "introduction": "HackIt is an action-driven learning community launched by Taiwanese teens for teens. In an era of AI and high uncertainty, what is truly scarce are people who can spot problems, dare to build, and turn ideas into reality with others. Through hackathons, creative experiments, and real-world missions, we help teens practice courage, innovation, execution, and collaboration with tool leverage—under pressure that is safe yet real.",
     "founderStoryTitle": "Our <highlight>Origin Story</highlight>",
     "founderStoryTitlePlain": "Origin Story",
     "founderStoryParagraph1": "HackIt was born in 2024, started by four high school students. After being invited to a global Hack Club hackathon, we challenged ourselves to create Taiwan's first-ever teen-organized hackathon. No one knew if it would work, but we believed that without trying, we'd never find out.",
@@ -66,18 +62,18 @@
     "events": "Events",
     "years": "Years of History",
     "missionShort": [
-      "HackIt's mission is to make teens seen and believed in.",
-      "We believe Taiwanese students aren't lacking talent, just opportunity.",
-      "When education values creativity over standardized answers,",
-      "those silent teens will begin to shine, even lighting others' paths."
+      "HackIt's mission is to help teens become future designers by changing the world with their own hands.",
+      "We believe what's scarce isn't people who memorize answers, but those who can see problems and dare to build.",
+      "We practice courage, innovation, and execution through adventure-based creation.",
+      "And we amplify change through collaboration and tool leverage."
     ],
     "manifestoShort": [
-      "We're building more than events—we're creating a culture.",
-      "Making action, courage, and mutual inspiration daily youth experiences.",
-      "When young people are trusted, they become not just participants, but catalysts of change."
+      "HackIt isn't just a stage for events; it's an incubator you can return to again and again.",
+      "We value safety and care, and believe real challenges bring real growth.",
+      "From participant to leader, we record and pass on every adventure."
     ],
     "missionAndManifesto": "Mission & Manifesto",
-    "coreIdealsPromise": "Our core ideals and commitment to the future",
+    "coreIdealsPromise": "Core ideals of adventure-based creation and our commitment to the future",
     "mission": "Mission",
     "manifesto": "Manifesto",
     "learnMoreNotion": "Want to learn more?",

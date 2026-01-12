@@ -23,12 +23,8 @@
       "resources": "資源",
       "contactUs": "聯絡我們"
     },
-    "eventsLinks": [
-      {"name": "黑客歷史", "href": "https://hackittw.notion.site/1a459188ed528024aa0be368754f6adf"}
-    ],
-    "resourcesLinks": [
-      {"name": "維基百科", "href": "https://hackittw.notion.site/wi-ki"}
-    ],
+    "eventsLinks": [],
+    "resourcesLinks": [],
     "contactInfo": {
       "email": "contact@hackit.tw",
       "discord": "https://discord.gg/hackit"
@@ -36,8 +32,8 @@
   },
   "aboutSection": {
     "aboutUs": "關於我們",
-    "tagline": "用<highlight>創新思維</highlight>啟發未來科技人才",
-    "introduction": "HackIt 是台灣首個由青少年主導的創造型社群，我們自己辦活動、自己寫程式、自己改變世界。拒絕填鴨、拒絕等待，HackIt 要讓每一位青少年，親手打造屬於自己的未來。",
+    "tagline": "以<highlight>冒險式創造</highlight>孵化未來設計者",
+    "introduction": "HackIt 是由台灣青少年發起、為青少年打造的行動型學習社群。我們相信在 AI 與高度不確定的時代，真正稀缺的是能看見問題、敢動手、能與他人一起把想法做成現實的人。透過黑客松、創作實驗與真實任務，我們讓青少年在安全但真實的壓力中練習勇氣、創新、執行，以及協作與工具槓桿。",
     "founderStoryTitle": "我們的<highlight>創辦故事</highlight>",
     "founderStoryTitlePlain": "創辦故事",
     "founderStoryParagraph1": "HackIt 誕生於 2024 年，由四位高中生親手發起。在一次全球性的 Hack Club 黑客松邀請下，我們決定挑戰一件台灣從未發生過的事——讓青少年自己籌辦、自己打造一場屬於青少年自己的黑客松。當時沒有人知道這是不是行得通，但我們知道，不試試看，永遠不會知道。",
@@ -66,18 +62,18 @@
     "events": "活動",
     "years": "年歷史",
     "missionShort": [
-      "HackIt 的使命，是讓青少年被看見、被相信。",
-      "我們相信，台灣的學生不是沒能力，而是缺少舞台。",
-      "當教育不再只追求標準答案，而是鼓勵自由創造，",
-      "那些原本沉默的青少年，就會開始發光，甚至照亮別人。"
+      "HackIt 的使命，是讓青少年在親手改變世界的過程中成為未來設計者。",
+      "我們相信稀缺的不是會背答案的人，而是能看見問題、敢動手的人。",
+      "以冒險式創造練習勇氣、創新與執行。",
+      "並用協作與工具槓桿放大改變。"
     ],
     "manifestoShort": [
-      "我們想打造的不只是活動，而是一種文化。",
-      "讓動手做、勇敢試、彼此啟發，成為青春的日常。",
-      "當青少年被信任，他們不只是參與者，更能成為改變的起點。"
+      "HackIt 想建的不是只辦活動的舞台，而是可反覆進入的孵化場。",
+      "我們重視安全與照顧，也相信真實挑戰會帶來真正成長。",
+      "從參與者到帶領者，讓每一次冒險都能被記錄、被傳承。"
     ],
     "missionAndManifesto": "使命與宣言",
-    "coreIdealsPromise": "我們的核心理念與對未來的承諾",
+    "coreIdealsPromise": "冒險式創造的核心理念與對未來的承諾",
     "mission": "使命",
     "manifesto": "宣言",
     "learnMoreNotion": "想了解更多?",
