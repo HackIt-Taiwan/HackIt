@@ -17,13 +17,15 @@ type ShareRecordsConfig = {
   baseOrigin: string;
 };
 
+const DEFAULT_SHARE_URL = 'https://nocodb.hackit.one/dashboard/#/nc/view/715cb71e-871f-4a80-8807-073a9856ee40';
+
 let resolvedRecordsUrl: string | null = null;
 let cachedEvents: Event[] | null = null;
 let cachedAt = 0;
 let cachePromise: Promise<Event[]> | null = null;
 
 function getShareRecordsConfig(): ShareRecordsConfig {
-  const apiUrl = process.env.NOCODB_EVENTS_API_URL;
+  const apiUrl = process.env.NOCODB_EVENTS_API_URL || process.env.NEXT_PUBLIC_NOCODB_EVENTS_API_URL;
   if (apiUrl) {
     let url: URL;
     try {
@@ -34,7 +36,7 @@ function getShareRecordsConfig(): ShareRecordsConfig {
     return { recordsUrls: [apiUrl], baseOrigin: url.origin };
   }
 
-  const shareUrl = process.env.NOCODB_EVENTS_SHARE_URL;
+  const shareUrl = process.env.NOCODB_EVENTS_SHARE_URL || process.env.NEXT_PUBLIC_NOCODB_EVENTS_SHARE_URL || DEFAULT_SHARE_URL;
   if (!shareUrl) {
     throw new Error('NOCODB_EVENTS_SHARE_URL is not set');
   }
