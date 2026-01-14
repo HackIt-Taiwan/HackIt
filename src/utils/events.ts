@@ -55,6 +55,34 @@ function getEventEndDate(event: Event): Date | null {
 let eventsCache: Event[] | null = null;
 let eventsPromise: Promise<Event[]> | null = null;
 
+function normalizeBaseUrl(value?: string): string | null {
+  if (!value) return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    return trimmed;
+  }
+  return `https://${trimmed}`;
+}
+
+function getServerBaseUrl(): string {
+  const candidates = [
+    process.env.NEXT_PUBLIC_SITE_URL,
+    process.env.NEXT_PUBLIC_APP_URL,
+    process.env.NEXT_PUBLIC_VERCEL_URL,
+    process.env.VERCEL_URL,
+    process.env.COOLIFY_FQDN,
+    process.env.COOLIFY_URL,
+  ];
+
+  for (const candidate of candidates) {
+    const normalized = normalizeBaseUrl(candidate);
+    if (normalized) return normalized;
+  }
+
+  return 'http://localhost:3000';
+}
+
 // Clear cache (useful for development/testing).
 export function clearEventsCache(): void {
   eventsCache = null;
@@ -63,6 +91,18 @@ export function clearEventsCache(): void {
 
 // Load events from the API.
 async function loadEventsData(): Promise<Event[]> {
+  if (typeof window === 'undefined') {
+    try {
+      const response = await fetch(`${getServerBaseUrl()}/api/data/events`, { cache: 'no-store' });
+      if (response.ok) {
+        return (await response.json()) || [];
+      }
+    } catch (error) {
+      console.error('Failed to load events data:', error);
+    }
+    return [];
+  }
+
   if (eventsCache) {
     return eventsCache;
   }
@@ -73,19 +113,10 @@ async function loadEventsData(): Promise<Event[]> {
 
   eventsPromise = (async () => {
     try {
-      // Use absolute URLs on the server and relative URLs on the client.
-      if (typeof window === 'undefined') {
-        const response = await fetch(`http://localhost:3000/api/data/events`);
-        if (response.ok) {
-          eventsCache = await response.json();
-          return eventsCache || [];
-        }
-      } else {
-        const response = await fetch(`/api/data/events`);
-        if (response.ok) {
-          eventsCache = await response.json();
-          return eventsCache || [];
-        }
+      const response = await fetch(`/api/data/events`);
+      if (response.ok) {
+        eventsCache = await response.json();
+        return eventsCache || [];
       }
     } catch (error) {
       console.error('Failed to load events data:', error);
